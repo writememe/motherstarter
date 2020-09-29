@@ -1,0 +1,32 @@
+[
+    {
+        "name": "lab-csr-01.lab.dfjt.local",
+        "mgmt_ip": "10.0.0.16",
+        "vendor": "Cisco",
+        "operating_system": "ios"
+    },
+    {
+        "name": "dfjt-r001.lab.dfjt.local",
+        "mgmt_ip": "10.0.0.1",
+        "vendor": "Cisco",
+        "operating_system": "ios"
+    },
+    {
+        "name": "lab-arista-01.lab.dfjt.local",
+        "mgmt_ip": "10.0.0.11",
+        "vendor": "Arista",
+        "operating_system": "eos"
+    },
+    {
+        "name": "lab-arista-02.lab.dfjt.local",
+        "mgmt_ip": "10.0.0.18",
+        "vendor": "Arista",
+        "operating_system": "eos"
+    },
+    {
+        "name": "lab-junos-01.lab.dfjt.local",
+        "mgmt_ip": "10.0.0.15",
+        "vendor": "Juniper",
+        "operating_system": "junos"
+    }
+]

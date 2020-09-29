@@ -1,0 +1,6 @@
+black
+pylama
+yamllint
+bandit
+pandas
+jinja2
