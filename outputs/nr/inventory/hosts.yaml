@@ -6,27 +6,45 @@ lab-csr-01.lab.dfjt.local:
         - ios
     data:
         mgmt_ip: 10.0.0.16
+        vendor: cisco
+        type: router
 dfjt-r001.lab.dfjt.local:
     hostname: dfjt-r001.lab.dfjt.local
     groups:
         - ios
     data:
         mgmt_ip: 10.0.0.1
+        vendor: cisco
+        type: router
 lab-arista-01.lab.dfjt.local:
     hostname: lab-arista-01.lab.dfjt.local
     groups:
         - eos
     data:
         mgmt_ip: 10.0.0.11
+        vendor: arista
+        type: switch
 lab-arista-02.lab.dfjt.local:
     hostname: lab-arista-02.lab.dfjt.local
     groups:
         - eos
     data:
         mgmt_ip: 10.0.0.18
+        vendor: arista
+        type: switch
 lab-junos-01.lab.dfjt.local:
     hostname: lab-junos-01.lab.dfjt.local
     groups:
         - junos
     data:
         mgmt_ip: 10.0.0.15
+        vendor: juniper
+        type: router
+lab-nxos-01.lab.dfjt.local:
+    hostname: lab-nxos-01.lab.dfjt.local
+    groups:
+        - nxos
+    data:
+        mgmt_ip: 10.0.0.14
+        vendor: cisco
+        type: switch

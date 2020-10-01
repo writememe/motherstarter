@@ -7,4 +7,6 @@
         - {{ dev.operating_system }}
     data:
         mgmt_ip: {{ dev.mgmt_ip }}
+        vendor: {{ dev.vendor|lower }}
+        type: {{ dev.device_type }}
 {% endfor %}

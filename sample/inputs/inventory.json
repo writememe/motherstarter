@@ -3,30 +3,42 @@
         "name": "lab-csr-01.lab.dfjt.local",
         "mgmt_ip": "10.0.0.16",
         "vendor": "Cisco",
+        "device_type": "router",
         "operating_system": "ios"
     },
     {
         "name": "dfjt-r001.lab.dfjt.local",
         "mgmt_ip": "10.0.0.1",
         "vendor": "Cisco",
+        "device_type": "router",
         "operating_system": "ios"
     },
     {
         "name": "lab-arista-01.lab.dfjt.local",
         "mgmt_ip": "10.0.0.11",
         "vendor": "Arista",
+        "device_type": "switch",
         "operating_system": "eos"
     },
     {
         "name": "lab-arista-02.lab.dfjt.local",
         "mgmt_ip": "10.0.0.18",
         "vendor": "Arista",
+        "device_type": "switch",
         "operating_system": "eos"
     },
     {
         "name": "lab-junos-01.lab.dfjt.local",
         "mgmt_ip": "10.0.0.15",
         "vendor": "Juniper",
+        "device_type": "router",
         "operating_system": "junos"
+    },
+    {
+        "name": "lab-nxos-01.lab.dfjt.local",
+        "mgmt_ip": "10.0.0.14",
+        "vendor": "Cisco",
+        "device_type": "switch",
+        "operating_system": "nxos"
     }
 ]
