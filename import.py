@@ -17,6 +17,24 @@ def init_dataframe(source_dir=None):
     return df
 
 
+def init_dataframe_excel(source_dir=None):
+    if source_dir is None:
+        # Specify the source dirs for inputs and templates
+        source_dir = "sample/inputs/"
+    # Read in source files
+    df = pd.read_excel(f"{source_dir}inventory.xlsx", sheet_name="inventory")
+    return df
+
+
+def init_dataframe_csv(source_dir=None):
+    if source_dir is None:
+        # Specify the source dirs for inputs and templates
+        source_dir = "sample/inputs/"
+    # Read in source files
+    df = pd.read_csv(f"{source_dir}inventory.csv")
+    return df
+
+
 def init_grp_dataframe(source_dir=None):
     if source_dir is None:
         # Specify the source dirs for inputs and templates
@@ -93,8 +111,7 @@ def to_pyats(env, df, output_dir=None):
 
 
 def to_csv(df, output_dir=None):
-    """
-    """
+    """"""
     if output_dir is None:
         output_dir = "outputs/generic"
     # Create entry directory and/or check that it exists
@@ -107,8 +124,7 @@ def to_csv(df, output_dir=None):
 
 
 def to_xlsx(df, output_dir=None):
-    """
-    """
+    """"""
     if output_dir is None:
         output_dir = "outputs/generic"
     # Create entry directory and/or check that it exists
@@ -121,6 +137,8 @@ def to_xlsx(df, output_dir=None):
 
 
 def main():
+    # df = init_dataframe_excel()
+    df = init_dataframe_csv()
     df = init_dataframe()
     group_df = init_grp_dataframe()
     env = prep_templates()

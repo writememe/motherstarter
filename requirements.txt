@@ -4,3 +4,4 @@ yamllint
 bandit
 pandas
 jinja2
+xlrd
