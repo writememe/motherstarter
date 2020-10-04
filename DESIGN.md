@@ -15,3 +15,9 @@
 - [X] Output to Excel file.
 - [X] Output to CSV file.
 - Output to Ansible file.
+
+# Things to work out
+Type printing
+https://realpython.com/lessons/type-hinting/
+Type hinting
+mypy

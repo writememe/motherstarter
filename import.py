@@ -136,6 +136,20 @@ def to_xlsx(df, output_dir=None):
     print(f"File output location: {xlsx_file}")
 
 
+def to_ansible(env, df, output_dir=None):
+    """"""
+    if output_dir is None:
+        output_dir = "outputs/ansible/inventory"
+    # Create entry directory and/or check that it exists
+    pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
+    inv = dataframe_to_dict(df)
+    template = env.get_template("hosts.j2")
+    output = template.render(inventory=inv)
+    with open(f"{output_dir}/hosts", "w+") as ans_h_file:
+        ans_h_file.write(output)
+    print(f"File output location: {ans_h_file.name}")
+
+
 def main():
     # df = init_dataframe_excel()
     df = init_dataframe_csv()
@@ -148,6 +162,8 @@ def main():
     to_csv(df)
     to_xlsx(df)
     to_pyats(env=pyats_env, df=df)
+    ans_env = prep_templates(tmpl_dir="templates/outputs/ansible")
+    to_ansible(env=ans_env, df=df)
 
 
 main()
