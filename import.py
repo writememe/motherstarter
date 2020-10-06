@@ -78,7 +78,7 @@ def init_groups_xlsx(source_dir=None):
         # Specify the source dirs for inputs and templates
         source_dir = "inputs/groups/xlsx"
     # Read in source files
-    df = pd.read_excel(f"{source_dir}/inventory.xlsx", sheet_name="groups")
+    df = pd.read_excel(f"{source_dir}/groups.xlsx", sheet_name="groups")
     return df
 
 
@@ -225,8 +225,8 @@ def to_ansible(env, df, output_dir=None):
 
 
 def main():
-    inv_df = init_inventory(source_dir=None, source_type='json')
-    group_df = init_groups(source_dir=None, source_type='json')
+    inv_df = init_inventory(source_dir=None, source_type='csv')
+    group_df = init_groups(source_dir=None, source_type='csv')
     env = prep_templates()
     pyats_env = prep_templates(tmpl_dir="templates/outputs/pyats")
     to_nr_hosts(env, inv_df)
