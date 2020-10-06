@@ -1,47 +1,95 @@
 # Import modules
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader
-import pprint
 import pathlib as pl
-
-# Set indentation on pretty print
-pp = pprint.PrettyPrinter(indent=2)
+from colorama import Fore, init
 
 
-def init_dataframe(source_dir=None):
-    if source_dir is None:
-        # Specify the source dirs for inputs and templates
-        source_dir = "sample/inputs/"
-    # Read in source files
-    df = pd.read_json(f"{source_dir}inventory.json")
+def init_inventory(source_dir=None, source_type='json'):
+    """
+    Initialise the inventory source
+    """
+    if source_type == "json":
+        df = init_inventory_json(source_dir)
+    elif source_type == 'xlsx':
+        df = init_inventory_xlsx(source_dir)
+    elif source_type == 'csv':
+        df = init_inventory_csv(source_dir)
+    else:
+        print(f"{Fore.RED}ERROR: {source_type} not supported...")
+        df = None
     return df
 
 
-def init_dataframe_excel(source_dir=None):
-    if source_dir is None:
-        # Specify the source dirs for inputs and templates
-        source_dir = "sample/inputs/"
-    # Read in source files
-    df = pd.read_excel(f"{source_dir}inventory.xlsx", sheet_name="inventory")
+def init_groups(source_dir=None, source_type='json'):
+    """
+    Initialise the groups source
+    """
+    if source_type == "json":
+        df = init_groups_json(source_dir)
+    elif source_type == 'xlsx':
+        df = init_groups_xlsx(source_dir)
+    elif source_type == 'csv':
+        df = init_groups_csv(source_dir)
+    else:
+        print(f"{Fore.RED}ERROR: {source_type} not supported...")
+        df = None
     return df
 
 
-def init_dataframe_csv(source_dir=None):
+def init_inventory_json(source_dir=None):
     if source_dir is None:
         # Specify the source dirs for inputs and templates
-        source_dir = "sample/inputs/"
+        source_dir = "inputs/inventory/json"
     # Read in source files
-    df = pd.read_csv(f"{source_dir}inventory.csv")
+    df = pd.read_json(f"{source_dir}/inventory.json")
     return df
 
 
-def init_grp_dataframe(source_dir=None):
+def init_inventory_xlsx(source_dir=None):
     if source_dir is None:
         # Specify the source dirs for inputs and templates
-        source_dir = "sample/inputs/"
+        source_dir = "inputs/inventory/xlsx"
     # Read in source files
-    df = pd.read_json(f"{source_dir}groups.json")
+    df = pd.read_excel(f"{source_dir}/inventory.xlsx", sheet_name="inventory")
     return df
+
+
+def init_inventory_csv(source_dir=None):
+    if source_dir is None:
+        # Specify the source dirs for inputs and templates
+        source_dir = "inputs/inventory/csv"
+    # Read in source files
+    df = pd.read_csv(f"{source_dir}/inventory.csv")
+    return df
+
+
+def init_groups_json(source_dir=None):
+    if source_dir is None:
+        # Specify the source dirs for inputs and templates
+        source_dir = "inputs/groups/json"
+    # Read in source files
+    df = pd.read_json(f"{source_dir}/groups.json")
+    return df
+
+
+def init_groups_xlsx(source_dir=None):
+    if source_dir is None:
+        # Specify the source dirs for inputs and templates
+        source_dir = "inputs/groups/xlsx"
+    # Read in source files
+    df = pd.read_excel(f"{source_dir}/inventory.xlsx", sheet_name="groups")
+    return df
+
+
+def init_groups_csv(source_dir=None):
+    if source_dir is None:
+        # Specify the source dirs for inputs and templates
+        source_dir = "inputs/groups/csv"
+    # Read in source files
+    df = pd.read_csv(f"{source_dir}/groups.csv")
+    return df
+
 
 
 def dataframe_to_dict(df):
@@ -110,7 +158,7 @@ def to_pyats(env, df, output_dir=None):
     print(f"File output location: {tb_file.name}")
 
 
-def to_csv(df, output_dir=None):
+def to_csv_inventory(df, output_dir=None):
     """"""
     if output_dir is None:
         output_dir = "outputs/generic"
@@ -123,7 +171,7 @@ def to_csv(df, output_dir=None):
     print(f"File output location: {csv_file}")
 
 
-def to_xlsx(df, output_dir=None):
+def to_xlsx_inventory(df, output_dir=None):
     """"""
     if output_dir is None:
         output_dir = "outputs/generic"
@@ -132,6 +180,32 @@ def to_xlsx(df, output_dir=None):
     inv = dataframe_to_dict(df)
     inv = df.from_dict(inv)
     xlsx_file = f"{output_dir}/inventory.xlsx"
+    inv.to_csv(xlsx_file, index=False)
+    print(f"File output location: {xlsx_file}")
+
+
+def to_csv_groups(df, output_dir=None):
+    """"""
+    if output_dir is None:
+        output_dir = "outputs/generic"
+    # Create entry directory and/or check that it exists
+    pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
+    inv = dataframe_to_dict(df)
+    inv = df.from_dict(inv)
+    csv_file = f"{output_dir}/groups.csv"
+    inv.to_csv(csv_file, index=False)
+    print(f"File output location: {csv_file}")
+
+
+def to_xlsx_groups(df, output_dir=None):
+    """"""
+    if output_dir is None:
+        output_dir = "outputs/generic"
+    # Create entry directory and/or check that it exists
+    pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
+    inv = dataframe_to_dict(df)
+    inv = df.from_dict(inv)
+    xlsx_file = f"{output_dir}/groups.xlsx"
     inv.to_csv(xlsx_file, index=False)
     print(f"File output location: {xlsx_file}")
 
@@ -151,19 +225,19 @@ def to_ansible(env, df, output_dir=None):
 
 
 def main():
-    # df = init_dataframe_excel()
-    df = init_dataframe_csv()
-    df = init_dataframe()
-    group_df = init_grp_dataframe()
+    inv_df = init_inventory(source_dir=None, source_type='json')
+    group_df = init_groups(source_dir=None, source_type='json')
     env = prep_templates()
     pyats_env = prep_templates(tmpl_dir="templates/outputs/pyats")
-    to_nr_hosts(env, df)
+    to_nr_hosts(env, inv_df)
     to_nr_groups(env=env, df=group_df)
-    to_csv(df)
-    to_xlsx(df)
-    to_pyats(env=pyats_env, df=df)
+    to_csv_inventory(inv_df)
+    to_xlsx_inventory(inv_df)
+    to_csv_groups(group_df)
+    to_xlsx_groups(group_df)
+    to_pyats(env=pyats_env, df=inv_df)
     ans_env = prep_templates(tmpl_dir="templates/outputs/ansible")
-    to_ansible(env=ans_env, df=df)
+    to_ansible(env=ans_env, df=inv_df)
 
 
 main()

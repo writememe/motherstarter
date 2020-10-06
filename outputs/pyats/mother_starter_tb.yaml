@@ -22,7 +22,7 @@ devices:
                 ip: 10.0.0.16
                 protocol: ssh
         custom:
-            vendor: Cisco
+            vendor: cisco
     dfjt-r001.lab.dfjt.local:
         os: ios
         type: router
@@ -31,7 +31,7 @@ devices:
                 ip: 10.0.0.1
                 protocol: ssh
         custom:
-            vendor: Cisco
+            vendor: cisco
     lab-arista-01.lab.dfjt.local:
         os: eos
         type: switch
@@ -40,7 +40,7 @@ devices:
                 ip: 10.0.0.11
                 protocol: ssh
         custom:
-            vendor: Arista
+            vendor: arista
     lab-arista-02.lab.dfjt.local:
         os: eos
         type: switch
@@ -49,7 +49,7 @@ devices:
                 ip: 10.0.0.18
                 protocol: ssh
         custom:
-            vendor: Arista
+            vendor: arista
     lab-junos-01.lab.dfjt.local:
         os: junos
         type: router
@@ -58,7 +58,7 @@ devices:
                 ip: 10.0.0.15
                 protocol: ssh
         custom:
-            vendor: Juniper
+            vendor: juniper
     lab-nxos-01.lab.dfjt.local:
         os: nxos
         type: switch
@@ -67,4 +67,4 @@ devices:
                 ip: 10.0.0.14
                 protocol: ssh
         custom:
-            vendor: Cisco
+            vendor: cisco

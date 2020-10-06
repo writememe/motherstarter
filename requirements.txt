@@ -5,3 +5,4 @@ bandit
 pandas
 jinja2
 xlrd
+colorama
