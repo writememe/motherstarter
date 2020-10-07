@@ -47,13 +47,6 @@ args = parser.parse_args()
 log_level = args.logging_level.upper()
 source_type = args.source_type
 output_type = args.output_type
-print(log_level)
-
-
-# if args.log_level:
-#     init_logger()
-#     logging.basicConfig(level=getattr(logging, args.log_level.upper()))
-
 
 def init_logger(log_level: str, log_name: str = "ms.log"):
     logger = logging.getLogger(__name__)
@@ -87,21 +80,8 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     logger.addHandler(s_handler)
     return logger
 
-
+# Initalise logger
 logger = init_logger(log_level=log_level, log_name="ms1.log")
-
-logger.debug(f"Hello debugs - {log_level}")
-
-
-# logger.setLevel(logging.DEBUG)
-# formatter = logging.Formatter("%(asctime)s:%(levelname)s:%(message)s")
-# file_handler = logging.FileHandler("motherstarter.log")
-# file_handler.setFormatter(formatter)
-# file_handler.setLevel(logging.INFO)
-# stream_handler = logging.StreamHandler()
-# stream_handler.setFormatter(formatter)
-# logger.addHandler(file_handler)
-# logger.addHandler(stream_handler)
 
 
 # Auto-reset colorama colours back after each print statement
@@ -125,7 +105,6 @@ def init_inventory(source_dir: str = None, source_type: str = "json"):
         print(f"{Fore.RED}ERROR: {source_type} not supported...")
 
         df = None
-    print(type(df))
     return df
 
 
