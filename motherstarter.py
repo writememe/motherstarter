@@ -40,7 +40,7 @@ parser.add_argument(
     choices=["nornir", "csv", "xlsx", "pyats", "all"],
     dest="output_type",
     default="all",
-    help="Specify the output file types. Default is all file types. This arguement only takes one option.",
+    help="Specify the output file types. Default is all file types. This argument only takes one option.",
 )
 args = parser.parse_args()
 

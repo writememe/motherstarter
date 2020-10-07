@@ -22,14 +22,15 @@ source venv/bin/activate
 
 3. Install the requirements:
 
+```bash
 pip install -r requirements.txt
-
+```
 
 ## Usage
 
 To use motherstarter, please look at the command-line helper below:
 
-```python
+```
 > python motherstarter.py --help
 
 usage: motherstarter.py [-h] [-l {debug,info,warning,error,critical}]
@@ -49,7 +50,7 @@ optional arguments:
                         Default is tree structure under the 'inputs/' folder.
   -o {nornir,csv,xlsx,pyats,all}, --output-type {nornir,csv,xlsx,pyats,all}
                         Specify the output file types. Default is all file
-                        types. This arguement only takes one option.
+                        types. This argument only takes one option.
 
 ```
 
