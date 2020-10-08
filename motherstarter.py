@@ -19,7 +19,7 @@ import argparse
 parser = argparse.ArgumentParser(
     description="Translate source file(s) into network automation inventory outputs"
 )
-# Setup argparse argumented to take user input from the command line
+# Setup argparse arguments to take user input from the command line
 parser.add_argument(
     "-l",
     "--log",
@@ -66,9 +66,10 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     The log_level is passed into the function and used to set
     the logging level.
 
-    :param log_level:
-    :param log_name:
-    :return logger:
+    :param log_level: The severity logging level for all events
+    to be logged at.
+    :param log_name: The name of the log file
+    :return logger: An initialised logger object
     """
     # Setup coloredlogs based on the logging level
     # coloredlogs.install(level=log_level)
