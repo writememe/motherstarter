@@ -9,10 +9,11 @@ used to perform network automation tasks.
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader
 import pathlib as pl
-from colorama import Fore, init
+from colorama import init
 import logging
 import argparse
-import coloredlogs
+
+# import coloredlogs
 
 # Setup argparse parameters to take user input from the command line
 parser = argparse.ArgumentParser(
@@ -75,10 +76,11 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     logger = logging.getLogger(__name__)
     # Setup the logging formatter
     log_fmt = logging.Formatter(("%(asctime)s - " "%(levelname)s - " "%(message)s"))
+    stream_fmt = logging.Formatter(("%(levelname)s - " "%(message)s"))
     f_handler = logging.FileHandler(log_name)
     f_handler.setFormatter(log_fmt)
     s_handler = logging.StreamHandler()
-    s_handler.setFormatter(log_fmt)
+    s_handler.setFormatter(stream_fmt)
     # TODO: Rework this ugly, yet functional block of code.
     # If/Else block to set logging level based on the log_level
     # taken from the user using argparse
@@ -417,7 +419,8 @@ def to_nr_hosts(env, df, output_dir: str = None):
     # Create file and write contents to file
     with open(f"{output_dir}/hosts.yaml", "w+") as nr_h_file:
         nr_h_file.write(output)
-    print(f"File output location: {nr_h_file.name}")
+    # Log diagnostic information
+    logger.info(f"File output location: {nr_h_file.name}")
     return nr_h_file
 
 
@@ -441,36 +444,60 @@ def to_nr_groups(env, df, output_dir: str = None):
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Convert pandas dataframe to a dictionary and assign to the
-    # 'inv' variable
-    inv = dataframe_to_dict(df)
+    # 'grp' variable
+    grp = dataframe_to_dict(df)
     # Get template and assign to a variable
     template = env.get_template("nornir/groups.j2")
-    # Render inventory dictionary through a template and assign and output
+    # Render groups dictionary through a template and assign and output
     # to a variable
-    output = template.render(inventory=inv)
+    output = template.render(groups=grp)
     # Create file and write contents to file
     with open(f"{output_dir}/groups.yaml", "w+") as nr_g_file:
         nr_g_file.write(output)
-    print(f"File output location: {nr_g_file.name}")
+    # Log diagnostic information
+    logger.info(f"File output location: {nr_g_file.name}")
     return nr_g_file
 
 
 def to_pyats(env, df, output_dir: str = None):
-    """"""
+    """
+    Take the pandas dataframe, convert it to a dictionary
+    and render that dictionary through a Jinja2 template to
+    create an pyATS testbed file.
+
+    :param env: The loaded Jinja2 environment, used to retrieve
+    templates from.
+    :param df: The pandas dataframe object, initialised from the
+    inventory data source
+    :param output_dir: The output directory
+
+    :return tb_file: The pyATS testbed file object.
+    """
+    # Specify the output dir when it is not supplied
     if output_dir is None:
         output_dir = "outputs/pyats"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
+    # Convert pandas dataframe to a dictionary and assign to the
+    # 'inv' variable
     inv = dataframe_to_dict(df)
+    # Get template and assign to a variable
     template = env.get_template("pyats/testbed.j2")
+    # Render inventory dictionary through a template and assign and output
+    # to a variable
     output = template.render(inventory=inv)
+    # Create file and write contents to file
     with open(f"{output_dir}/mother_starter_tb.yaml", "w+") as tb_file:
         tb_file.write(output)
-    print(f"File output location: {tb_file.name}")
+    # Log diagnostic information
+    logger.info(f"File output location: {tb_file.name}")
+    return tb_file
 
 
 def to_csv_inventory(df, output_dir: str = None):
-    """"""
+    """
+    TODO: Doco function.
+    """
     if output_dir is None:
         output_dir = "outputs/generic"
     # Create entry directory and/or check that it exists
@@ -483,7 +510,9 @@ def to_csv_inventory(df, output_dir: str = None):
 
 
 def to_xlsx_inventory(df, output_dir: str = None):
-    """"""
+    """
+    TODO: Doco function
+    """
     if output_dir is None:
         output_dir = "outputs/generic"
     # Create entry directory and/or check that it exists
@@ -496,7 +525,9 @@ def to_xlsx_inventory(df, output_dir: str = None):
 
 
 def to_csv_groups(df, output_dir: str = None):
-    """"""
+    """
+    TODO: Doco function.
+    """
     if output_dir is None:
         output_dir = "outputs/generic"
     # Create entry directory and/or check that it exists
@@ -509,7 +540,9 @@ def to_csv_groups(df, output_dir: str = None):
 
 
 def to_xlsx_groups(df, output_dir: str = None):
-    """"""
+    """
+    TODO: Doco function.
+    """
     if output_dir is None:
         output_dir = "outputs/generic"
     # Create entry directory and/or check that it exists
@@ -522,7 +555,9 @@ def to_xlsx_groups(df, output_dir: str = None):
 
 
 def to_ansible(env, df, output_dir: str = None):
-    """"""
+    """
+    TODO: Doco function.
+    """
     if output_dir is None:
         output_dir = "outputs/ansible/inventory"
     # Create entry directory and/or check that it exists
@@ -535,11 +570,24 @@ def to_ansible(env, df, output_dir: str = None):
     print(f"File output location: {ans_h_file.name}")
 
 
-def main(source_type=source_type, output_type=output_type):
+def main(source_type: str = source_type, output_type: str = output_type):
+    """
+    Main workflow function used to execute the entire workflow
+
+    :param source_type: The source file type to read the inventory
+    and group data in from.
+    :param output_type: What file type(s) you would like to be outputted
+    as a result of running the function.
+    """
+    # Initialise inventory dataframe, based on the source_dir and source_type
     inv_df = init_inventory(source_dir=None, source_type=source_type)
+    # Initialise group dataframe, based on the source_dir and source_type
     group_df = init_groups(source_dir=None, source_type=source_type)
-    env = prep_templates()
-    print(f"OUTPUT TYPE IS {output_type}")
+    # Prepare the jinja2 template environment
+    env = prep_templates(tmpl_dir=None)
+    logger.debug(f"Output type is: {output_type}")
+    # If/Else block to execute the desired output_type based on
+    # what is passed in from argparse
     if output_type == "all":
         to_nr_hosts(env, inv_df)
         to_nr_groups(env=env, df=group_df)
@@ -564,4 +612,5 @@ def main(source_type=source_type, output_type=output_type):
         to_ansible(env=env, df=inv_df)
 
 
+# Execute main function
 main(source_type=source_type, output_type=output_type)
