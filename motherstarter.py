@@ -13,7 +13,9 @@ from colorama import init
 import logging
 import argparse
 
-# import coloredlogs
+# Auto-reset colorama colours back after each print statement
+init(autoreset=True)
+
 
 # Setup argparse parameters to take user input from the command line
 parser = argparse.ArgumentParser(
@@ -62,7 +64,6 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     """
     Initialise a logger object, to be used to perform logging
     and console outputs to the screen.
-
     The log_level is passed into the function and used to set
     the logging level.
 
@@ -71,15 +72,15 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     :param log_name: The name of the log file
     :return logger: An initialised logger object
     """
-    # Setup coloredlogs based on the logging level
-    # coloredlogs.install(level=log_level)
     # Create a logger object
     logger = logging.getLogger(__name__)
-    # Setup the logging formatter
+    # Setup the logging formatters for log and stream outputs
     log_fmt = logging.Formatter(("%(asctime)s - " "%(levelname)s - " "%(message)s"))
     stream_fmt = logging.Formatter(("%(levelname)s - " "%(message)s"))
+    # Setup file handler and use a different log format for output
     f_handler = logging.FileHandler(log_name)
     f_handler.setFormatter(log_fmt)
+    # Setup stream handler and use a different log format for output
     s_handler = logging.StreamHandler()
     s_handler.setFormatter(stream_fmt)
     # TODO: Rework this ugly, yet functional block of code.
@@ -110,18 +111,10 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     return logger
 
 
-# Initalise logger
-logger = init_logger(log_level=log_level, log_name="ms1.log")
-
-
-# Auto-reset colorama colours back after each print statement
-init(autoreset=True)
-
-
 def init_inventory(source_dir: str = None, source_type: str = "json"):
     """
     Initialise the inventory data based on the source_type and from the source
-    directory and return a pandas dataframe object?
+    directory and return a pandas dataframe object
 
     :param source_dir: The source directory to find the files in.
     :param source_type: The source file type to read the inventory data from.
@@ -152,7 +145,7 @@ def init_inventory(source_dir: str = None, source_type: str = "json"):
 def init_groups(source_dir: str = None, source_type: str = "json"):
     """
     Initialise the group data based on the source_type and from the source
-    directory and return a pandas dataframe object?
+    directory and return a pandas dataframe object
 
     :param source_dir: The source directory to find the inventory files in.
     :param source_type: The source file type to read the group data from.
@@ -188,7 +181,6 @@ def init_inventory_json(source_dir: str = None):
     function by reading in the "inventory.json" file from the
     applicable source directory
 
-
     :param source_dir: The source directory to find the inventory files in.
     :return df: The pandas dataframe object
     :type df: #TODO - not sure what this is..
@@ -213,7 +205,6 @@ def init_inventory_xlsx(source_dir: str = None):
     Initialise a pandas dataframe by using pandas read_excel
     function by reading in the "inventory.xlsx" file from the
     applicable source directory
-
 
     :param source_dir: The source directory to find the inventory files in.
     :return df: The pandas dataframe object
@@ -240,7 +231,6 @@ def init_inventory_csv(source_dir: str = None):
     function by reading in the "inventory.csv" file from the
     applicable source directory
 
-
     :param source_dir: The source directory to find the files in.
     :return df: The pandas dataframe object
     :type df: #TODO - not sure what this is..
@@ -265,7 +255,6 @@ def init_groups_json(source_dir: str = None):
     Initialise a pandas dataframe by using pandas read_json
     function by reading in the "groups.json" file from the
     applicable source directory
-
 
     :param source_dir: The source directory to find the groups files in.
     :return df: The pandas dataframe object
@@ -292,7 +281,6 @@ def init_groups_xlsx(source_dir: str = None):
     function by reading in the "groups.xlsx" file from the
     applicable source directory
 
-
     :param source_dir: The source directory to find the groups files in.
     :return df: The pandas dataframe object
     :type df: #TODO - not sure what this is..
@@ -317,7 +305,6 @@ def init_groups_csv(source_dir: str = None):
     Initialise a pandas dataframe by using pandas read_csv
     function by reading in the "groups.csv" file from the
     applicable source directory
-
 
     :param source_dir: The source directory to find the groups files in.
     :return df: The pandas dataframe object
@@ -675,5 +662,7 @@ def main(source_type: str = source_type, output_type: str = output_type):
         to_ansible(env=env, df=inv_df)
 
 
+# Initalise logger
+logger = init_logger(log_level=log_level, log_name="motherstarter.log")
 # Execute main function
 main(source_type=source_type, output_type=output_type)
