@@ -497,78 +497,133 @@ def to_pyats(env, df, output_dir: str = None):
 
 def to_csv_inventory(df, output_dir: str = None):
     """
-    TODO: Doco function.
+    Take the pandas dataframe and save it to a CSV file.
+
+    :param df: The pandas dataframe object, initialised from the
+    inventory data source
+    :param output_dir: The output directory
+
+    :return csv_file: The CSV file object.
     """
+    # Specify the output dir when it is not supplied
     if output_dir is None:
         output_dir = "outputs/generic"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
-    inv = dataframe_to_dict(df)
-    inv = df.from_dict(inv)
+    # Assign CSV file name to a variable
     csv_file = f"{output_dir}/inventory.csv"
-    inv.to_csv(csv_file, index=False)
-    print(f"File output location: {csv_file}")
+    # Output the dataframe to CSV, save in CSV file
+    df.to_csv(csv_file, index=False)
+    # Log diagnostic information
+    logger.info(f"File output location: {csv_file}")
+    return csv_file
 
 
 def to_xlsx_inventory(df, output_dir: str = None):
     """
-    TODO: Doco function
+    Take the pandas dataframe and save it to a xlsx file.
+
+    :param df: The pandas dataframe object, initialised from the
+    inventory data source
+    :param output_dir: The output directory
+
+    :return xlsx_file: The xlsx file object.
     """
+    # Specify the output dir when it is not supplied
     if output_dir is None:
         output_dir = "outputs/generic"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
-    inv = dataframe_to_dict(df)
-    inv = df.from_dict(inv)
+    # Assign xlsx file name to a variable
     xlsx_file = f"{output_dir}/inventory.xlsx"
-    inv.to_csv(xlsx_file, index=False)
-    print(f"File output location: {xlsx_file}")
+    # Output the dataframe to Excel, save in xlsx file
+    df.to_excel(xlsx_file, index=False, sheet_name="inventory")
+    # Log diagnostic information
+    logger.info(f"File output location: {xlsx_file}")
+    return xlsx_file
 
 
 def to_csv_groups(df, output_dir: str = None):
     """
-    TODO: Doco function.
+    Take the pandas dataframe and save it to a CSV file.
+
+    :param df: The pandas dataframe object, initialised from the
+    group data source
+    :param output_dir: The output directory
+
+    :return csv_file: The CSV file object.
     """
+    # Specify the output dir when it is not supplied
     if output_dir is None:
         output_dir = "outputs/generic"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
-    inv = dataframe_to_dict(df)
-    inv = df.from_dict(inv)
+    # Assign CSV file name to a variable
     csv_file = f"{output_dir}/groups.csv"
-    inv.to_csv(csv_file, index=False)
-    print(f"File output location: {csv_file}")
+    # Output the dataframe to CSV, save in CSV file
+    df.to_csv(csv_file, index=False)
+    # Log diagnostic information
+    logger.info(f"File output location: {csv_file}")
+    return csv_file
 
 
 def to_xlsx_groups(df, output_dir: str = None):
     """
-    TODO: Doco function.
+    Take the pandas dataframe and save it to a xlsx file.
+
+    :param df: The pandas dataframe object, initialised from the
+    group data source
+    :param output_dir: The output directory
+
+    :return xlsx_file: The xlsx file object.
     """
+    # Specify the output dir when it is not supplied
     if output_dir is None:
         output_dir = "outputs/generic"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
-    inv = dataframe_to_dict(df)
-    inv = df.from_dict(inv)
+    # Assign xlsx file name to a variable
     xlsx_file = f"{output_dir}/groups.xlsx"
-    inv.to_csv(xlsx_file, index=False)
-    print(f"File output location: {xlsx_file}")
+    # Output the dataframe to Excel, save in xlsx file
+    df.to_excel(xlsx_file, index=False, sheet_name="groups")
+    # Log diagnostic information
+    logger.info(f"File output location: {xlsx_file}")
+    return xlsx_file
 
 
 def to_ansible(env, df, output_dir: str = None):
     """
-    TODO: Doco function.
+    Take the pandas dataframe, convert it to a dictionary
+    and render that dictionary through a Jinja2 template to
+    create an Ansible inventory file.
+
+    :param env: The loaded Jinja2 environment, used to retrieve
+    templates from.
+    :param df: The pandas dataframe object, initialised from the
+    inventory data source
+    :param output_dir: The output directory
+
+    :return ans_h_file: The Ansible inventory file object.
     """
+    # Specify the output dir when it is not supplied
     if output_dir is None:
         output_dir = "outputs/ansible/inventory"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
+    # Convert pandas dataframe to a dictionary and assign to the
+    # 'inv' variable
     inv = dataframe_to_dict(df)
+    # Get template and assign to a variable
     template = env.get_template("ansible/hosts.j2")
+    # Render groups dictionary through a template and assign and output
+    # to a variable
     output = template.render(inventory=inv)
+    # Create file and write contents to file
     with open(f"{output_dir}/hosts", "w+") as ans_h_file:
         ans_h_file.write(output)
-    print(f"File output location: {ans_h_file.name}")
+    # Log diagnostic information
+    logger.info(f"File output location: {ans_h_file.name}")
+    return ans_h_file
 
 
 def main(source_type: str = source_type, output_type: str = output_type):
@@ -586,9 +641,11 @@ def main(source_type: str = source_type, output_type: str = output_type):
     group_df = init_groups(source_dir=None, source_type=source_type)
     # Prepare the jinja2 template environment
     env = prep_templates(tmpl_dir=None)
+    # Diagnostic outputs
     logger.debug(f"Output type is: {output_type}")
     # If/Else block to execute the desired output_type based on
     # what is passed in from argparse
+    # If output type is all, output all file types
     if output_type == "all":
         to_nr_hosts(env, inv_df)
         to_nr_groups(env=env, df=group_df)
@@ -598,17 +655,22 @@ def main(source_type: str = source_type, output_type: str = output_type):
         to_xlsx_groups(group_df)
         to_pyats(env=env, df=inv_df)
         to_ansible(env=env, df=inv_df)
+    # If output type is nornir, output all nornir types
     elif output_type == "nornir":
         to_nr_hosts(env, inv_df)
         to_nr_groups(env=env, df=group_df)
+    # If output type is csv, output all CSV types
     elif output_type == "csv":
         to_csv_inventory(inv_df)
         to_csv_groups(group_df)
+    # If output type is xlsx, output all xlsx types
     elif output_type == "xlsx":
         to_xlsx_inventory(inv_df)
         to_xlsx_groups(group_df)
+    # If output type is pyats, output all pyATS types
     elif output_type == "pyats":
         to_pyats(env=env, df=inv_df)
+    # If output type is ansible, output all ansible types
     elif output_type == "ansible":
         to_ansible(env=env, df=inv_df)
 
