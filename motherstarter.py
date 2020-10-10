@@ -34,7 +34,7 @@ parser.add_argument(
     "-st",
     "--source-type",
     dest="source_type",
-    choices=["json", "csv", "xlsx"],
+    choices=["csv", "json", "xlsx"],
     default="json",
     help="Specify the source file type. Default is json.",
 )
@@ -48,7 +48,7 @@ parser.add_argument(
 parser.add_argument(
     "-o",
     "--output-type",
-    choices=["nornir", "csv", "xlsx", "pyats", "all"],
+    choices=["all", "csv", "json", "nornir", "pyats", "xlsx"],
     dest="output_type",
     default="all",
     help="Specify the output file types. Default is all file types. This argument only takes one option.",
@@ -494,7 +494,7 @@ def to_csv_inventory(df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/generic"
+        output_dir = "outputs/csv"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign CSV file name to a variable
@@ -518,7 +518,7 @@ def to_xlsx_inventory(df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/generic"
+        output_dir = "outputs/xlsx"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign xlsx file name to a variable
@@ -528,6 +528,30 @@ def to_xlsx_inventory(df, output_dir: str = None):
     # Log diagnostic information
     logger.info(f"File output location: {xlsx_file}")
     return xlsx_file
+
+
+def to_json_inventory(df, output_dir: str = None):
+    """
+    Take the pandas dataframe and save it to a json file.
+
+    :param df: The pandas dataframe object, initialised from the
+    inventory data source
+    :param output_dir: The output directory
+
+    :return json_file: The json file object.
+    """
+    # Specify the output dir when it is not supplied
+    if output_dir is None:
+        output_dir = "outputs/json"
+    # Create entry directory and/or check that it exists
+    pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
+    # Assign json file name to a variable
+    json_file = f"{output_dir}/inventory.json"
+    # Output the dataframe to json, save in json file
+    df.to_json(json_file, indent=4, orient="records")
+    # Log diagnostic information
+    logger.info(f"File output location: {json_file}")
+    return json_file
 
 
 def to_csv_groups(df, output_dir: str = None):
@@ -542,7 +566,7 @@ def to_csv_groups(df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/generic"
+        output_dir = "outputs/csv"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign CSV file name to a variable
@@ -566,7 +590,7 @@ def to_xlsx_groups(df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/generic"
+        output_dir = "outputs/xlsx"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign xlsx file name to a variable
@@ -576,6 +600,30 @@ def to_xlsx_groups(df, output_dir: str = None):
     # Log diagnostic information
     logger.info(f"File output location: {xlsx_file}")
     return xlsx_file
+
+
+def to_json_groups(df, output_dir: str = None):
+    """
+    Take the pandas dataframe and save it to a json file.
+
+    :param df: The pandas dataframe object, initialised from the
+    group data source
+    :param output_dir: The output directory
+
+    :return json_file: The json file object.
+    """
+    # Specify the output dir when it is not supplied
+    if output_dir is None:
+        output_dir = "outputs/json"
+    # Create entry directory and/or check that it exists
+    pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
+    # Assign json file name to a variable
+    json_file = f"{output_dir}/groups.json"
+    # Output the dataframe to json, save in json file
+    df.to_json(json_file, indent=4, orient="records")
+    # Log diagnostic information
+    logger.info(f"File output location: {json_file}")
+    return json_file
 
 
 def to_ansible(env, df, output_dir: str = None):
@@ -642,6 +690,8 @@ def main(source_type: str = source_type, output_type: str = output_type):
         to_xlsx_groups(group_df)
         to_pyats(env=env, df=inv_df)
         to_ansible(env=env, df=inv_df)
+        to_json_inventory(inv_df)
+        to_json_groups(group_df)
     # If output type is nornir, output all nornir types
     elif output_type == "nornir":
         to_nr_hosts(env, inv_df)
@@ -660,6 +710,10 @@ def main(source_type: str = source_type, output_type: str = output_type):
     # If output type is ansible, output all ansible types
     elif output_type == "ansible":
         to_ansible(env=env, df=inv_df)
+    # If output type is json, output all ansible types
+    elif output_type == "json":
+        to_json_inventory(inv_df)
+        to_json_groups(group_df)
 
 
 # Initalise logger
