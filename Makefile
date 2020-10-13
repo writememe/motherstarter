@@ -13,7 +13,7 @@ lint-all:	black pylama yamllint bandit ## Perform all linting and security check
 .PHONY:	black
 black: ## Format code using black
 	@echo "--- Performing black reformatting ---"
-	black .
+	black . --check
 
 .PHONY:	pylama
 pylama:	## Perform python linting using pylama
