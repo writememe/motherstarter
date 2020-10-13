@@ -83,29 +83,23 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     # Setup stream handler and use a different log format for output
     s_handler = logging.StreamHandler()
     s_handler.setFormatter(stream_fmt)
-    # TODO: Rework this ugly, yet functional block of code.
-    # If/Else block to set logging level based on the log_level
-    # taken from the user using argparse
-    if log_level == "DEBUG":
-        logger.setLevel(logging.DEBUG)
-        f_handler.setLevel(logging.DEBUG)
-        s_handler.setLevel(logging.DEBUG)
-    elif log_level == "INFO":
-        logger.setLevel(logging.INFO)
-        f_handler.setLevel(logging.INFO)
-        s_handler.setLevel(logging.INFO)
-    elif log_level == "WARNING":
-        logger.setLevel(logging.WARNING)
-        f_handler.setLevel(logging.WARNING)
-        s_handler.setLevel(logging.WARNING)
-    elif log_level == "ERROR":
-        logger.setLevel(logging.ERROR)
-        f_handler.setLevel(logging.ERROR)
-        s_handler.setLevel(logging.ERROR)
-    elif log_level == "CRITICAL":
-        logger.setLevel(logging.CRITICAL)
-        f_handler.setLevel(logging.CRITICAL)
-        s_handler.setLevel(logging.CRITICAL)
+    # Create a dictionary of log_level mappings
+    logger_map = {
+        "INFO": logging.INFO,
+        "DEBUG": logging.DEBUG,
+        "WARNING": logging.WARNING,
+        "ERROR": logging.ERROR,
+        "CRITICAL": logging.CRITICAL,
+    }
+    # Set logging level based on the log_level
+    # taken from the user using argparse and the log_level dictionary map above
+    # NOTE: This will be an integer value
+    # https://docs.python.org/3/library/logging.html#logging-levels
+    log_integer = logger_map.get(log_level)
+    logger.setLevel(level=log_integer)
+    f_handler.setLevel(level=log_integer)
+    s_handler.setLevel(level=log_integer)
+    # Add these handlers to the logger objects
     logger.addHandler(f_handler)
     logger.addHandler(s_handler)
     return logger
@@ -175,7 +169,7 @@ def init_groups(source_dir: str = None, source_type: str = "json"):
     return df
 
 
-def init_inventory_json(source_dir: str = None):
+def init_inventory_json(source_dir: str = None):  # Make this required at this level
     """
     Initialise a pandas dataframe by using pandas read_json
     function by reading in the "inventory.json" file from the

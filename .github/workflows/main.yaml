@@ -2,7 +2,7 @@
 # Github actions workflow file
 name: mother-starter
 
-on:
+on:  # yamllint disable rule:truthy
     push:
         branches:
             - master
@@ -23,7 +23,7 @@ jobs:
         runs-on: ubuntu-latest
         strategy:
             matrix:
-                python-version: [3.6, 3.7, 3.8]
+                python-version: [3.6, 3.7, 3.8, 3.9]
         steps:
             - uses: actions/checkout@v2
             - name: Set up Python ${{ matrix.python-version }}
@@ -33,7 +33,7 @@ jobs:
             - name: Install dependencies
               run: |
                 python -m pip install --upgrade pip
-                if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+                pip install -r requirements.txt
                 pip freeze install
             - name: Execute black formatting check
               run: make black
