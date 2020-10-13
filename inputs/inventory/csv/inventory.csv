@@ -1,0 +1,7 @@
+name,mgmt_ip,vendor,device_type,operating_system
+lab-csr-01.lab.dfjt.local,10.0.0.16,cisco,router,ios
+dfjt-r001.lab.dfjt.local,10.0.0.1,cisco,router,ios
+lab-arista-01.lab.dfjt.local,10.0.0.11,arista,switch,eos
+lab-arista-02.lab.dfjt.local,10.0.0.18,arista,switch,eos
+lab-junos-01.lab.dfjt.local,10.0.0.15,juniper,router,junos
+lab-nxos-01.lab.dfjt.local,10.0.0.14,cisco,switch,nxos
