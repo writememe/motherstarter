@@ -731,31 +731,13 @@ def main(source_type: str, output_type: str):
         to_json_groups(group_df)
 
 
-def cmd_line_input():
-    """
-    Take the command line input (argparse) use it those
-    values to populate the other functions which
-    run the main workflow.
-    Args:
-        N/A
-
-    Returns:
-        N/A
-
-    Raises:
-        N/A
-
-    """
-    # Get the arguments from the command line and assign
-    # arg_outputs to variables
-    arg_outputs = get_argparse_args()
-    log_level = arg_outputs["level"]
-    source_type = arg_outputs["source"]
-    output_type = arg_outputs["output"]
-    # Initalise logger
-    logger = init_logger(log_level=log_level, log_name="motherstarter.log")
-    # Execute main function
-    main(source_type=source_type, output_type=output_type)
-
-
-cmd_line_input()
+# Get the arguments from the command line and assign
+# arg_outputs to variables
+arg_outputs = get_argparse_args()
+log_level = arg_outputs["level"]
+source_type = arg_outputs["source"]
+output_type = arg_outputs["output"]
+# Initalise logger
+logger = init_logger(log_level=log_level, log_name="motherstarter.log")
+# Execute main function
+main(source_type=source_type, output_type=output_type)
