@@ -17,47 +17,68 @@ import argparse
 init(autoreset=True)
 
 
-# Setup argparse parameters to take user input from the command line
-parser = argparse.ArgumentParser(
-    description="Translate source file(s) into network automation inventory outputs"
-)
-# Setup argparse arguments to take user input from the command line
-parser.add_argument(
-    "-l",
-    "--log",
-    dest="logging_level",
-    choices=["debug", "info", "warning", "error", "critical"],
-    default="debug",
-    help="Specify the logging level. Default is debug.",
-)
-parser.add_argument(
-    "-st",
-    "--source-type",
-    dest="source_type",
-    choices=["csv", "json", "xlsx"],
-    default="json",
-    help="Specify the source file type. Default is json.",
-)
-parser.add_argument(
-    "-sd",
-    "--source-dir",
-    dest="source_dir",
-    default=None,
-    help="Specify the source directory for the source files. Default is tree structure under the 'inputs/' folder.",
-)
-parser.add_argument(
-    "-o",
-    "--output-type",
-    choices=["all", "csv", "json", "nornir", "pyats", "xlsx"],
-    dest="output_type",
-    default="all",
-    help="Specify the output file types. Default is all file types. This argument only takes one option.",
-)
-args = parser.parse_args()
-# Take log_level argument, assign to var and turn into uppercase
-log_level = args.logging_level.upper()
-# Take source_type and output_type arguments and assign to a variable
-source_type, output_type = args.source_type, args.output_type
+def get_argparse_args():
+    """
+    Take argparse parameter(s) off user input from a command
+    line and return those outputs for usage in other functions.
+
+    Args:
+        N/A
+
+    Returns:
+        arg_outputs: Dictionary of argument outputs which can be
+        used for other functions.
+            level: The logging level set at the command line.
+            source: The source type set at the command line.
+            output: The output type set at the command line.
+    Raises:
+        N/A
+
+    """
+    # Setup argparse parameters to take user input from the command line
+    parser = argparse.ArgumentParser(
+        description="Translate source file(s) into network automation inventory outputs"
+    )
+    # Setup argparse arguments to take user input from the command line
+    parser.add_argument(
+        "-l",
+        "--log",
+        dest="logging_level",
+        choices=["debug", "info", "warning", "error", "critical"],
+        default="debug",
+        help="Specify the logging level. Default is debug.",
+    )
+    parser.add_argument(
+        "-st",
+        "--source-type",
+        dest="source_type",
+        choices=["csv", "json", "xlsx"],
+        default="json",
+        help="Specify the source file type. Default is json.",
+    )
+    parser.add_argument(
+        "-sd",
+        "--source-dir",
+        dest="source_dir",
+        default=None,
+        help="Specify the source directory for the source files. Default is tree structure under the 'inputs/' folder.",
+    )
+    parser.add_argument(
+        "-o",
+        "--output-type",
+        choices=["all", "csv", "json", "nornir", "pyats", "xlsx"],
+        dest="output_type",
+        default="all",
+        help="Specify the output file types. Default is all file types. This argument only takes one option.",
+    )
+    args = parser.parse_args()
+    # Take log_level argument, assign to var and turn into uppercase
+    log_level = args.logging_level.upper()
+    # Take source_type and output_type arguments and assign to a variable
+    source_type, output_type = args.source_type, args.output_type
+    # Assign outputs to a dict, so they can be reliably used outside this function
+    arg_outputs = {"level": log_level, "source": source_type, "output": output_type}
+    return arg_outputs
 
 
 def init_logger(log_level: str, log_name: str = "ms.log"):
@@ -655,7 +676,7 @@ def to_ansible(env, df, output_dir: str = None):
     return ans_h_file
 
 
-def main(source_type: str = source_type, output_type: str = output_type):
+def main(source_type: str, output_type: str):
     """
     Main workflow function used to execute the entire workflow
 
@@ -710,6 +731,12 @@ def main(source_type: str = source_type, output_type: str = output_type):
         to_json_groups(group_df)
 
 
+# Get the arguments from the command line and assign
+# arg_outputs to variables
+arg_outputs = get_argparse_args()
+log_level = arg_outputs["level"]
+source_type = arg_outputs["source"]
+output_type = arg_outputs["output"]
 # Initalise logger
 logger = init_logger(log_level=log_level, log_name="motherstarter.log")
 # Execute main function
