@@ -8,3 +8,4 @@ jinja2==2.11.2
 xlrd==1.2.0
 colorama==0.4.4
 openpyxl==3.0.5
+click>=7.1,<=7.2
