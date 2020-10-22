@@ -86,7 +86,8 @@ def ms():
     help="Specify the output file types.  This argument only takes one option.",
     default="all",
     type=click.Choice(
-        ["all", "ansible","csv", "json", "nornir", "pyats", "xlsx"], case_sensitive=False
+        ["all", "ansible", "csv", "json", "nornir", "pyats", "xlsx"],
+        case_sensitive=False,
     ),
     show_default=True,
 )
