@@ -4,7 +4,7 @@ A network tool to accelerate the adoption of network automation by providing a c
 
 ## Nomenclature
 
-Throughout the tool and subsequent code, it's important to establish some terminology which is used. Unsuprisingly, each automation solution uses slightly different names for the same thing. A reference table
+Throughout the tool and subsequent code, it's important to establish some terminology which is used.   Unsuprisingly, each automation solution uses slightly different names for the same thing. A reference table
 is supplied below:
 
 ### Definitions
@@ -19,15 +19,19 @@ motherstarter will make frequent usage of `inventory` and `groups` throughout th
 
 ## What is with the name?
 
-Do you appreciate a good sourdough? As part of the process, bakers will nuture a 'starter' (or mother starter) consisting of flour, water and wild yeast. Each day they take some of the starter to make loaves and the rest is fed with fresh water and flour. Over time, the 'motherstarter' increases in complexity and makes even tastier sourdough bread. From basic, freely avialable ingredents, a very tasty bread is made.
+__**Do you appreciate a good sourdough?**__
 
-motherstarter is a take on this concept. You feed the tool good "data", and you can take it's output to make great solutions. Over time, you feed it even more data and as a result, you can solve more complex and interesting problems on more devices.
+As part of the process, bakers will nuture a 'starter' (or mother starter) consisting of flour, water and wild yeast. Each day they take some of the starter to make loaves and the rest is fed with fresh water and flour. Over time, the 'motherstarter' increases in complexity and makes even tastier sourdough bread. From basic, freely available ingredents, a very tasty bread is made.
+
+motherstarter is a take on this concept.
+
+You feed the tool good "data", and you can take it's output to make great solutions. Over time, you feed it even more data and as a result, you can solve more complex and interesting problems on more devices.
  
 ## What is motherstarter?
 
 motherstarter was created to bridge the gap between those wanting to use network automation and those who already are with fully formed network automation platforms.
 
-At it's core, motherstarter is designed to address three primary-use cases:
+At it's core, motherstarter is designed to address four primary-use cases:
 
 1) Take one input type (json, csv, xlsx) and convert to one or many outputs
 2) Provide a facility to promote experimentation with multiple network automation frameworks/solutions
@@ -80,6 +84,7 @@ pip install -r requirements.txt
 To use motherstarter, please look at the command-line helper below:
 
 ```
+cd motherstarter/
 > python motherstarter.py convert --help
 Usage: motherstarter.py convert [OPTIONS]
 
