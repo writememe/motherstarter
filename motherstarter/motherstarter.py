@@ -35,7 +35,6 @@ def set_global_logger_var(log):
 
     Raises:
         N/A
-
     """
     # Access the global logger variable
     global logger
@@ -124,7 +123,6 @@ def convert(log_level: str, source_type: str, source_dir: str, output_type: str)
 
     Raises:
         N/A
-
     """
     # Convert log level to an upper-case variable
     ll = log_level.upper()
@@ -160,7 +158,6 @@ def get_argparse_args():
 
     Raises:
         N/A
-
     """
     # Setup argparse parameters to take user input from the command line
     parser = argparse.ArgumentParser(
@@ -224,7 +221,6 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
 
     Raises:
         N/A
-
     """
     # Create a logger object
     logger = logging.getLogger(__name__)
@@ -274,7 +270,6 @@ def init_inventory(source_dir: str = None, source_type: str = "json"):
 
     Raises:
         N/A
-
     """
     # Provide debugging output if needed.
     logger.debug(f"Inventory source type is {source_type}")
@@ -315,7 +310,6 @@ def init_groups(source_dir: str = None, source_type: str = "json"):
 
     Raises:
         N/A
-
     """
     # Provide debugging output if needed.
     logger.debug(f"Inventory source type is {source_type}")
@@ -361,8 +355,6 @@ def init_inventory_json(source_dir: str = None):  # Make this required at this l
 
     Raises:
         N/A
-
-
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
@@ -394,7 +386,6 @@ def init_inventory_xlsx(source_dir: str = None):
 
     Raises:
         N/A
-
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
@@ -426,7 +417,6 @@ def init_inventory_csv(source_dir: str = None):
 
     Raises:
         N/A
-
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
@@ -458,7 +448,6 @@ def init_groups_json(source_dir: str = None):
 
     Raises:
         N/A
-
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
@@ -490,7 +479,6 @@ def init_groups_xlsx(source_dir: str = None):
 
     Raises:
         N/A
-
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
@@ -522,7 +510,6 @@ def init_groups_csv(source_dir: str = None):
 
     Raises:
         N/A
-
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
@@ -842,7 +829,6 @@ def to_xlsx_groups(df, output_dir: str = None):
 
     Returns:
         xlsx_file (?): The xlsx file object.
-
 
     Raises:
         N/A
