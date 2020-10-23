@@ -12,9 +12,109 @@ import pathlib as pl
 from colorama import init
 import logging
 import argparse
+import click
+
 
 # Auto-reset colorama colours back after each print statement
 init(autoreset=True)
+# Set global logger variable as blank
+logger = ""
+
+
+def set_global_logger_var(log):
+    """
+    This is a hack to ser the log variable
+    as an to the global variable to save passing around
+    all the functions. TODO: This should be reviewed.
+
+    Args:
+        log: The initialised log variable
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+
+    """
+    # Access the global logger variable
+    global logger
+    # Override it with what is passed into the variable
+    logger = log
+
+
+# This block of code initialises motherstarter from the command
+# line
+@click.group()
+@click.version_option(version="0.0.1")
+def ms():
+    """
+    Function to initialise motherstarter from the command line
+    """
+    pass
+
+
+@ms.command()
+@click.option(
+    "--log-level",
+    "-l",
+    help="Specify the logging level.",
+    default="debug",
+    type=click.Choice(
+        ["debug", "info", "warning", "error", "critical"], case_sensitive=False
+    ),
+    show_default=True,
+)
+@click.option(
+    "--source-type",
+    "-st",
+    help="Specify the source file type.",
+    default="json",
+    type=click.Choice(["csv", "json", "xlsx"], case_sensitive=False),
+    show_default=True,
+)
+@click.option(
+    "--source-dir",
+    "-sd",
+    help="Specify the source directory for the source files. Default is tree structure under the 'inputs/' folder.",
+    default=None,
+    show_default=True,
+)
+@click.option(
+    "--output-type",
+    "-o",
+    help="Specify the output file types.  This argument only takes one option.",
+    default="all",
+    type=click.Choice(
+        ["all", "ansible", "csv", "json", "nornir", "pyats", "xlsx"],
+        case_sensitive=False,
+    ),
+    show_default=True,
+)
+def convert(log_level, source_type, source_dir, output_type):
+    """
+    Convert source file(s) into network automation inventory outputs
+    based on multiple command-line inputs.
+
+    For example:
+        Input type: json
+        Output type: nornir
+    """
+    # Convert log level to an upper-case variable
+    ll = log_level.upper()
+    # Rename the other inputs for usage below
+    st = source_type
+    ot = output_type
+    # TODO: Refactor this temp code.
+    sd = source_dir
+    print(sd)
+    # Initialise the logger
+    logger = init_logger(log_level=ll, log_name="motherstarter.log")
+    # TODO: This is a hack to override the global logger variable
+    # Yes, this is not cool
+    set_global_logger_var(logger)
+    # Initialise the main workflow
+    main(source_type=st, output_type=ot, logger=logger)
 
 
 def get_argparse_args():
@@ -31,6 +131,7 @@ def get_argparse_args():
             level: The logging level set at the command line.
             source: The source type set at the command line.
             output: The output type set at the command line.
+
     Raises:
         N/A
 
@@ -88,10 +189,16 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     The log_level is passed into the function and used to set
     the logging level.
 
-    :param log_level: The severity logging level for all events
-    to be logged at.
-    :param log_name: The name of the log file
-    :return logger: An initialised logger object
+    Args:
+        log_level: The severity logging level for all events
+        log_name: The name of the log file
+
+    Returns:
+        logger: An initialised logger object
+
+    Raises:
+        N/A
+
     """
     # Create a logger object
     logger = logging.getLogger(__name__)
@@ -676,7 +783,7 @@ def to_ansible(env, df, output_dir: str = None):
     return ans_h_file
 
 
-def main(source_type: str, output_type: str):
+def main(source_type: str, output_type: str, logger):
     """
     Main workflow function used to execute the entire workflow
 
@@ -731,13 +838,6 @@ def main(source_type: str, output_type: str):
         to_json_groups(group_df)
 
 
-# Get the arguments from the command line and assign
-# arg_outputs to variables
-arg_outputs = get_argparse_args()
-log_level = arg_outputs["level"]
-source_type = arg_outputs["source"]
-output_type = arg_outputs["output"]
-# Initalise logger
-logger = init_logger(log_level=log_level, log_name="motherstarter.log")
-# Execute main function
-main(source_type=source_type, output_type=output_type)
+if __name__ == "__main__":
+    # Initialise click from the command-line
+    ms()
