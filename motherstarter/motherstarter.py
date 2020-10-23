@@ -131,7 +131,6 @@ def convert(log_level: str, source_type: str, source_dir: str, output_type: str)
     ot = output_type
     # TODO: Refactor this temp code.
     sd = source_dir
-    print(sd)
     # Initialise the logger
     logger = init_logger(log_level=ll, log_name="motherstarter.log")
     # TODO: This is a hack to override the global logger variable
@@ -150,7 +149,7 @@ def get_argparse_args():
         N/A
 
     Returns:
-        arg_outputs: Dictionary of argument outputs which can be
+        arg_outputs (dict): Dictionary of argument outputs which can be
         used for other functions.
             level: The logging level set at the command line.
             source: The source type set at the command line.
@@ -673,7 +672,7 @@ def to_pyats(env, df, output_dir: str = None):
         templates from.
         df (?): The pandas dataframe object, initialised from the
         inventory data source.
-        output_dir (?): The output directory. Default: None
+        output_dir (str): The output directory. Default: None
 
     Returns:
         tb_file (?): The pyATS testbed file object.
@@ -737,8 +736,8 @@ def to_xlsx_inventory(df, output_dir: str = None):
 
     Args:
         df (?): The pandas dataframe object, initialised from the
-    inventory data source.
-        output_dir (?): The output directory.
+        inventory data source.
+        output_dir (str): The output directory.
 
     Returns:
         xlsx_file (?): The xlsx file object.
@@ -767,7 +766,7 @@ def to_json_inventory(df, output_dir: str = None):
     Args:
         df (?): The pandas dataframe object, initialised from the
         inventory data source
-        output_dir (?): The output directory. Default: None.
+        output_dir (str): The output directory. Default: None.
 
     Returns:
         json_file (?): The json file object.
@@ -824,8 +823,8 @@ def to_xlsx_groups(df, output_dir: str = None):
 
     Args:
         df (?): The pandas dataframe object, initialised from the
-    inventory data source.
-        output_dir (?): The output directory.
+        inventory data source.
+        output_dir (str): The output directory.
 
     Returns:
         xlsx_file (?): The xlsx file object.
@@ -854,7 +853,7 @@ def to_json_groups(df, output_dir: str = None):
     Args:
         df (?): The pandas dataframe object, initialised from the
         inventory data source
-        output_dir (?): The output directory. Default: None.
+        output_dir (str): The output directory. Default: None.
 
     Returns:
         json_file (?): The json file object.
@@ -922,9 +921,9 @@ def main(source_type: str, output_type: str, logger):
 
     Args:
         source_type: The source file type to read the inventory
-    and group data in from.
+        and group data in from.
         output_type: What file type(s) you would like to be outputted
-    as a result of running the function.
+        as a result of running the function.
 
     Returns:
         N/A
