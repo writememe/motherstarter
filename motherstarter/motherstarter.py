@@ -137,7 +137,7 @@ def convert(log_level: str, source_type: str, source_dir: str, output_type: str)
     # Yes, this is not cool
     set_global_logger_var(logger)
     # Initialise the main workflow
-    main(source_type=st, output_type=ot, logger=logger)
+    main(source_type=st, output_type=ot, logger=logger, source_dir=sd)
 
 
 def get_argparse_args():
@@ -915,16 +915,17 @@ def to_ansible(env, df, output_dir: str = None):
     return ans_h_file
 
 
-def main(source_type: str, output_type: str, logger):
+def main(source_type: str, output_type: str, logger, source_dir: str = None):
     """
     Main workflow function used to execute the entire workflow
 
     Args:
-        source_type: The source file type to read the inventory
+        source_type (str): The source file type to read the inventory
         and group data in from.
-        output_type: What file type(s) you would like to be outputted
+        output_type (str): What file type(s) you would like to be outputted
         as a result of running the function.
-
+        logger: The initialised logger object.
+        source_dir (str): The source directory of the input files.
     Returns:
         N/A
 
