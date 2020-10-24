@@ -46,7 +46,7 @@ def set_global_logger_var(log):
 # line
 @click.group()
 @click.version_option(version="0.0.1")
-def ms():
+def cli():
     """
     Function to initialise motherstarter from the command line.
 
@@ -62,7 +62,7 @@ def ms():
     pass
 
 
-@ms.command()
+@cli.command()
 @click.option(
     "--log-level",
     "-l",
@@ -84,7 +84,7 @@ def ms():
 @click.option(
     "--source-dir",
     "-sd",
-    help="Specify the source directory for the source files. Default is tree structure under the 'inputs/' folder.",
+    help="Specify the source directory for the source files. Default is under the 'inputs/' folder.",  # noqa (pylama ignore)
     default=None,
     show_default=True,
 )
@@ -184,7 +184,7 @@ def get_argparse_args():
         "--source-dir",
         dest="source_dir",
         default=None,
-        help="Specify the source directory for the source files. Default is tree structure under the 'inputs/' folder.",
+        help="Specify the source directory for the source files. Default is tree structure under the 'inputs/' folder.",  # noqa (pylama ignore)
     )
     parser.add_argument(
         "-o",
@@ -192,7 +192,7 @@ def get_argparse_args():
         choices=["all", "csv", "json", "nornir", "pyats", "xlsx"],
         dest="output_type",
         default="all",
-        help="Specify the output file types. Default is all file types. This argument only takes one option.",
+        help="Specify the output file types. Default is all file types. This argument only takes one option.",  # noqa (pylama ignore)
     )
     args = parser.parse_args()
     # Take log_level argument, assign to var and turn into uppercase
@@ -980,4 +980,4 @@ def main(source_type: str, output_type: str, logger, source_dir: str = None):
 
 if __name__ == "__main__":
     # Initialise click from the command-line
-    ms()
+    cli()
