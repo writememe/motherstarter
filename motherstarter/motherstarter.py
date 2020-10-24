@@ -21,27 +21,6 @@ init(autoreset=True)
 logger = ""
 
 
-def set_global_logger_var(log):
-    """
-    This is a hack to ser the log variable
-    as an to the global variable to save passing around
-    all the functions. TODO: This should be reviewed.
-
-    Args:
-        log: The initialised log variable
-
-    Returns:
-        N/A
-
-    Raises:
-        N/A
-    """
-    # Access the global logger variable
-    global logger
-    # Override it with what is passed into the variable
-    logger = log
-
-
 # This block of code initialises motherstarter from the command
 # line
 @click.group()
@@ -133,11 +112,8 @@ def convert(log_level: str, source_type: str, source_dir: str, output_type: str)
     sd = source_dir
     # Initialise the logger
     logger = init_logger(log_level=ll, log_name="motherstarter.log")
-    # TODO: This is a hack to override the global logger variable
-    # Yes, this is not cool
-    set_global_logger_var(logger)
     # Initialise the main workflow
-    main(source_type=st, output_type=ot, logger=logger, source_dir=sd)
+    main(logger=logger, source_type=st, output_type=ot, source_dir=sd)
 
 
 def get_argparse_args():
@@ -254,12 +230,13 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     return logger
 
 
-def init_inventory(source_dir: str = None, source_type: str = "json"):
+def init_inventory(logger, source_dir: str = None, source_type: str = "json"):
     """
     Initialise the inventory data based on the source_type and from the source
     directory and return a pandas dataframe object.
 
     Args:
+        logger: The initialised logger object.
         source_dir (str): The source directory to find the files in.
         source_type (str): The source file type to read the inventory data from.
         Default: "json".
@@ -293,12 +270,13 @@ def init_inventory(source_dir: str = None, source_type: str = "json"):
     return df
 
 
-def init_groups(source_dir: str = None, source_type: str = "json"):
+def init_groups(logger, source_dir: str = None, source_type: str = "json"):
     """
     Initialise the group data based on the source_type and from the source
     directory and return a pandas dataframe object
 
     Args:
+        logger: The initialised logger object
         source_dir (str): The source directory to find the inventory files in.
         Default: None
         source_type (str): The source file type to read the group data from.
@@ -581,13 +559,14 @@ def prep_templates(tmpl_dir: str = None):
     return env
 
 
-def to_nr_hosts(env, df, output_dir: str = None):
+def to_nr_hosts(logger, env, df, output_dir: str = None):
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
     create an nornir hosts inventory file.
 
     Args:
+        logger: The initialised logger object.
         env (?): The loaded Jinja2 environment, used to retrieve
         templates from.
         df (?): The pandas dataframe object, initialised from the
@@ -621,13 +600,14 @@ def to_nr_hosts(env, df, output_dir: str = None):
     return nr_h_file
 
 
-def to_nr_groups(env, df, output_dir: str = None):
+def to_nr_groups(logger, env, df, output_dir: str = None):
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
     create an nornir groups inventory file.
 
     Args:
+        logger: The initialised logger object.
         env (?): The loaded Jinja2 environment, used to retrieve
         templates from.
         df (?): The pandas dataframe object, initialised from the
@@ -661,13 +641,14 @@ def to_nr_groups(env, df, output_dir: str = None):
     return nr_g_file
 
 
-def to_pyats(env, df, output_dir: str = None):
+def to_pyats(logger, env, df, output_dir: str = None):
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
     create an pyATS testbed file.
 
     Args:
+        logger: The initialised logger object.
         env (?): The loaded Jinja2 environment, used to retrieve
         templates from.
         df (?): The pandas dataframe object, initialised from the
@@ -701,11 +682,12 @@ def to_pyats(env, df, output_dir: str = None):
     return tb_file
 
 
-def to_csv_inventory(df, output_dir: str = None):
+def to_csv_inventory(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a CSV file.
 
     Args:
+        logger: The initialised logger object.
         df (?): The pandas dataframe object, initialised from the
         inventory data source
         output_dir (str): The output directory. Default: None.
@@ -730,11 +712,12 @@ def to_csv_inventory(df, output_dir: str = None):
     return csv_file
 
 
-def to_xlsx_inventory(df, output_dir: str = None):
+def to_xlsx_inventory(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a xlsx file.
 
     Args:
+        logger: The initialised logger object.
         df (?): The pandas dataframe object, initialised from the
         inventory data source.
         output_dir (str): The output directory.
@@ -759,11 +742,12 @@ def to_xlsx_inventory(df, output_dir: str = None):
     return xlsx_file
 
 
-def to_json_inventory(df, output_dir: str = None):
+def to_json_inventory(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a json file.
 
     Args:
+        logger: The initialised logger object.
         df (?): The pandas dataframe object, initialised from the
         inventory data source
         output_dir (str): The output directory. Default: None.
@@ -788,11 +772,12 @@ def to_json_inventory(df, output_dir: str = None):
     return json_file
 
 
-def to_csv_groups(df, output_dir: str = None):
+def to_csv_groups(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a CSV file.
 
     Args:
+        logger: The initialised logger object.
         df (?): The pandas dataframe object, initialised from the
         inventory data source
         output_dir (str): The output directory. Default: None.
@@ -817,11 +802,12 @@ def to_csv_groups(df, output_dir: str = None):
     return csv_file
 
 
-def to_xlsx_groups(df, output_dir: str = None):
+def to_xlsx_groups(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a xlsx file.
 
     Args:
+        logger: The initialised logger object.
         df (?): The pandas dataframe object, initialised from the
         inventory data source.
         output_dir (str): The output directory.
@@ -846,11 +832,12 @@ def to_xlsx_groups(df, output_dir: str = None):
     return xlsx_file
 
 
-def to_json_groups(df, output_dir: str = None):
+def to_json_groups(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a json file.
 
     Args:
+        logger: The initialised logger object.
         df (?): The pandas dataframe object, initialised from the
         inventory data source
         output_dir (str): The output directory. Default: None.
@@ -875,13 +862,14 @@ def to_json_groups(df, output_dir: str = None):
     return json_file
 
 
-def to_ansible(env, df, output_dir: str = None):
+def to_ansible(logger, env, df, output_dir: str = None):
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
     create an Ansible inventory file.
 
     Args:
+        logger: The initialised logger object.
         env (?): The loaded Jinja2 environment, used to retrieve
         templates from.
         df (?): The pandas dataframe object, initialised from the
@@ -915,16 +903,16 @@ def to_ansible(env, df, output_dir: str = None):
     return ans_h_file
 
 
-def main(source_type: str, output_type: str, logger, source_dir: str = None):
+def main(logger, source_type: str, output_type: str, source_dir: str = None):
     """
     Main workflow function used to execute the entire workflow
 
     Args:
+        logger: The initialised logger object.
         source_type (str): The source file type to read the inventory
         and group data in from.
         output_type (str): What file type(s) you would like to be outputted
         as a result of running the function.
-        logger: The initialised logger object.
         source_dir (str): The source directory of the input files.
     Returns:
         N/A
@@ -933,9 +921,9 @@ def main(source_type: str, output_type: str, logger, source_dir: str = None):
         N/A
     """
     # Initialise inventory dataframe, based on the source_dir and source_type
-    inv_df = init_inventory(source_dir=None, source_type=source_type)
+    inv_df = init_inventory(logger=logger, source_dir=None, source_type=source_type)
     # Initialise group dataframe, based on the source_dir and source_type
-    group_df = init_groups(source_dir=None, source_type=source_type)
+    group_df = init_groups(logger=logger, source_dir=None, source_type=source_type)
     # Prepare the jinja2 template environment
     env = prep_templates(tmpl_dir=None)
     # Diagnostic outputs
@@ -944,38 +932,38 @@ def main(source_type: str, output_type: str, logger, source_dir: str = None):
     # what is passed in from argparse
     # If output type is all, output all file types
     if output_type == "all":
-        to_nr_hosts(env, inv_df)
-        to_nr_groups(env=env, df=group_df)
-        to_csv_inventory(inv_df)
-        to_xlsx_inventory(inv_df)
-        to_csv_groups(group_df)
-        to_xlsx_groups(group_df)
-        to_pyats(env=env, df=inv_df)
-        to_ansible(env=env, df=inv_df)
-        to_json_inventory(inv_df)
-        to_json_groups(group_df)
+        to_nr_hosts(logger=logger, env=env, df=inv_df)
+        to_nr_groups(logger=logger, env=env, df=group_df)
+        to_csv_inventory(logger=logger, df=inv_df)
+        to_xlsx_inventory(logger=logger, df=inv_df)
+        to_csv_groups(logger=logger, df=group_df)
+        to_xlsx_groups(logger=logger, df=group_df)
+        to_pyats(logger=logger, env=env, df=inv_df)
+        to_ansible(logger=logger, env=env, df=inv_df)
+        to_json_inventory(logger=logger, df=inv_df)
+        to_json_groups(logger=logger, df=group_df)
     # If output type is nornir, output all nornir types
     elif output_type == "nornir":
-        to_nr_hosts(env, inv_df)
-        to_nr_groups(env=env, df=group_df)
+        to_nr_hosts(logger=logger, env=env, df=inv_df)
+        to_nr_groups(logger=logger, env=env, df=group_df)
     # If output type is csv, output all CSV types
     elif output_type == "csv":
-        to_csv_inventory(inv_df)
-        to_csv_groups(group_df)
+        to_csv_inventory(logger=logger, df=inv_df)
+        to_csv_groups(logger=logger, df=group_df)
     # If output type is xlsx, output all xlsx types
     elif output_type == "xlsx":
-        to_xlsx_inventory(inv_df)
-        to_xlsx_groups(group_df)
+        to_xlsx_inventory(logger=logger, df=inv_df)
+        to_xlsx_groups(logger=logger, df=group_df)
     # If output type is pyats, output all pyATS types
     elif output_type == "pyats":
-        to_pyats(env=env, df=inv_df)
+        to_pyats(logger=logger, env=env, df=inv_df)
     # If output type is ansible, output all ansible types
     elif output_type == "ansible":
-        to_ansible(env=env, df=inv_df)
+        to_ansible(logger=logger, env=env, df=inv_df)
     # If output type is json, output all ansible types
     elif output_type == "json":
-        to_json_inventory(inv_df)
-        to_json_groups(group_df)
+        to_json_inventory(logger=logger, df=inv_df)
+        to_json_groups(logger=logger, df=group_df)
 
 
 if __name__ == "__main__":
