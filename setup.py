@@ -17,7 +17,7 @@ setup(
     author=__author__,
     packages=find_packages(),
     classifiers=[
-        "License :: OSI Approved :: Apache License 2.0",
+        "License :: OSI Approved :: Apache Software License",
         "Programming Language :: Python :: 3",
         "Programming Language :: Python :: 3.6",
         "Programming Language :: Python :: 3.7",
