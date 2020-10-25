@@ -3,8 +3,17 @@
 from setuptools import setup, find_packages
 from motherstarter import __version__, __author__
 
+
+# Open and read README file
 with open("README.md", "r", encoding="utf-8") as f:
     README = f.read()
+
+
+# Setup requirements to be installed
+requirements = []
+with open("requirements.txt") as f:
+    requirements = f.read().splitlines()
+
 
 setup(
     author_email="danielfjteycheney@gmail.com",
@@ -27,9 +36,7 @@ setup(
     ],
     python_requires=">=3.6",
     include_package_data=True,
-    install_requires=[
-        "Click",
-    ],
+    install_requires=requirements,
     entry_points="""
         [console_scripts]
         motherstarter=motherstarter.motherstarter:cli
