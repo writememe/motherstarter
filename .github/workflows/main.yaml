@@ -1,6 +1,6 @@
 ---
 # Github actions workflow file
-name: mother-starter
+name: motherstarter
 
 on:  # yamllint disable rule:truthy
     push:

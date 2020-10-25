@@ -61,7 +61,7 @@ def cli():
 @click.option(
     "--source-dir",
     "-sd",
-    help="Specify the source directory for the source files. Default is under the 'inputs/' folder.",  # noqa (pylama ignore)
+    help="Specify the source directory for the source files. Default is under the 'motherstarter/inputs/' folder.",  # noqa (pylama ignore)
     default=None,
     show_default=True,
 )
@@ -158,7 +158,7 @@ def get_argparse_args():
         "--source-dir",
         dest="source_dir",
         default=None,
-        help="Specify the source directory for the source files. Default is tree structure under the 'inputs/' folder.",  # noqa (pylama ignore)
+        help="Specify the source directory for the source files. Default is tree structure under the 'motherstarter/inputs/' folder.",  # noqa (pylama ignore)
     )
     parser.add_argument(
         "-o",
@@ -317,7 +317,7 @@ def init_inventory_json(source_dir: str = None):  # Make this required at this l
 
     NOTE: Whilst this function exposes the ability to change the source_dir,
     it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
+    place the files in template folder structure supplied in the 'motherstarter/inputs/'
     directory. We would recommend just sticking with that, unless you want
     to write your own custom workflow.
 
@@ -333,7 +333,7 @@ def init_inventory_json(source_dir: str = None):  # Make this required at this l
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
-        source_dir = "inputs/inventory/json"
+        source_dir = "motherstarter/inputs/inventory/json"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_json(f"{source_dir}/inventory.json")
     # Return dataframe
@@ -348,7 +348,7 @@ def init_inventory_xlsx(source_dir: str = None):
 
     NOTE: Whilst this function exposes the ability to change the source_dir,
     it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
+    place the files in template folder structure supplied in the 'motherstarter/inputs/'
     directory. We would recommend just sticking with that, unless you want
     to write your own custom workflow.
 
@@ -364,7 +364,7 @@ def init_inventory_xlsx(source_dir: str = None):
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
-        source_dir = "inputs/inventory/xlsx"
+        source_dir = "motherstarter/inputs/inventory/xlsx"
     # Read in source file. NOTE: The source filename and sheet name are hardcoded
     df = pd.read_excel(f"{source_dir}/inventory.xlsx", sheet_name="inventory")
     # Return dataframe
@@ -379,7 +379,7 @@ def init_inventory_csv(source_dir: str = None):
 
     NOTE: Whilst this function exposes the ability to change the source_dir,
     it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
+    place the files in template folder structure supplied in the 'motherstarter/inputs/'
     directory. We would recommend just sticking with that, unless you want
     to write your own custom workflow.
 
@@ -395,7 +395,7 @@ def init_inventory_csv(source_dir: str = None):
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
-        source_dir = "inputs/inventory/csv"
+        source_dir = "motherstarter/inputs/inventory/csv"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_csv(f"{source_dir}/inventory.csv")
     # Return dataframe
@@ -410,7 +410,7 @@ def init_groups_json(source_dir: str = None):
 
     NOTE: Whilst this function exposes the ability to change the source_dir,
     it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
+    place the files in template folder structure supplied in the 'motherstarter/inputs/'
     directory. We would recommend just sticking with that, unless you want
     to write your own custom workflow.
 
@@ -426,7 +426,7 @@ def init_groups_json(source_dir: str = None):
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
-        source_dir = "inputs/groups/json"
+        source_dir = "motherstarter/inputs/groups/json"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_json(f"{source_dir}/groups.json")
     # Return dataframe
@@ -441,7 +441,7 @@ def init_groups_xlsx(source_dir: str = None):
 
     NOTE: Whilst this function exposes the ability to change the source_dir,
     it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
+    place the files in template folder structure supplied in the 'motherstarter/inputs/'
     directory. We would recommend just sticking with that, unless you want
     to write your own custom workflow.
 
@@ -457,7 +457,7 @@ def init_groups_xlsx(source_dir: str = None):
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
-        source_dir = "inputs/groups/xlsx"
+        source_dir = "motherstarter/inputs/groups/xlsx"
     # Read in source file. NOTE: The source filename and sheet name are hardcoded
     df = pd.read_excel(f"{source_dir}/groups.xlsx", sheet_name="groups")
     # Return dataframe
@@ -472,7 +472,7 @@ def init_groups_csv(source_dir: str = None):
 
     NOTE: Whilst this function exposes the ability to change the source_dir,
     it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
+    place the files in template folder structure supplied in the 'motherstarter/inputs/'
     directory. We would recommend just sticking with that, unless you want
     to write your own custom workflow.
 
@@ -488,7 +488,7 @@ def init_groups_csv(source_dir: str = None):
     """
     # Specify the source dirs for inputs when it is not supplied
     if source_dir is None:
-        source_dir = "inputs/groups/csv"
+        source_dir = "motherstarter/inputs/groups/csv"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_csv(f"{source_dir}/groups.csv")
     return df
@@ -531,7 +531,7 @@ def prep_templates(tmpl_dir: Optional[str] = None):
     NOTE: Whilst this function exposes the ability to change the tmpl_dir,
     it's probably not something you want to be doing. Most people can just
     place the files in template folder structure supplied in the
-    'templates/outputs/' directory. We would recommend just sticking with
+    'motherstarter/templates/outputs/' directory. We would recommend just sticking with
     that, unless you want to write your own custom workflow.
 
     Args:
@@ -546,7 +546,7 @@ def prep_templates(tmpl_dir: Optional[str] = None):
     """
     # Specify the template dirs when it is not supplied
     if tmpl_dir is None:
-        tmpl_dir = "templates/outputs"
+        tmpl_dir = "motherstarter/templates/outputs"
     # Load template directory where Jinja2 templates are located
     templates = FileSystemLoader(tmpl_dir)
     # Load environment and setting autoescape to True
@@ -579,7 +579,7 @@ def to_nr_hosts(logger, env, df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/nr/inventory"
+        output_dir = "motherstarter/outputs/nr/inventory"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Convert pandas dataframe to a dictionary and assign to the
@@ -620,7 +620,7 @@ def to_nr_groups(logger, env, df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/nr/inventory"
+        output_dir = "motherstarter/outputs/nr/inventory"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Convert pandas dataframe to a dictionary and assign to the
@@ -661,7 +661,7 @@ def to_pyats(logger, env, df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/pyats"
+        output_dir = "motherstarter/outputs/pyats"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Convert pandas dataframe to a dictionary and assign to the
@@ -698,7 +698,7 @@ def to_csv_inventory(logger, df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/csv"
+        output_dir = "motherstarter/outputs/csv"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign CSV file name to a variable
@@ -728,7 +728,7 @@ def to_xlsx_inventory(logger, df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/xlsx"
+        output_dir = "motherstarter/outputs/xlsx"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign xlsx file name to a variable
@@ -758,7 +758,7 @@ def to_json_inventory(logger, df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/json"
+        output_dir = "motherstarter/outputs/json"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign json file name to a variable
@@ -788,7 +788,7 @@ def to_csv_groups(logger, df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/csv"
+        output_dir = "motherstarter/outputs/csv"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign CSV file name to a variable
@@ -818,7 +818,7 @@ def to_xlsx_groups(logger, df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/xlsx"
+        output_dir = "motherstarter/outputs/xlsx"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign xlsx file name to a variable
@@ -848,7 +848,7 @@ def to_json_groups(logger, df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/json"
+        output_dir = "motherstarter/outputs/json"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign json file name to a variable
@@ -882,7 +882,7 @@ def to_ansible(logger, env, df, output_dir: str = None):
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/ansible/inventory"
+        output_dir = "motherstarter/outputs/ansible/inventory"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Convert pandas dataframe to a dictionary and assign to the
