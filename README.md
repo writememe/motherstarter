@@ -144,7 +144,7 @@ sources
 
 ### Why should you use motherstarter?
 
-motherstarter is a value to those who are:
+motherstarter is of| value to those who are:
 - Looking to "seed" new network automation platforms. For example, use nornir/napalm to get facts about a network and then populate a system such as netbox.
 - Looking to trial and experiment different automation frameworks. For example, you want to try pyATS for a certain feature, or use Ansible modules because they solve a specific use-case for fact gathering.
 - Who move between multiple environments and need reliable inventory sources for automation solutions. For example, you are a consultant who has to perform network audits or perform repetitive work between multiple customers.
@@ -165,6 +165,13 @@ is supplied below:
 
 motherstarter will make frequent usage of `inventory` and `groups` throughout the code and templates, so this table is a handy reference when trying to understand the differences.
 
+### motherstarter is not ...
+
+It's important to understand that motherstarter does not intend, nor plan to be a permanent, enterprise-class inventory solution. motherstarter cannot substitute for a first-class system such as netbox. It's anticipated that you will reach the limits of motherstarter as an inventory solution, if you plan to make the inventory files available in multiple locations over multiple solutions.
+
+You may temporarily get around this by saving the outputs to Git and using version control to track changes. But, again a proper, permanent solution should be considered beyond that.
+
+
 ## What is with the name?
 
 __**Do you appreciate a good sourdough?**__
@@ -175,9 +182,3 @@ motherstarter is a take on this concept.
 
 You feed the tool good "data", and you can take it's output to make great solutions. Over time, you feed it even more data and as a result, you can solve more complex and interesting problems on more devices.
  
-
-### motherstarter is not ...
-
-It's important to understand that motherstarter does not intend, nor plan to be a permanent, enterprise-class inventory solution. motherstarter cannot substitute for a first-class system such as netbox. It's anticipated that you will reach the limits of motherstarter as an inventory solution, if you plan to make the inventory files available in multiple locations over multiple solutions.
-
-You may temporarily get around this by saving the outputs to Git and using version control to track changes. But, again a proper, permanent solution should be considered beyond that.
