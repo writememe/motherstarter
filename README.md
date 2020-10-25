@@ -114,7 +114,7 @@ To run using the defaults, execute the following:
 motherstarter convert
 ```
 
-Sample outputs are provided in the [motherstarter/outputs](.motherstarter/outputs) folder.
+Sample outputs are provided in the [motherstarter/outputs](motherstarter/outputs) folder.
 
 
 ## What is motherstarter?
