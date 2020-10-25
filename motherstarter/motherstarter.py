@@ -13,12 +13,10 @@ from colorama import init
 import logging
 import argparse
 import click
-
+from typing import Optional
 
 # Auto-reset colorama colours back after each print statement
 init(autoreset=True)
-# Set global logger variable as blank
-logger = ""
 
 
 # This block of code initialises motherstarter from the command
@@ -200,8 +198,8 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     # Create a logger object
     logger = logging.getLogger(__name__)
     # Setup the logging formatters for log and stream outputs
-    log_fmt = logging.Formatter(("%(asctime)s - " "%(levelname)s - " "%(message)s"))
-    stream_fmt = logging.Formatter(("%(levelname)s - " "%(message)s"))
+    log_fmt = logging.Formatter("%(asctime)s - " "%(levelname)s - " "%(message)s")
+    stream_fmt = logging.Formatter("%(levelname)s - " "%(message)s")
     # Setup file handler and use a different log format for output
     f_handler = logging.FileHandler(log_name)
     f_handler.setFormatter(log_fmt)
@@ -239,7 +237,7 @@ def init_inventory(logger, source_dir: str = None, source_type: str = "json"):
         logger: The initialised logger object.
         source_dir (str): The source directory to find the files in.
         source_type (str): The source file type to read the inventory data from.
-        Default: "json".
+            Default: "json".
 
     Returns:
         df (?): The pandas dataframe object for further processing.
@@ -278,9 +276,9 @@ def init_groups(logger, source_dir: str = None, source_type: str = "json"):
     Args:
         logger: The initialised logger object
         source_dir (str): The source directory to find the inventory files in.
-        Default: None
+            Default: None
         source_type (str): The source file type to read the group data from.
-        Default: "json"
+            Default: "json"
 
     Returns:
         df (?): The pandas dataframe object for further processing.
@@ -325,7 +323,7 @@ def init_inventory_json(source_dir: str = None):  # Make this required at this l
 
     Args:
         source_dir (str): The source directory to find the inventory files in.
-        Default: None
+            Default: None
 
     Returns:
         df (?): The pandas dataframe object for further processing.
@@ -356,10 +354,10 @@ def init_inventory_xlsx(source_dir: str = None):
 
     Args:
         source_dir (str): The source directory to find the inventory files in.
-        Default: None
+            Default: None
 
     Returns:
-        df (?): The pandas dataframe object for further processing.
+        df : The pandas dataframe object for further processing.
 
     Raises:
         N/A
@@ -387,10 +385,10 @@ def init_inventory_csv(source_dir: str = None):
 
     Args:
         source_dir (str): The source directory to find the inventory files in.
-        Default: None
+            Default: None
 
     Returns:
-        df (?): The pandas dataframe object for further processing.
+        df : The pandas dataframe object for further processing.
 
     Raises:
         N/A
@@ -418,10 +416,10 @@ def init_groups_json(source_dir: str = None):
 
     Args:
         source_dir (str): The source directory to find the inventory files in.
-        Default: None
+            Default: None
 
     Returns:
-        df (?): The pandas dataframe object for further processing.
+        df : The pandas dataframe object for further processing.
 
     Raises:
         N/A
@@ -449,10 +447,10 @@ def init_groups_xlsx(source_dir: str = None):
 
     Args:
         source_dir (str): The source directory to find the inventory files in.
-        Default: None
+            Default: None
 
     Returns:
-        df (?): The pandas dataframe object for further processing.
+        df : The pandas dataframe object for further processing.
 
     Raises:
         N/A
@@ -480,10 +478,10 @@ def init_groups_csv(source_dir: str = None):
 
     Args:
         source_dir (str): The source directory to find the inventory files in.
-        Default: None
+            Default: None
 
     Returns:
-        df (?): The pandas dataframe object for further processing.
+        df : The pandas dataframe object for further processing.
 
     Raises:
         N/A
@@ -503,7 +501,7 @@ def dataframe_to_dict(df) -> list:
     processing throughout the application
 
     Args:
-        df (?): The pandas dataframe object.
+        df : The pandas dataframe object.
 
     Returns:
         df (list): A list of dictionaries of the dataframe object.
@@ -514,7 +512,7 @@ def dataframe_to_dict(df) -> list:
     return df.to_dict(orient="records")
 
 
-def prep_templates(tmpl_dir: str = None):
+def prep_templates(tmpl_dir: Optional[str] = None):
     """
     Take the template directory and load a Jinja2 environment
     with those templates and other settings enabled
@@ -541,7 +539,7 @@ def prep_templates(tmpl_dir: str = None):
     templates are stored. Default: None
 
     Returns:
-        env (?):  The loaded jinja2 environment.
+        env :  The loaded jinja2 environment.
 
     Raises:
         N/A
@@ -567,14 +565,14 @@ def to_nr_hosts(logger, env, df, output_dir: str = None):
 
     Args:
         logger: The initialised logger object.
-        env (?): The loaded Jinja2 environment, used to retrieve
+        env : The loaded Jinja2 environment, used to retrieve
         templates from.
-        df (?): The pandas dataframe object, initialised from the
+        df : The pandas dataframe object, initialised from the
         inventory data source
         output_dir (str): The output directory. Default: None.
 
     Returns:
-        nr_h_file (?): The nornir hosts file object.
+        nr_h_file : The nornir hosts file object.
 
     Raises:
         N/A
@@ -608,9 +606,9 @@ def to_nr_groups(logger, env, df, output_dir: str = None):
 
     Args:
         logger: The initialised logger object.
-        env (?): The loaded Jinja2 environment, used to retrieve
+        env : The loaded Jinja2 environment, used to retrieve
         templates from.
-        df (?): The pandas dataframe object, initialised from the
+        df : The pandas dataframe object, initialised from the
         inventory data source.
         output_dir (str): The output directory. Default: None.
 
@@ -649,14 +647,14 @@ def to_pyats(logger, env, df, output_dir: str = None):
 
     Args:
         logger: The initialised logger object.
-        env (?): The loaded Jinja2 environment, used to retrieve
+        env : The loaded Jinja2 environment, used to retrieve
         templates from.
-        df (?): The pandas dataframe object, initialised from the
+        df : The pandas dataframe object, initialised from the
         inventory data source.
         output_dir (str): The output directory. Default: None
 
     Returns:
-        tb_file (?): The pyATS testbed file object.
+        tb_file : The pyATS testbed file object.
 
     Raises:
         N/A
@@ -688,12 +686,12 @@ def to_csv_inventory(logger, df, output_dir: str = None):
 
     Args:
         logger: The initialised logger object.
-        df (?): The pandas dataframe object, initialised from the
+        df : The pandas dataframe object, initialised from the
         inventory data source
         output_dir (str): The output directory. Default: None.
 
     Returns:
-        csv_file (?): The CSV file object.
+        csv_file : The CSV file object.
 
     Raises:
         N/A
@@ -718,12 +716,12 @@ def to_xlsx_inventory(logger, df, output_dir: str = None):
 
     Args:
         logger: The initialised logger object.
-        df (?): The pandas dataframe object, initialised from the
+        df : The pandas dataframe object, initialised from the
         inventory data source.
         output_dir (str): The output directory.
 
     Returns:
-        xlsx_file (?): The xlsx file object.
+        xlsx_file : The xlsx file object.
 
     Raises:
         N/A
@@ -748,12 +746,12 @@ def to_json_inventory(logger, df, output_dir: str = None):
 
     Args:
         logger: The initialised logger object.
-        df (?): The pandas dataframe object, initialised from the
+        df : The pandas dataframe object, initialised from the
         inventory data source
         output_dir (str): The output directory. Default: None.
 
     Returns:
-        json_file (?): The json file object.
+        json_file : The json file object.
 
     Raises:
         N/A
@@ -778,12 +776,12 @@ def to_csv_groups(logger, df, output_dir: str = None):
 
     Args:
         logger: The initialised logger object.
-        df (?): The pandas dataframe object, initialised from the
+        df : The pandas dataframe object, initialised from the
         inventory data source
         output_dir (str): The output directory. Default: None.
 
     Returns:
-        csv_file (?): The CSV file object.
+        csv_file : The CSV file object.
 
     Raises:
         N/A
@@ -808,12 +806,12 @@ def to_xlsx_groups(logger, df, output_dir: str = None):
 
     Args:
         logger: The initialised logger object.
-        df (?): The pandas dataframe object, initialised from the
+        df : The pandas dataframe object, initialised from the
         inventory data source.
         output_dir (str): The output directory.
 
     Returns:
-        xlsx_file (?): The xlsx file object.
+        xlsx_file : The xlsx file object.
 
     Raises:
         N/A
@@ -838,12 +836,12 @@ def to_json_groups(logger, df, output_dir: str = None):
 
     Args:
         logger: The initialised logger object.
-        df (?): The pandas dataframe object, initialised from the
+        df : The pandas dataframe object, initialised from the
         inventory data source
         output_dir (str): The output directory. Default: None.
 
     Returns:
-        json_file (?): The json file object.
+        json_file : The json file object.
 
     Raises:
         N/A
@@ -870,14 +868,14 @@ def to_ansible(logger, env, df, output_dir: str = None):
 
     Args:
         logger: The initialised logger object.
-        env (?): The loaded Jinja2 environment, used to retrieve
+        env : The loaded Jinja2 environment, used to retrieve
         templates from.
-        df (?): The pandas dataframe object, initialised from the
+        df : The pandas dataframe object, initialised from the
         inventory data source
         output_dir (str): The output directory. Default: None.
 
     Returns:
-        ans_h_file (?): The Ansible inventory file object.
+        ans_h_file : The Ansible inventory file object.
 
     Raises:
         N/A
