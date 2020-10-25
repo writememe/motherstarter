@@ -121,26 +121,13 @@ Sample outputs are provided in the [motherstarter/outputs](motherstarter/outputs
 
 The following file formats are supported by motherstarter:
 
-.. |yes|   unicode:: U+02705 .. Yes
-.. |no|    unicode:: U+0274C .. No
-
-
-
-==============================  =======  ======   ======  ===========
-_                               Format    Input    Output  Description
-==============================  =======  ======   ======  ===========
-**csv**                        |yes|  |yes|   |yes|   |yes|   |yes|
-**ping**                       |yes|  |yes|   |no|    |yes|   |yes|
-**traceroute**                 |yes|  |yes|   |yes|   |yes|   |yes|
-============================== =====  =====   ======  ======  =====
-
 |File format |Description|Input|Output|
 | ---------- | --------- | ------- | ----- |
-| csv |Comma separated file||yes|||yes||
-| json|groups|groups|Not applicable|
-| xlsx |defaults|all|Not applicable|
-||||
-||||
+| csv |Comma separated file|:thumbsup:|:thumbsup:|
+| json|groups|:thumbsup:|:thumbsup:|
+| xlsx |defaults|:thumbsup:|:thumbsup:|
+|ansible||:-1:|:thumbsup: |
+|nornir||:-1:|:thumbsup: |
 ## What is motherstarter?
 
 motherstarter was created to bridge the gap between those wanting to use network automation and those who already are with fully formed network automation platforms.
