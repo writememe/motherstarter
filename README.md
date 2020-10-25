@@ -123,12 +123,12 @@ The following file formats are supported by motherstarter:
 
 | File format | Description | Input (inventory) | Input (groups)| Output (inventory)| Output (groups) |
 | ---------- | ------------ | ----------------- | ------------- | ----------------- | --------------- |
-| csv |Comma separated file|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
-| json |JavaScript Object Notation file|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
-| xlsx |Excel workbook |:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
-| ansible |Ansible configuration files|:x:|:x: |:heavy_check_mark:|:x:|
-| nornir | Nornir inventory files |:x:|:x: |:heavy_check_mark:|:heavy_check_mark:|
-| nornir | Nornir inventory files |:x:|:x: |:heavy_check_mark:|:heavy_check_mark:|
+| **csv** |Comma separated file|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+| **json** |JavaScript Object Notation file|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+| **xlsx** |Excel workbook |:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+| **ansible** |Ansible configuration files|:x:|:x: |:heavy_check_mark:|:x:|
+| **nornir** | Nornir inventory files |:x:|:x: |:heavy_check_mark:|:heavy_check_mark:|
+| **pyATS** | pyATS testbed file |:x:|:x: |:heavy_check_mark:|:heavy_check_mark:|
 
 ## What is motherstarter?
 
