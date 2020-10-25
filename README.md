@@ -121,13 +121,15 @@ Sample outputs are provided in the [motherstarter/outputs](motherstarter/outputs
 
 The following file formats are supported by motherstarter:
 
-|File format |Description|Input|Output|
-| ---------- | --------- | ------- | ----- |
-| csv |Comma separated file|:thumbsup:|:thumbsup:|
-| json|groups|:thumbsup:|:thumbsup:|
-| xlsx |defaults|:thumbsup:|:thumbsup:|
-|ansible||:-1:|:thumbsup: |
-|nornir||:-1:|:thumbsup: |
+| File format | Description | Input (inventory) | Input (groups)| Output (inventory)| Output (groups) |
+| ---------- | ------------ | ----------------- | ------------- | ----------------- | --------------- |
+| csv |Comma separated file|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+| json |JavaScript Object Notation file|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+| xlsx |Excel workbook |:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
+| ansible |Ansible configuration files|:x:|:x: |:heavy_check_mark:|:x:|
+| nornir | Nornir inventory files |:x:|:x: |:heavy_check_mark:|:heavy_check_mark:|
+| nornir | Nornir inventory files |:x:|:x: |:heavy_check_mark:|:heavy_check_mark:|
+
 ## What is motherstarter?
 
 motherstarter was created to bridge the gap between those wanting to use network automation and those who already are with fully formed network automation platforms.
