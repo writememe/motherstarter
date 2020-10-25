@@ -144,7 +144,7 @@ sources
 
 ### Why should you use motherstarter?
 
-motherstarter is of| value to those who are:
+motherstarter is of value to those who are:
 - Looking to "seed" new network automation platforms. For example, use nornir/napalm to get facts about a network and then populate a system such as netbox.
 - Looking to trial and experiment different automation frameworks. For example, you want to try pyATS for a certain feature, or use Ansible modules because they solve a specific use-case for fact gathering.
 - Who move between multiple environments and need reliable inventory sources for automation solutions. For example, you are a consultant who has to perform network audits or perform repetitive work between multiple customers.
