@@ -17,9 +17,10 @@ A network data transformation tool to accelerate the adoption of network automat
 - [Quick Start Guide](#quick-start-guide)
   - [Installation](#installation)
   - [Usage](#usage)
+- [Support Matrix](#support-matrix)
 - [What is motherstarter?](#what-is-motherstarter)
   - [Why should you use motherstarter?](#why-should-you-use-motherstarter)
-  - [Nomentclature](#nomentclature)
+  - [Nomenclature](#nomenclature)
     - [Definitions](#definitions) 
   - [motherstarter is not...](#motherstarter-is-not-)
   - [What is with the name?](#what-is-with-the-name)
@@ -116,7 +117,30 @@ motherstarter convert
 
 Sample outputs are provided in the [motherstarter/outputs](motherstarter/outputs) folder.
 
+## Support Matrix
 
+The following file formats are supported by motherstarter:
+
+.. |yes|   unicode:: U+02705 .. Yes
+.. |no|    unicode:: U+0274C .. No
+
+
+
+==============================  =======  ======   ======  ===========
+_                               Format    Input    Output  Description
+==============================  =======  ======   ======  ===========
+**csv**                        |yes|  |yes|   |yes|   |yes|   |yes|
+**ping**                       |yes|  |yes|   |no|    |yes|   |yes|
+**traceroute**                 |yes|  |yes|   |yes|   |yes|   |yes|
+============================== =====  =====   ======  ======  =====
+
+|File format |Description|Input|Output|
+| ---------- | --------- | ------- | ----- |
+| csv |Comma separated file||yes|||yes||
+| json|groups|groups|Not applicable|
+| xlsx |defaults|all|Not applicable|
+||||
+||||
 ## What is motherstarter?
 
 motherstarter was created to bridge the gap between those wanting to use network automation and those who already are with fully formed network automation platforms.
@@ -137,6 +161,21 @@ motherstarter is a value to those who are:
 - Who move between multiple environments and need reliable inventory sources for automation solutions. For example, you are a consultant who has to perform network audits or perform repetitive work between multiple customers.
 - Need an interim inventory offering, prior to migrating to a more robust solution.
 
+### Nomenclature
+
+Throughout the tool and subsequent code, it's important to establish some terminology which is used.   Unsuprisingly, each automation solution uses slightly different names for the same thing. A reference table
+is supplied below:
+
+#### Definitions
+
+| motherstarter | nornir | ansible | pyats |
+| -------------- | ----- | ------- | ----- |
+| inventory |hosts|hosts|devices|
+|groups |groups|groups|Not applicable|
+| Not applicable |defaults|all|Not applicable|
+
+motherstarter will make frequent usage of `inventory` and `groups` throughout the code and templates, so this table is a handy reference when trying to understand the differences.
+
 ## What is with the name?
 
 __**Do you appreciate a good sourdough?**__
@@ -153,18 +192,3 @@ You feed the tool good "data", and you can take it's output to make great soluti
 It's important to understand that motherstarter does not intend, nor plan to be a permanent, enterprise-class inventory solution. motherstarter cannot substitute for a first-class system such as netbox. It's anticipated that you will reach the limits of motherstarter as an inventory solution, if you plan to make the inventory files available in multiple locations over multiple solutions.
 
 You may temporarily get around this by saving the outputs to Git and using version control to track changes. But, again a proper, permanent solution should be considered beyond that.
-
-### Nomenclature
-
-Throughout the tool and subsequent code, it's important to establish some terminology which is used.   Unsuprisingly, each automation solution uses slightly different names for the same thing. A reference table
-is supplied below:
-
-#### Definitions
-
-| motherstarter | nornir | ansible | pyats |
-| -------------- | ----- | ------- | ----- |
-| inventory |hosts|hosts|devices|
-|groups |groups|groups|Not applicable|
-| Not applicable |defaults|all|Not applicable|
-
-motherstarter will make frequent usage of `inventory` and `groups` throughout the code and templates, so this table is a handy reference when trying to understand the differences.
