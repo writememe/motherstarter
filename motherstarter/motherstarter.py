@@ -11,7 +11,6 @@ from jinja2 import Environment, FileSystemLoader
 import pathlib as pl
 from colorama import init
 import logging
-import argparse
 import click
 from typing import Optional
 
@@ -112,70 +111,6 @@ def convert(log_level: str, source_type: str, source_dir: str, output_type: str)
     logger = init_logger(log_level=ll, log_name="motherstarter.log")
     # Initialise the main workflow
     main(logger=logger, source_type=st, output_type=ot, source_dir=sd)
-
-
-def get_argparse_args():
-    """
-    Take argparse parameter(s) off user input from a command
-    line and return those outputs for usage in other functions.
-
-    Args:
-        N/A
-
-    Returns:
-        arg_outputs (dict): Dictionary of argument outputs which can be
-        used for other functions.
-            level: The logging level set at the command line.
-            source: The source type set at the command line.
-            output: The output type set at the command line.
-
-    Raises:
-        N/A
-    """
-    # Setup argparse parameters to take user input from the command line
-    parser = argparse.ArgumentParser(
-        description="Translate source file(s) into network automation inventory outputs"
-    )
-    # Setup argparse arguments to take user input from the command line
-    parser.add_argument(
-        "-l",
-        "--log",
-        dest="logging_level",
-        choices=["debug", "info", "warning", "error", "critical"],
-        default="debug",
-        help="Specify the logging level. Default is debug.",
-    )
-    parser.add_argument(
-        "-st",
-        "--source-type",
-        dest="source_type",
-        choices=["csv", "json", "xlsx"],
-        default="json",
-        help="Specify the source file type. Default is json.",
-    )
-    parser.add_argument(
-        "-sd",
-        "--source-dir",
-        dest="source_dir",
-        default=None,
-        help="Specify the source directory for the source files. Default is tree structure under the 'motherstarter/inputs/' folder.",  # noqa (pylama ignore)
-    )
-    parser.add_argument(
-        "-o",
-        "--output-type",
-        choices=["all", "csv", "json", "nornir", "pyats", "xlsx"],
-        dest="output_type",
-        default="all",
-        help="Specify the output file types. Default is all file types. This argument only takes one option.",  # noqa (pylama ignore)
-    )
-    args = parser.parse_args()
-    # Take log_level argument, assign to var and turn into uppercase
-    log_level = args.logging_level.upper()
-    # Take source_type and output_type arguments and assign to a variable
-    source_type, output_type = args.source_type, args.output_type
-    # Assign outputs to a dict, so they can be reliably used outside this function
-    arg_outputs = {"level": log_level, "source": source_type, "output": output_type}
-    return arg_outputs
 
 
 def init_logger(log_level: str, log_name: str = "ms.log"):
