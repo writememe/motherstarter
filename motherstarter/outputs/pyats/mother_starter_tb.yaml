@@ -40,7 +40,7 @@ devices:
                 ip: 10.0.0.11
                 protocol: ssh
         custom:
-            vendor: arista
+            vendor: cisco
     lab-arista-02.lab.dfjt.local:
         os: eos
         type: switch

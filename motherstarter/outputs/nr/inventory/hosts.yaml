@@ -22,7 +22,7 @@ lab-arista-01.lab.dfjt.local:
         - eos
     data:
         mgmt_ip: 10.0.0.11
-        vendor: arista
+        vendor: cisco
         type: switch
 lab-arista-02.lab.dfjt.local:
     hostname: lab-arista-02.lab.dfjt.local

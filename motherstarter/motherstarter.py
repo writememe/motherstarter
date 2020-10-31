@@ -309,7 +309,7 @@ def init_groups(logger, source_dir: str = None, source_type: str = "json"):
     return df
 
 
-def init_inventory_json(source_dir: str = None):  # Make this required at this level
+def init_inventory_json(source_dir: str = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_json
     function by reading in the "inventory.json" file from the
@@ -323,7 +323,7 @@ def init_inventory_json(source_dir: str = None):  # Make this required at this l
 
     Args:
         source_dir (str): The source directory to find the inventory files in.
-            Default: None
+            Default: "motherstarter/inputs"
 
     Returns:
         df (?): The pandas dataframe object for further processing.
@@ -331,30 +331,21 @@ def init_inventory_json(source_dir: str = None):  # Make this required at this l
     Raises:
         N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "motherstarter/inputs/inventory/json"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_json(f"{source_dir}/inventory.json")
     # Return dataframe
     return df
 
 
-def init_inventory_xlsx(source_dir: str = None):
+def init_inventory_xlsx(source_dir: str = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_excel
     function by reading in the "inventory.xlsx" file from the
     applicable source directory
 
-    NOTE: Whilst this function exposes the ability to change the source_dir,
-    it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'motherstarter/inputs/'
-    directory. We would recommend just sticking with that, unless you want
-    to write your own custom workflow.
-
     Args:
         source_dir (str): The source directory to find the inventory files in.
-            Default: None
+            Default: "motherstarter/inputs"
 
     Returns:
         df : The pandas dataframe object for further processing.
@@ -362,30 +353,22 @@ def init_inventory_xlsx(source_dir: str = None):
     Raises:
         N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "motherstarter/inputs/inventory/xlsx"
     # Read in source file. NOTE: The source filename and sheet name are hardcoded
     df = pd.read_excel(f"{source_dir}/inventory.xlsx", sheet_name="inventory")
     # Return dataframe
     return df
 
 
-def init_inventory_csv(source_dir: str = None):
+def init_inventory_csv(source_dir: str = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_csv
     function by reading in the "inventory.csv" file from the
     applicable source directory
 
-    NOTE: Whilst this function exposes the ability to change the source_dir,
-    it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'motherstarter/inputs/'
-    directory. We would recommend just sticking with that, unless you want
-    to write your own custom workflow.
 
     Args:
         source_dir (str): The source directory to find the inventory files in.
-            Default: None
+            Default: "motherstarter/inputs"
 
     Returns:
         df : The pandas dataframe object for further processing.
@@ -393,30 +376,21 @@ def init_inventory_csv(source_dir: str = None):
     Raises:
         N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "motherstarter/inputs/inventory/csv"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_csv(f"{source_dir}/inventory.csv")
     # Return dataframe
     return df
 
 
-def init_groups_json(source_dir: str = None):
+def init_groups_json(source_dir: str = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_json
     function by reading in the "groups.json" file from the
     applicable source directory
 
-    NOTE: Whilst this function exposes the ability to change the source_dir,
-    it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'motherstarter/inputs/'
-    directory. We would recommend just sticking with that, unless you want
-    to write your own custom workflow.
-
     Args:
         source_dir (str): The source directory to find the inventory files in.
-            Default: None
+            Default: "motherstarter/inputs"
 
     Returns:
         df : The pandas dataframe object for further processing.
@@ -424,30 +398,21 @@ def init_groups_json(source_dir: str = None):
     Raises:
         N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "motherstarter/inputs/groups/json"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_json(f"{source_dir}/groups.json")
     # Return dataframe
     return df
 
 
-def init_groups_xlsx(source_dir: str = None):
+def init_groups_xlsx(source_dir: str = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_excel
     function by reading in the "groups.xlsx" file from the
     applicable source directory
 
-    NOTE: Whilst this function exposes the ability to change the source_dir,
-    it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'motherstarter/inputs/'
-    directory. We would recommend just sticking with that, unless you want
-    to write your own custom workflow.
-
     Args:
         source_dir (str): The source directory to find the inventory files in.
-            Default: None
+            Default: "motherstarter/inputs"
 
     Returns:
         df : The pandas dataframe object for further processing.
@@ -455,30 +420,21 @@ def init_groups_xlsx(source_dir: str = None):
     Raises:
         N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "motherstarter/inputs/groups/xlsx"
     # Read in source file. NOTE: The source filename and sheet name are hardcoded
     df = pd.read_excel(f"{source_dir}/groups.xlsx", sheet_name="groups")
     # Return dataframe
     return df
 
 
-def init_groups_csv(source_dir: str = None):
+def init_groups_csv(source_dir: str = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_csv
     function by reading in the "groups.csv" file from the
     applicable source directory
 
-    NOTE: Whilst this function exposes the ability to change the source_dir,
-    it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'motherstarter/inputs/'
-    directory. We would recommend just sticking with that, unless you want
-    to write your own custom workflow.
-
     Args:
         source_dir (str): The source directory to find the inventory files in.
-            Default: None
+            Default: "motherstarter/inputs"
 
     Returns:
         df : The pandas dataframe object for further processing.
@@ -486,9 +442,6 @@ def init_groups_csv(source_dir: str = None):
     Raises:
         N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "motherstarter/inputs/groups/csv"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_csv(f"{source_dir}/groups.csv")
     return df
@@ -912,16 +865,27 @@ def main(logger, source_type: str, output_type: str, source_dir: str = None):
         output_type (str): What file type(s) you would like to be outputted
         as a result of running the function.
         source_dir (str): The source directory of the input files.
+            Default: None
     Returns:
         N/A
 
     Raises:
         N/A
     """
+    # Specify the source dirs for inputs when it is not supplied
+    if source_dir is None:
+        source_dir = "motherstarter/inputs"
+        logger.warning(f"Source directory not specified, using default: {source_dir}")
+    else:
+        logger.debug(f"Source directory is: {source_dir}")
     # Initialise inventory dataframe, based on the source_dir and source_type
-    inv_df = init_inventory(logger=logger, source_dir=None, source_type=source_type)
+    inv_df = init_inventory(
+        logger=logger, source_dir=source_dir, source_type=source_type
+    )
     # Initialise group dataframe, based on the source_dir and source_type
-    group_df = init_groups(logger=logger, source_dir=None, source_type=source_type)
+    group_df = init_groups(
+        logger=logger, source_dir=source_dir, source_type=source_type
+    )
     # Prepare the jinja2 template environment
     env = prep_templates(tmpl_dir=None)
     # Diagnostic outputs
