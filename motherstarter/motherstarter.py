@@ -75,7 +75,7 @@ def cli():
     ),
     show_default=True,
 )
-def convert(log_level: str, source_type: str, source_dir: str, output_type: str):
+def convert(log_level: str, source_type: str, source_dir: str, output_type: str) -> None:
     """
     Convert source file(s) into network automation inventory outputs
     based on multiple command-line inputs.
@@ -244,7 +244,7 @@ def init_groups(logger, source_dir: str = None, source_type: str = "json"):
     return df
 
 
-def init_inventory_json(source_dir: str = "motherstarter/inputs"):
+def init_inventory_json(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_json
     function by reading in the "inventory.json" file from the
@@ -272,7 +272,7 @@ def init_inventory_json(source_dir: str = "motherstarter/inputs"):
     return df
 
 
-def init_inventory_xlsx(source_dir: str = "motherstarter/inputs"):
+def init_inventory_xlsx(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_excel
     function by reading in the "inventory.xlsx" file from the
@@ -294,7 +294,7 @@ def init_inventory_xlsx(source_dir: str = "motherstarter/inputs"):
     return df
 
 
-def init_inventory_csv(source_dir: str = "motherstarter/inputs"):
+def init_inventory_csv(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_csv
     function by reading in the "inventory.csv" file from the
@@ -317,7 +317,7 @@ def init_inventory_csv(source_dir: str = "motherstarter/inputs"):
     return df
 
 
-def init_groups_json(source_dir: str = "motherstarter/inputs"):
+def init_groups_json(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_json
     function by reading in the "groups.json" file from the
@@ -339,7 +339,7 @@ def init_groups_json(source_dir: str = "motherstarter/inputs"):
     return df
 
 
-def init_groups_xlsx(source_dir: str = "motherstarter/inputs"):
+def init_groups_xlsx(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_excel
     function by reading in the "groups.xlsx" file from the
@@ -361,7 +361,7 @@ def init_groups_xlsx(source_dir: str = "motherstarter/inputs"):
     return df
 
 
-def init_groups_csv(source_dir: str = "motherstarter/inputs"):
+def init_groups_csv(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_csv
     function by reading in the "groups.csv" file from the
