@@ -16,7 +16,7 @@
     {
         "name":"lab-arista-01.lab.dfjt.local",
         "mgmt_ip":"10.0.0.11",
-        "vendor":"arista",
+        "vendor":"cisco",
         "device_type":"switch",
         "operating_system":"eos"
     },
