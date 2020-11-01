@@ -44,4 +44,4 @@ jobs:
             - name: Execute bandit check
               run: make bandit
             - name: Run tests
-              run: make pytest  
+              run: make pytest
