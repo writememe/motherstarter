@@ -7,7 +7,7 @@ ios:
             platform: cisco_iosxe
             port: 22
             extras:
-                auth_strict_key: False
+                auth_strict_key: false
 junos:
     platform: junos
     connection_options:
@@ -15,7 +15,7 @@ junos:
             platform: juniper_junos
             port: 22
             extras:
-                auth_strict_key: False
+                auth_strict_key: false
 eos:
     platform: eos
     connection_options:
@@ -23,7 +23,7 @@ eos:
             platform: arista_eos
             port: 22
             extras:
-                auth_strict_key: False
+                auth_strict_key: false
 nxos:
     platform: nxos
     connection_options:
@@ -31,7 +31,7 @@ nxos:
             platform: cisco_nxos
             port: 22
             extras:
-                auth_strict_key: False
+                auth_strict_key: false
 nxos_ssh:
     platform: nxos_ssh
     connection_options:
@@ -39,4 +39,4 @@ nxos_ssh:
             platform: cisco_nxos
             port: 22
             extras:
-                auth_strict_key: False
+                auth_strict_key: false

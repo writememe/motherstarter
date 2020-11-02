@@ -75,7 +75,9 @@ def cli():
     ),
     show_default=True,
 )
-def convert(log_level: str, source_type: str, source_dir: str, output_type: str) -> None:
+def convert(
+    log_level: str, source_type: str, source_dir: str, output_type: str
+) -> None:
     """
     Convert source file(s) into network automation inventory outputs
     based on multiple command-line inputs.
