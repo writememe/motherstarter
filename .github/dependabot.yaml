@@ -1,4 +1,5 @@
 ---
+# motherstarter Dependabot config file
 version: 2
 updates:
   - package-ecosystem: "github-actions"
