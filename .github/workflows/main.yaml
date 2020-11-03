@@ -75,5 +75,4 @@ jobs:
                   env_vars: OS,PYTHON
                   name: codecov-umbrella
                   fail_ci_if_error: false
-                  path_to_write_report: ./coverage/codecov_report.gz
                   verbose: true
