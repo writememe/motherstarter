@@ -11,53 +11,108 @@ from jinja2 import Environment, FileSystemLoader
 import pathlib as pl
 from colorama import init
 import logging
-import argparse
+import click
+from typing import Optional
 
 # Auto-reset colorama colours back after each print statement
 init(autoreset=True)
 
 
-# Setup argparse parameters to take user input from the command line
-parser = argparse.ArgumentParser(
-    description="Translate source file(s) into network automation inventory outputs"
-)
-# Setup argparse arguments to take user input from the command line
-parser.add_argument(
+# This block of code initialises motherstarter from the command
+# line
+@click.group()
+@click.version_option(version="0.0.1")
+def cli():
+    """
+    Function to initialise motherstarter from the command line.
+
+    Args:
+        N/A
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
+    pass
+
+
+@cli.command()
+@click.option(
+    "--log-level",
     "-l",
-    "--log",
-    dest="logging_level",
-    choices=["debug", "info", "warning", "error", "critical"],
+    help="Specify the logging level.",
     default="debug",
-    help="Specify the logging level. Default is debug.",
+    type=click.Choice(
+        ["debug", "info", "warning", "error", "critical"], case_sensitive=False
+    ),
+    show_default=True,
 )
-parser.add_argument(
-    "-st",
+@click.option(
     "--source-type",
-    dest="source_type",
-    choices=["csv", "json", "xlsx"],
+    "-st",
+    help="Specify the source file type.",
     default="json",
-    help="Specify the source file type. Default is json.",
+    type=click.Choice(["csv", "json", "xlsx"], case_sensitive=False),
+    show_default=True,
 )
-parser.add_argument(
-    "-sd",
+@click.option(
     "--source-dir",
-    dest="source_dir",
+    "-sd",
+    help="Specify the source directory for the source files. Default is under the 'motherstarter/inputs/' folder.",  # noqa (pylama ignore)
     default=None,
-    help="Specify the source directory for the source files. Default is tree structure under the 'inputs/' folder.",
+    show_default=True,
 )
-parser.add_argument(
-    "-o",
+@click.option(
     "--output-type",
-    choices=["all", "csv", "json", "nornir", "pyats", "xlsx"],
-    dest="output_type",
+    "-o",
+    help="Specify the output file types.  This argument only takes one option.",
     default="all",
-    help="Specify the output file types. Default is all file types. This argument only takes one option.",
+    type=click.Choice(
+        ["all", "ansible", "csv", "json", "nornir", "pyats", "xlsx"],
+        case_sensitive=False,
+    ),
+    show_default=True,
 )
-args = parser.parse_args()
-# Take log_level argument, assign to var and turn into uppercase
-log_level = args.logging_level.upper()
-# Take source_type and output_type arguments and assign to a variable
-source_type, output_type = args.source_type, args.output_type
+def convert(
+    log_level: str, source_type: str, source_dir: str, output_type: str
+) -> None:
+    """
+    Convert source file(s) into network automation inventory outputs
+    based on multiple command-line inputs.
+
+    For example:
+        Input type: json
+        Output type: nornir
+
+    Args:\n
+        log_level (str): The severity logging level for all events. Valid
+        options: "debug", "info", "warning", "error" and "critical".
+        source_type (str): The source file type to read the inventory/group
+        data from. Valid options: "csv", "json" and "xlsx".\n
+        source_dir (str): The source directory to find the files in.\n
+        output_type (str): What file type(s) you would like to be outputted
+        as a result of running the function. Valid options: "all", "ansible",
+        "csv", "json", "nornir", "pyats" and "xlsx".\n
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
+    # Convert log level to an upper-case variable
+    ll = log_level.upper()
+    # Rename the other inputs for usage below
+    st = source_type
+    ot = output_type
+    # TODO: Refactor this temp code.
+    sd = source_dir
+    # Initialise the logger
+    logger = init_logger(log_level=ll, log_name="motherstarter.log")
+    # Initialise the main workflow
+    main(logger=logger, source_type=st, output_type=ot, source_dir=sd)
 
 
 def init_logger(log_level: str, log_name: str = "ms.log"):
@@ -67,16 +122,21 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     The log_level is passed into the function and used to set
     the logging level.
 
-    :param log_level: The severity logging level for all events
-    to be logged at.
-    :param log_name: The name of the log file
-    :return logger: An initialised logger object
+    Args:
+        log_level (str): The severity logging level for all events
+        log_name (str): The name of the log file. Default "ms.log"
+
+    Returns:
+        logger: An initialised logger object
+
+    Raises:
+        N/A
     """
     # Create a logger object
     logger = logging.getLogger(__name__)
     # Setup the logging formatters for log and stream outputs
-    log_fmt = logging.Formatter(("%(asctime)s - " "%(levelname)s - " "%(message)s"))
-    stream_fmt = logging.Formatter(("%(levelname)s - " "%(message)s"))
+    log_fmt = logging.Formatter("%(asctime)s - " "%(levelname)s - " "%(message)s")
+    stream_fmt = logging.Formatter("%(levelname)s - " "%(message)s")
     # Setup file handler and use a different log format for output
     f_handler = logging.FileHandler(log_name)
     f_handler.setFormatter(log_fmt)
@@ -105,13 +165,22 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     return logger
 
 
-def init_inventory(source_dir: str = None, source_type: str = "json"):
+def init_inventory(logger, source_dir: str = None, source_type: str = "json"):
     """
     Initialise the inventory data based on the source_type and from the source
-    directory and return a pandas dataframe object
+    directory and return a pandas dataframe object.
 
-    :param source_dir: The source directory to find the files in.
-    :param source_type: The source file type to read the inventory data from.
+    Args:
+        logger: The initialised logger object.
+        source_dir (str): The source directory to find the files in.
+        source_type (str): The source file type to read the inventory data from.
+            Default: "json".
+
+    Returns:
+        df (?): The pandas dataframe object for further processing.
+
+    Raises:
+        N/A
     """
     # Provide debugging output if needed.
     logger.debug(f"Inventory source type is {source_type}")
@@ -136,15 +205,23 @@ def init_inventory(source_dir: str = None, source_type: str = "json"):
     return df
 
 
-def init_groups(source_dir: str = None, source_type: str = "json"):
+def init_groups(logger, source_dir: str = None, source_type: str = "json"):
     """
     Initialise the group data based on the source_type and from the source
     directory and return a pandas dataframe object
 
-    :param source_dir: The source directory to find the inventory files in.
-    :param source_type: The source file type to read the group data from.
-    :return df: The pandas dataframe object
-    :type df: #TODO - not sure what this is..
+    Args:
+        logger: The initialised logger object
+        source_dir (str): The source directory to find the inventory files in.
+            Default: None
+        source_type (str): The source file type to read the group data from.
+            Default: "json"
+
+    Returns:
+        df (?): The pandas dataframe object for further processing.
+
+    Raises:
+        N/A
     """
     # Provide debugging output if needed.
     logger.debug(f"Inventory source type is {source_type}")
@@ -169,175 +246,166 @@ def init_groups(source_dir: str = None, source_type: str = "json"):
     return df
 
 
-def init_inventory_json(source_dir: str = None):  # Make this required at this level
+def init_inventory_json(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_json
     function by reading in the "inventory.json" file from the
     applicable source directory
 
-    :param source_dir: The source directory to find the inventory files in.
-    :return df: The pandas dataframe object
-    :type df: #TODO - not sure what this is..
-
     NOTE: Whilst this function exposes the ability to change the source_dir,
     it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
+    place the files in template folder structure supplied in the 'motherstarter/inputs/'
     directory. We would recommend just sticking with that, unless you want
     to write your own custom workflow.
+
+    Args:
+        source_dir (str): The source directory to find the inventory files in.
+            Default: "motherstarter/inputs"
+
+    Returns:
+        df (?): The pandas dataframe object for further processing.
+
+    Raises:
+        N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "inputs/inventory/json"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_json(f"{source_dir}/inventory.json")
     # Return dataframe
     return df
 
 
-def init_inventory_xlsx(source_dir: str = None):
+def init_inventory_xlsx(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_excel
     function by reading in the "inventory.xlsx" file from the
     applicable source directory
 
-    :param source_dir: The source directory to find the inventory files in.
-    :return df: The pandas dataframe object
-    :type df: #TODO - not sure what this is..
+    Args:
+        source_dir (str): The source directory to find the inventory files in.
+            Default: "motherstarter/inputs"
 
-    NOTE: Whilst this function exposes the ability to change the source_dir,
-    it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
-    directory. We would recommend just sticking with that, unless you want
-    to write your own custom workflow.
+    Returns:
+        df : The pandas dataframe object for further processing.
+
+    Raises:
+        N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "inputs/inventory/xlsx"
     # Read in source file. NOTE: The source filename and sheet name are hardcoded
     df = pd.read_excel(f"{source_dir}/inventory.xlsx", sheet_name="inventory")
     # Return dataframe
     return df
 
 
-def init_inventory_csv(source_dir: str = None):
+def init_inventory_csv(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_csv
     function by reading in the "inventory.csv" file from the
     applicable source directory
 
-    :param source_dir: The source directory to find the files in.
-    :return df: The pandas dataframe object
-    :type df: #TODO - not sure what this is..
 
-    NOTE: Whilst this function exposes the ability to change the source_dir,
-    it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
-    directory. We would recommend just sticking with that, unless you want
-    to write your own custom workflow.
+    Args:
+        source_dir (str): The source directory to find the inventory files in.
+            Default: "motherstarter/inputs"
+
+    Returns:
+        df : The pandas dataframe object for further processing.
+
+    Raises:
+        N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "inputs/inventory/csv"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_csv(f"{source_dir}/inventory.csv")
     # Return dataframe
     return df
 
 
-def init_groups_json(source_dir: str = None):
+def init_groups_json(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_json
     function by reading in the "groups.json" file from the
     applicable source directory
 
-    :param source_dir: The source directory to find the groups files in.
-    :return df: The pandas dataframe object
-    :type df: #TODO - not sure what this is..
+    Args:
+        source_dir (str): The source directory to find the inventory files in.
+            Default: "motherstarter/inputs"
 
-    NOTE: Whilst this function exposes the ability to change the source_dir,
-    it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
-    directory. We would recommend just sticking with that, unless you want
-    to write your own custom workflow.
+    Returns:
+        df : The pandas dataframe object for further processing.
+
+    Raises:
+        N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "inputs/groups/json"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_json(f"{source_dir}/groups.json")
     # Return dataframe
     return df
 
 
-def init_groups_xlsx(source_dir: str = None):
+def init_groups_xlsx(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_excel
     function by reading in the "groups.xlsx" file from the
     applicable source directory
 
-    :param source_dir: The source directory to find the groups files in.
-    :return df: The pandas dataframe object
-    :type df: #TODO - not sure what this is..
+    Args:
+        source_dir (str): The source directory to find the inventory files in.
+            Default: "motherstarter/inputs"
 
-    NOTE: Whilst this function exposes the ability to change the source_dir,
-    it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
-    directory. We would recommend just sticking with that, unless you want
-    to write your own custom workflow.
+    Returns:
+        df : The pandas dataframe object for further processing.
+
+    Raises:
+        N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "inputs/groups/xlsx"
     # Read in source file. NOTE: The source filename and sheet name are hardcoded
     df = pd.read_excel(f"{source_dir}/groups.xlsx", sheet_name="groups")
     # Return dataframe
     return df
 
 
-def init_groups_csv(source_dir: str = None):
+def init_groups_csv(source_dir: Optional[str] = "motherstarter/inputs"):
     """
     Initialise a pandas dataframe by using pandas read_csv
     function by reading in the "groups.csv" file from the
     applicable source directory
 
-    :param source_dir: The source directory to find the groups files in.
-    :return df: The pandas dataframe object
-    :type df: #TODO - not sure what this is..
+    Args:
+        source_dir (str): The source directory to find the inventory files in.
+            Default: "motherstarter/inputs"
 
-    NOTE: Whilst this function exposes the ability to change the source_dir,
-    it's probably not something you want to be doing. Most people can just
-    place the files in template folder structure supplied in the 'inputs/'
-    directory. We would recommend just sticking with that, unless you want
-    to write your own custom workflow.
+    Returns:
+        df : The pandas dataframe object for further processing.
+
+    Raises:
+        N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "inputs/groups/csv"
     # Read in source file. NOTE: The source filename is hardcoded
     df = pd.read_csv(f"{source_dir}/groups.csv")
     return df
 
 
-def dataframe_to_dict(df) -> dict:
+def dataframe_to_dict(df) -> list:
     """
     Helper function to return a Pandas dataframe into
     a dictionary so that it can be used for further
     processing throughout the application
 
-    :param df: The pandas dataframe object
-    :return : A dictionary instance of the dataframe object
+    Args:
+        df : The pandas dataframe object.
+
+    Returns:
+        df (list): A list of dictionaries of the dataframe object.
+
+    Raises:
+        N/A
     """
-    # Convert dataframe to a dict object and orient based on records
     return df.to_dict(orient="records")
 
 
-def prep_templates(tmpl_dir: str = None):
+def prep_templates(tmpl_dir: Optional[str] = None):
     """
     Take the template directory and load a Jinja2 environment
     with those templates and other settings enabled
-
-    :param tmpl_dir: The template directory one-level above where the Jinja2
-    templates are stored.
 
     For example:
      .
@@ -350,17 +418,25 @@ def prep_templates(tmpl_dir: str = None):
                   ├── hosts.j2
                   └── groups.j2
 
-    :return env: The loaded jinja2 environment.
-
     NOTE: Whilst this function exposes the ability to change the tmpl_dir,
     it's probably not something you want to be doing. Most people can just
     place the files in template folder structure supplied in the
-    'templates/outputs/' directory. We would recommend just sticking with
+    'motherstarter/templates/outputs/' directory. We would recommend just sticking with
     that, unless you want to write your own custom workflow.
+
+    Args:
+        tmpl_dir (str): The template directory one-level above where the Jinja2
+    templates are stored. Default: None
+
+    Returns:
+        env :  The loaded jinja2 environment.
+
+    Raises:
+        N/A
     """
     # Specify the template dirs when it is not supplied
     if tmpl_dir is None:
-        tmpl_dir = "templates/outputs"
+        tmpl_dir = "motherstarter/templates/outputs"
     # Load template directory where Jinja2 templates are located
     templates = FileSystemLoader(tmpl_dir)
     # Load environment and setting autoescape to True
@@ -371,23 +447,29 @@ def prep_templates(tmpl_dir: str = None):
     return env
 
 
-def to_nr_hosts(env, df, output_dir: str = None):
+def to_nr_hosts(logger, env, df, output_dir: str = None):
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
     create an nornir hosts inventory file.
 
-    :param env: The loaded Jinja2 environment, used to retrieve
-    templates from.
-    :param df: The pandas dataframe object, initialised from the
-    inventory data source
-    :param output_dir: The output directory
+    Args:
+        logger: The initialised logger object.
+        env : The loaded Jinja2 environment, used to retrieve
+        templates from.
+        df : The pandas dataframe object, initialised from the
+        inventory data source
+        output_dir (str): The output directory. Default: None.
 
-    :return nr_h_file: The nornir hosts file object.
+    Returns:
+        nr_h_file : The nornir hosts file object.
+
+    Raises:
+        N/A
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/nr/inventory"
+        output_dir = "motherstarter/outputs/nr/inventory"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Convert pandas dataframe to a dictionary and assign to the
@@ -406,23 +488,29 @@ def to_nr_hosts(env, df, output_dir: str = None):
     return nr_h_file
 
 
-def to_nr_groups(env, df, output_dir: str = None):
+def to_nr_groups(logger, env, df, output_dir: str = None):
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
     create an nornir groups inventory file.
 
-    :param env: The loaded Jinja2 environment, used to retrieve
-    templates from.
-    :param df: The pandas dataframe object, initialised from the
-    inventory data source
-    :param output_dir: The output directory
+    Args:
+        logger: The initialised logger object.
+        env : The loaded Jinja2 environment, used to retrieve
+        templates from.
+        df : The pandas dataframe object, initialised from the
+        inventory data source.
+        output_dir (str): The output directory. Default: None.
 
-    :return nr_g_file: The nornir groups file object.
+    Returns:
+        nr_g_file: The nornir groups file object.
+
+    Raises:
+        N/A
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/nr/inventory"
+        output_dir = "motherstarter/outputs/nr/inventory"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Convert pandas dataframe to a dictionary and assign to the
@@ -441,23 +529,29 @@ def to_nr_groups(env, df, output_dir: str = None):
     return nr_g_file
 
 
-def to_pyats(env, df, output_dir: str = None):
+def to_pyats(logger, env, df, output_dir: str = None):
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
     create an pyATS testbed file.
 
-    :param env: The loaded Jinja2 environment, used to retrieve
-    templates from.
-    :param df: The pandas dataframe object, initialised from the
-    inventory data source
-    :param output_dir: The output directory
+    Args:
+        logger: The initialised logger object.
+        env : The loaded Jinja2 environment, used to retrieve
+        templates from.
+        df : The pandas dataframe object, initialised from the
+        inventory data source.
+        output_dir (str): The output directory. Default: None
 
-    :return tb_file: The pyATS testbed file object.
+    Returns:
+        tb_file : The pyATS testbed file object.
+
+    Raises:
+        N/A
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/pyats"
+        output_dir = "motherstarter/outputs/pyats"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Convert pandas dataframe to a dictionary and assign to the
@@ -476,19 +570,25 @@ def to_pyats(env, df, output_dir: str = None):
     return tb_file
 
 
-def to_csv_inventory(df, output_dir: str = None):
+def to_csv_inventory(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a CSV file.
 
-    :param df: The pandas dataframe object, initialised from the
-    inventory data source
-    :param output_dir: The output directory
+    Args:
+        logger: The initialised logger object.
+        df : The pandas dataframe object, initialised from the
+        inventory data source
+        output_dir (str): The output directory. Default: None.
 
-    :return csv_file: The CSV file object.
+    Returns:
+        csv_file : The CSV file object.
+
+    Raises:
+        N/A
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/csv"
+        output_dir = "motherstarter/outputs/csv"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign CSV file name to a variable
@@ -500,19 +600,25 @@ def to_csv_inventory(df, output_dir: str = None):
     return csv_file
 
 
-def to_xlsx_inventory(df, output_dir: str = None):
+def to_xlsx_inventory(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a xlsx file.
 
-    :param df: The pandas dataframe object, initialised from the
-    inventory data source
-    :param output_dir: The output directory
+    Args:
+        logger: The initialised logger object.
+        df : The pandas dataframe object, initialised from the
+        inventory data source.
+        output_dir (str): The output directory.
 
-    :return xlsx_file: The xlsx file object.
+    Returns:
+        xlsx_file : The xlsx file object.
+
+    Raises:
+        N/A
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/xlsx"
+        output_dir = "motherstarter/outputs/xlsx"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign xlsx file name to a variable
@@ -524,19 +630,25 @@ def to_xlsx_inventory(df, output_dir: str = None):
     return xlsx_file
 
 
-def to_json_inventory(df, output_dir: str = None):
+def to_json_inventory(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a json file.
 
-    :param df: The pandas dataframe object, initialised from the
-    inventory data source
-    :param output_dir: The output directory
+    Args:
+        logger: The initialised logger object.
+        df : The pandas dataframe object, initialised from the
+        inventory data source
+        output_dir (str): The output directory. Default: None.
 
-    :return json_file: The json file object.
+    Returns:
+        json_file : The json file object.
+
+    Raises:
+        N/A
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/json"
+        output_dir = "motherstarter/outputs/json"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign json file name to a variable
@@ -548,19 +660,25 @@ def to_json_inventory(df, output_dir: str = None):
     return json_file
 
 
-def to_csv_groups(df, output_dir: str = None):
+def to_csv_groups(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a CSV file.
 
-    :param df: The pandas dataframe object, initialised from the
-    group data source
-    :param output_dir: The output directory
+    Args:
+        logger: The initialised logger object.
+        df : The pandas dataframe object, initialised from the
+        inventory data source
+        output_dir (str): The output directory. Default: None.
 
-    :return csv_file: The CSV file object.
+    Returns:
+        csv_file : The CSV file object.
+
+    Raises:
+        N/A
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/csv"
+        output_dir = "motherstarter/outputs/csv"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign CSV file name to a variable
@@ -572,19 +690,25 @@ def to_csv_groups(df, output_dir: str = None):
     return csv_file
 
 
-def to_xlsx_groups(df, output_dir: str = None):
+def to_xlsx_groups(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a xlsx file.
 
-    :param df: The pandas dataframe object, initialised from the
-    group data source
-    :param output_dir: The output directory
+    Args:
+        logger: The initialised logger object.
+        df : The pandas dataframe object, initialised from the
+        inventory data source.
+        output_dir (str): The output directory.
 
-    :return xlsx_file: The xlsx file object.
+    Returns:
+        xlsx_file : The xlsx file object.
+
+    Raises:
+        N/A
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/xlsx"
+        output_dir = "motherstarter/outputs/xlsx"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign xlsx file name to a variable
@@ -596,19 +720,25 @@ def to_xlsx_groups(df, output_dir: str = None):
     return xlsx_file
 
 
-def to_json_groups(df, output_dir: str = None):
+def to_json_groups(logger, df, output_dir: str = None):
     """
     Take the pandas dataframe and save it to a json file.
 
-    :param df: The pandas dataframe object, initialised from the
-    group data source
-    :param output_dir: The output directory
+    Args:
+        logger: The initialised logger object.
+        df : The pandas dataframe object, initialised from the
+        inventory data source
+        output_dir (str): The output directory. Default: None.
 
-    :return json_file: The json file object.
+    Returns:
+        json_file : The json file object.
+
+    Raises:
+        N/A
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/json"
+        output_dir = "motherstarter/outputs/json"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign json file name to a variable
@@ -620,23 +750,29 @@ def to_json_groups(df, output_dir: str = None):
     return json_file
 
 
-def to_ansible(env, df, output_dir: str = None):
+def to_ansible(logger, env, df, output_dir: str = None):
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
     create an Ansible inventory file.
 
-    :param env: The loaded Jinja2 environment, used to retrieve
-    templates from.
-    :param df: The pandas dataframe object, initialised from the
-    inventory data source
-    :param output_dir: The output directory
+    Args:
+        logger: The initialised logger object.
+        env : The loaded Jinja2 environment, used to retrieve
+        templates from.
+        df : The pandas dataframe object, initialised from the
+        inventory data source
+        output_dir (str): The output directory. Default: None.
 
-    :return ans_h_file: The Ansible inventory file object.
+    Returns:
+        ans_h_file : The Ansible inventory file object.
+
+    Raises:
+        N/A
     """
     # Specify the output dir when it is not supplied
     if output_dir is None:
-        output_dir = "outputs/ansible/inventory"
+        output_dir = "motherstarter/outputs/ansible/inventory"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Convert pandas dataframe to a dictionary and assign to the
@@ -655,19 +791,38 @@ def to_ansible(env, df, output_dir: str = None):
     return ans_h_file
 
 
-def main(source_type: str = source_type, output_type: str = output_type):
+def main(logger, source_type: str, output_type: str, source_dir: str = None):
     """
     Main workflow function used to execute the entire workflow
 
-    :param source_type: The source file type to read the inventory
-    and group data in from.
-    :param output_type: What file type(s) you would like to be outputted
-    as a result of running the function.
+    Args:
+        logger: The initialised logger object.
+        source_type (str): The source file type to read the inventory
+        and group data in from.
+        output_type (str): What file type(s) you would like to be outputted
+        as a result of running the function.
+        source_dir (str): The source directory of the input files.
+            Default: None
+    Returns:
+        N/A
+
+    Raises:
+        N/A
     """
+    # Specify the source dirs for inputs when it is not supplied
+    if source_dir is None:
+        source_dir = "motherstarter/inputs"
+        logger.warning(f"Source directory not specified, using default: {source_dir}")
+    else:
+        logger.debug(f"Source directory is: {source_dir}")
     # Initialise inventory dataframe, based on the source_dir and source_type
-    inv_df = init_inventory(source_dir=None, source_type=source_type)
+    inv_df = init_inventory(
+        logger=logger, source_dir=source_dir, source_type=source_type
+    )
     # Initialise group dataframe, based on the source_dir and source_type
-    group_df = init_groups(source_dir=None, source_type=source_type)
+    group_df = init_groups(
+        logger=logger, source_dir=source_dir, source_type=source_type
+    )
     # Prepare the jinja2 template environment
     env = prep_templates(tmpl_dir=None)
     # Diagnostic outputs
@@ -676,41 +831,40 @@ def main(source_type: str = source_type, output_type: str = output_type):
     # what is passed in from argparse
     # If output type is all, output all file types
     if output_type == "all":
-        to_nr_hosts(env, inv_df)
-        to_nr_groups(env=env, df=group_df)
-        to_csv_inventory(inv_df)
-        to_xlsx_inventory(inv_df)
-        to_csv_groups(group_df)
-        to_xlsx_groups(group_df)
-        to_pyats(env=env, df=inv_df)
-        to_ansible(env=env, df=inv_df)
-        to_json_inventory(inv_df)
-        to_json_groups(group_df)
+        to_nr_hosts(logger=logger, env=env, df=inv_df)
+        to_nr_groups(logger=logger, env=env, df=group_df)
+        to_csv_inventory(logger=logger, df=inv_df)
+        to_xlsx_inventory(logger=logger, df=inv_df)
+        to_csv_groups(logger=logger, df=group_df)
+        to_xlsx_groups(logger=logger, df=group_df)
+        to_pyats(logger=logger, env=env, df=inv_df)
+        to_ansible(logger=logger, env=env, df=inv_df)
+        to_json_inventory(logger=logger, df=inv_df)
+        to_json_groups(logger=logger, df=group_df)
     # If output type is nornir, output all nornir types
     elif output_type == "nornir":
-        to_nr_hosts(env, inv_df)
-        to_nr_groups(env=env, df=group_df)
+        to_nr_hosts(logger=logger, env=env, df=inv_df)
+        to_nr_groups(logger=logger, env=env, df=group_df)
     # If output type is csv, output all CSV types
     elif output_type == "csv":
-        to_csv_inventory(inv_df)
-        to_csv_groups(group_df)
+        to_csv_inventory(logger=logger, df=inv_df)
+        to_csv_groups(logger=logger, df=group_df)
     # If output type is xlsx, output all xlsx types
     elif output_type == "xlsx":
-        to_xlsx_inventory(inv_df)
-        to_xlsx_groups(group_df)
+        to_xlsx_inventory(logger=logger, df=inv_df)
+        to_xlsx_groups(logger=logger, df=group_df)
     # If output type is pyats, output all pyATS types
     elif output_type == "pyats":
-        to_pyats(env=env, df=inv_df)
+        to_pyats(logger=logger, env=env, df=inv_df)
     # If output type is ansible, output all ansible types
     elif output_type == "ansible":
-        to_ansible(env=env, df=inv_df)
+        to_ansible(logger=logger, env=env, df=inv_df)
     # If output type is json, output all ansible types
     elif output_type == "json":
-        to_json_inventory(inv_df)
-        to_json_groups(group_df)
+        to_json_inventory(logger=logger, df=inv_df)
+        to_json_groups(logger=logger, df=group_df)
 
 
-# Initalise logger
-logger = init_logger(log_level=log_level, log_name="motherstarter.log")
-# Execute main function
-main(source_type=source_type, output_type=output_type)
+if __name__ == "__main__":
+    # Initialise click from the command-line
+    cli()

@@ -1,0 +1,10 @@
+# Non-pinned requirements file
+black
+pylama
+yamllint
+bandit
+pandas
+jinja2
+xlrd
+colorama
+openpyxl
