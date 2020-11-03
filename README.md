@@ -1,3 +1,4 @@
+[![codecov](https://codecov.io/gh/writememe/motherstarter/branch/develop/graph/badge.svg?token=YMRIJT034F)](https://codecov.io/gh/writememe/motherstarter)
 ![motherstarter](https://github.com/writememe/motherstarter/workflows/motherstarter/badge.svg)
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
