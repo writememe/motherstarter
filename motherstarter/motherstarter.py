@@ -868,4 +868,4 @@ def main(logger, source_type: str, output_type: str, source_dir: str = None):
 
 if __name__ == "__main__":
     # Initialise click from the command-line
-    cli() # pragma: no cover (ignore pytest)
+    cli()  # pragma: no cover (ignore pytest)
