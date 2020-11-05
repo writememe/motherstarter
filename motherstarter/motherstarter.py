@@ -13,6 +13,7 @@ from colorama import init
 import logging
 import click
 from typing import Optional
+from motherstarter import __version__
 
 # Auto-reset colorama colours back after each print statement
 init(autoreset=True)
@@ -21,7 +22,7 @@ init(autoreset=True)
 # This block of code initialises motherstarter from the command
 # line
 @click.group()
-@click.version_option(version="0.0.1")
+@click.version_option(version=__version__)
 def cli():
     """
     Function to initialise motherstarter from the command line.
@@ -867,4 +868,4 @@ def main(logger, source_type: str, output_type: str, source_dir: str = None):
 
 if __name__ == "__main__":
     # Initialise click from the command-line
-    cli()
+    cli()  # pragma: no cover (ignore pytest)
