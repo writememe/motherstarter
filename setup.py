@@ -22,6 +22,7 @@ setup(
     long_description_content_type="text/markdown",
     url="https://github.com/writememe/motherstarter",
     name="motherstarter",
+    license="Apache License 2.0",
     version=__version__,
     author=__author__,
     packages=find_packages(),

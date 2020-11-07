@@ -7,6 +7,7 @@ from click.testing import CliRunner
 import pytest
 from motherstarter import motherstarter as ms
 import traceback
+from motherstarter import __version__
 
 
 @pytest.fixture(scope="module")
@@ -33,7 +34,7 @@ def test_base_version(runner):
     result = runner.invoke(ms.cli, ["--version"])
     if result.exception:
         traceback.print_exception(*result.exc_info)  # noqa
-    expected = "version 0.0.1"
+    expected = __version__
     assert result.exit_code == 0
     assert expected in result.output
 
