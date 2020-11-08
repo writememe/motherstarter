@@ -130,3 +130,6 @@ dmypy.json
 
 VS code
 .vscode
+
+# Unit testing log
+unit-tests.log
