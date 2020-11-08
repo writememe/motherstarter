@@ -21,10 +21,12 @@ def test_convert_default(runner):
         traceback.print_exception(*result.exc_info)  # noqa
     expected_source_type = "DEBUG - Inventory source type is json"
     expected_output_type = "DEBUG - Output type is: all"
-    expected_source_dir = (
-        "WARNING - Source directory not specified, using default: motherstarter/inputs"
+    expected_source_dir = "DEBUG - Source directory is: motherstarter/inputs/"
+    expected_template_dir = (
+        "DEBUG - Source template directory is: motherstarter/templates/core/"
     )
     assert result.exit_code == 0
+    assert expected_source_type in result.output
     assert expected_output_type in result.output
     assert expected_source_dir in result.output
     assert expected_template_dir in result.output
@@ -32,8 +34,20 @@ def test_convert_default(runner):
 
 def test_base_version(runner):
     result = runner.invoke(ms.cli, ["--version"])
+    if result.exception:
+        traceback.print_exception(*result.exc_info)  # noqa
+    expected = __version__
+    assert result.exit_code == 0
+    assert expected in result.output
+
+
 def test_base_help(runner):
+    result = runner.invoke(ms.cli, ["--help"])
+    if result.exception:
+        traceback.print_exception(*result.exc_info)  # noqa
+    expected_usage = "Usage: cli [OPTIONS] COMMAND [ARGS]."
     expected_convert = (
+        "convert  Convert source file(s) into network automation inventory outputs"
     )
     assert result.exit_code == 0
     assert expected_usage in result.output
@@ -42,7 +56,11 @@ def test_base_help(runner):
 
 def test_convert_help(runner):
     result = runner.invoke(ms.convert, ["--help"])
+    if result.exception:
+        traceback.print_exception(*result.exc_info)  # noqa
+    expected_usage = "Usage: convert [OPTIONS]"
     expected_convert = (
+        "Convert source file(s) into network automation inventory outputs based on"
         "\n  multiple command-line inputs"
     )
     assert result.exit_code == 0
@@ -100,6 +118,12 @@ def test_convert_source_dir_custom(runner):
     assert expected_source_type in result.output
     assert expected_output_type in result.output
     assert expected_source_dir in result.output
+
+
+def test_convert_source_dir_bad(runner):
+    sd = "tests/test_data/inputs/core/bad"
+    result = runner.invoke(ms.convert, ["-sd", sd])
+    assert result.exit_code == 1
 
 
 def test_convert_log_level_debug(runner):

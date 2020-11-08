@@ -189,3 +189,6 @@ motherstarter is a take on this concept.
 
 You feed the tool good "data", and you can take it's output to make great solutions. Over time, you feed it even more data and as a result, you can solve more complex and interesting problems on more devices.
  
+## Release Notes
+
+Please see the [CHANGELOG](./CHANGELOG.md) for release notes.
