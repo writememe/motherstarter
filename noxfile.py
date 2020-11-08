@@ -5,7 +5,7 @@ motherstarter noxfile
 import nox
 
 
-@nox.session(python=["3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def black(session):
     """
     Nox run black
@@ -24,7 +24,7 @@ def black(session):
     session.run("black", "--check", ".")
 
 
-@nox.session(python=["3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def pylama(session):
     """
     Nox run pylama
@@ -43,7 +43,7 @@ def pylama(session):
     session.run("pylama", ".")
 
 
-@nox.session(python=["3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def yamllint(session):
     """
     Nox run yamllint
@@ -62,7 +62,7 @@ def yamllint(session):
     session.run("yamllint", ".")
 
 
-@nox.session(python=["3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def bandit(session):
     """
     Nox run bandit
@@ -93,7 +93,7 @@ def bandit(session):
     )
 
 
-@nox.session(python=["3.8"])
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def pytest(session):
     """
     Nox run tests using pytest
