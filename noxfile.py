@@ -6,6 +6,40 @@ import nox
 
 
 @nox.session(python=["3.6", "3.7", "3.8", "3.9"])
+def lint(session):
+    """
+    Run all linting tests.
+    Nox run black, pylama, yamllint and bandit
+
+    Args:
+        session: nox session
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
+    session.install("-r", "requirements.txt")
+    session.run("black", "--check", ".")
+    session.run("pylama", ".")
+    session.run("yamllint", ".")
+    session.run(
+        "bandit",
+        "-v",
+        "--exclude",
+        "./venv",
+        "--recursive",
+        "--format",
+        "json",
+        "motherstarter/",
+        "--verbose",
+        "-s",
+        "B101",
+    )
+
+
+@nox.session(python=["3.6", "3.7", "3.8", "3.9"])
 def black(session):
     """
     Nox run black
@@ -94,7 +128,7 @@ def bandit(session):
 
 
 @nox.session(python=["3.6", "3.7", "3.8", "3.9"])
-def pytest(session):
+def tests(session):
     """
     Nox run tests using pytest
 
