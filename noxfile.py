@@ -86,7 +86,7 @@ def bandit(session):
         "--recursive",
         "--format",
         "json",
-        ".",
+        "motherstarter/",
         "--verbose",
         "-s",
         "B101",
