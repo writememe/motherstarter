@@ -67,7 +67,7 @@ pip install -e .
 To use motherstarter, please look at the command-line helper below:
 
 ```
-> motherstarter convert --help
+(venv) ➜ motherstarter convert --help
 Usage: motherstarter convert [OPTIONS]
 
   Convert source file(s) into network automation inventory outputs based on
@@ -83,6 +83,8 @@ Usage: motherstarter convert [OPTIONS]
       data from. Valid options: "csv", "json" and "xlsx".
 
       source_dir (str): The source directory to find the files in.
+
+      template_dir (str): The template directory to find the templates in.
 
       output_type (str): What file type(s) you would like to be outputted
       as a result of running the function. Valid options: "all", "ansible",
@@ -100,8 +102,11 @@ Options:
                                   json]
 
   -sd, --source-dir TEXT          Specify the source directory for the source
-                                  files. Default is under the
-                                  'motherstarter/inputs/' folder.
+                                  files.  [default: motherstarter/inputs/]
+
+  -td, --template-dir TEXT        Specify the template directory for the
+                                  template files.  [default:
+                                  motherstarter/templates/core/]
 
   -o, --output-type [all|ansible|csv|json|nornir|pyats|xlsx]
                                   Specify the output file types.  This
