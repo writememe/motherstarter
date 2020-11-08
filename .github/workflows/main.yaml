@@ -45,6 +45,8 @@ jobs:
               run: make bandit
             - name: Run tests
               run: make pytest
+            - name: Run nox
+              run: nox
     run:
         name: Codecov report
         runs-on: ${{ matrix.os }}
