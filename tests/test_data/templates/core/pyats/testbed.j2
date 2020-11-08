@@ -1,0 +1,27 @@
+---
+testbed:
+    name: mother_starter_testbed
+    credentials:
+        default:
+            # Use environmental variables for credentials
+            username: "%ENV{PYATS_UNAME}"
+            password: "%ENV{PYATS_PWORD}"
+        enable:
+            password: "%ENV{PYATS_PWORD}"
+    custom:
+        name: Dynamically generated pyATS Mother Starter testbed
+        contact: Network Automation Team
+        version: 1.0
+# Dynamically generated inventory from mother starter
+devices:
+{% for dev in inventory %}
+    {{ dev.name|indent }}:
+        os: {{ dev.operating_system }}
+        type: {{ dev.device_type }}
+        connections:
+            vty:
+                ip: {{ dev.mgmt_ip }}
+                protocol: ssh
+        custom:
+            vendor: {{ dev.vendor }}
+{% endfor %}

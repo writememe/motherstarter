@@ -21,13 +21,15 @@ def test_convert_default(runner):
         traceback.print_exception(*result.exc_info)  # noqa
     expected_source_type = "DEBUG - Inventory source type is json"
     expected_output_type = "DEBUG - Output type is: all"
-    expected_source_dir = (
-        "WARNING - Source directory not specified, using default: motherstarter/inputs"
+    expected_source_dir = "DEBUG - Source directory is: motherstarter/inputs/"
+    expected_template_dir = (
+        "DEBUG - Source template directory is: motherstarter/templates/core/"
     )
     assert result.exit_code == 0
     assert expected_source_type in result.output
     assert expected_output_type in result.output
     assert expected_source_dir in result.output
+    assert expected_template_dir in result.output
 
 
 def test_base_version(runner):
@@ -105,7 +107,7 @@ def test_convert_source_type_bad(runner):
 
 
 def test_convert_source_dir_custom(runner):
-    sd = "tests/test_data/core"
+    sd = "tests/test_data/inputs/core"
     result = runner.invoke(ms.convert, ["-sd", sd])
     if result.exception:
         traceback.print_exception(*result.exc_info)  # noqa
@@ -119,7 +121,7 @@ def test_convert_source_dir_custom(runner):
 
 
 def test_convert_source_dir_bad(runner):
-    sd = "tests/test_data/core/bad"
+    sd = "tests/test_data/inputs/core/bad"
     result = runner.invoke(ms.convert, ["-sd", sd])
     assert result.exit_code == 1
 
@@ -191,6 +193,36 @@ def test_convert_log_level_bad(runner):
     expected_block = f"Error: Invalid value for '--log-level' / '-l': invalid choice: {ll}. (choose from debug, info, warning, error, critical)"  # noqa
     assert result.exit_code == 2
     assert expected_block in result.output
+
+
+def test_convert_template_dir_custom(runner):
+    td = "tests/test_data/templates/custom"
+    result = runner.invoke(ms.convert, ["-td", td])
+    if result.exception:
+        traceback.print_exception(*result.exc_info)  # noqa
+    expected_source_type = "DEBUG - Inventory source type is json"
+    expected_output_type = "DEBUG - Output type is: all"
+    expected_source_dir = "DEBUG - Source directory is: motherstarter/inputs/"
+    expected_template_dir = f"DEBUG - Source template directory is: {td}"
+    assert result.exit_code == 0
+    assert expected_source_type in result.output
+    assert expected_output_type in result.output
+    assert expected_source_dir in result.output
+    assert expected_template_dir in result.output
+
+
+def test_convert_template_dir_bad(runner):
+    td = "tests/test_data/templates/bad"
+    result = runner.invoke(ms.convert, ["-td", td])
+    expected_source_type = "DEBUG - Inventory source type is json"
+    expected_output_type = "DEBUG - Output type is: all"
+    expected_source_dir = "DEBUG - Source directory is: motherstarter/inputs/"
+    expected_template_dir = f"DEBUG - Source template directory is: {td}"
+    assert result.exit_code == 1
+    assert expected_source_type in result.output
+    assert expected_output_type in result.output
+    assert expected_source_dir in result.output
+    assert expected_template_dir in result.output
 
 
 def test_convert_output_type_csv(runner):

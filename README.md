@@ -130,7 +130,7 @@ The following file formats are supported by motherstarter:
 | **xlsx** |Excel workbook |:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|:heavy_check_mark:|
 | **ansible** |Ansible configuration files|:x:|:x: |:heavy_check_mark:|:x:|
 | **nornir** | Nornir inventory files |:x:|:x: |:heavy_check_mark:|:heavy_check_mark:|
-| **pyATS** | pyATS testbed file |:x:|:x: |:heavy_check_mark:|:heavy_check_mark:|
+| **pyATS** | pyATS testbed file |:x:|:x: |:heavy_check_mark:|:x:|
 
 ## What is motherstarter?
 
