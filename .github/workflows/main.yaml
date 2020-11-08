@@ -35,16 +35,6 @@ jobs:
                 python -m pip install --upgrade pip
                 pip install -r requirements.txt
                 pip freeze install
-            # - name: Execute black formatting check
-            #   run: make black
-            # - name: Execute pylama check
-            #   run: make pylama
-            # - name: Execute yamllint check
-            #   run: make yamllint
-            # - name: Execute bandit check
-            #   run: make bandit
-            # - name: Run tests
-            #   run: make pytest
             - name: Run nox lint
               run: nox -s lint
             - name: Run nox tests

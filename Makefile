@@ -7,7 +7,9 @@ help:
 	sort | \
 	awk -F ':.*?## ' 'NF==2 {printf "\033[35m  %-25s\033[0m %s\n", $$1, $$2}'
 
+all: lint-all tests ## Perform all linting checks, security checks and tests
 lint-all:	black pylama yamllint bandit ## Perform all linting and security checks (black, pylama, yamllint and bandit).
+tests:	pytest pytest-cov ## Perform pytests checks (verbose mode and coverage report).
 
 black: ## Format code using black
 	@echo "--- Performing black reformatting ---"
@@ -32,10 +34,13 @@ venv: ## Install virtualenv, create virtualenv, install requirements for Python 
 	. venv/bin/activate
 	pip install -r requirements.txt
 
-pytest: ## Perform testing using pytest
-	@echo "--- Performing pytest ---"
+pytest: ## Perform local testing using pytest in verbose mode
+	@echo "--- Performing pytest (verbose) ---"
 	pytest . --cov-report term-missing -vs --pylama . --cache-clear -vvvvv
+	pytest --cov=./ --cov-report=xml
 
-pytest-gh-actions: ## Perform testing using pytest on Github Actions
-	@echo "--- Performing pytest on Github Action ---"
-	pytest . --ignore=tests/ --cov-report term-missing -vs --pylama . --cache-clear -vvvvv
+pytest-cov: ## Perform local testing using pytest and generate coverage report
+	@echo "--- Performing pytest (coverage report) ---"
+	pytest --cov=./ --cov-report=xml
+
+

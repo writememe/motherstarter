@@ -21,7 +21,7 @@ def lint(session):
         N/A
     """
     session.install("-r", "requirements.txt")
-    session.run("black", "--check", ".")
+    session.run("black", ".", "--check")
     session.run("pylama", ".")
     session.run("yamllint", ".")
     session.run(
@@ -55,7 +55,7 @@ def black(session):
 
     """
     session.install("-r", "requirements.txt")
-    session.run("black", "--check", ".")
+    session.run("black", ".", "--check")
 
 
 @nox.session(python=["3.6", "3.7", "3.8", "3.9"])
