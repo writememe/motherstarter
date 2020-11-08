@@ -191,4 +191,4 @@ You feed the tool good "data", and you can take it's output to make great soluti
  
 ## Release Notes
 
-Please see the [CHANGELOG](./CHANGELOG.md) for release notes.
+Please see the [CHANGELOG](./CHANGELOGNEW.md) for release notes.
