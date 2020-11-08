@@ -26,6 +26,7 @@ A network data transformation tool to accelerate the adoption of network automat
     - [Definitions](#definitions) 
   - [motherstarter is not...](#motherstarter-is-not-)
   - [What is with the name?](#what-is-with-the-name)
+  - [Release Notes](#release-notes)
 
 
 # Quick Start Guide
