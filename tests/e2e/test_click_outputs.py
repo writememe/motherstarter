@@ -9,7 +9,7 @@ import yaml
 
 # Specify global params
 base_output_dir = "motherstarter/outputs/"
-base_input_dir = "tests/test_data/core/"
+base_input_dir = "tests/test_data/inputs/core/"
 
 
 @pytest.fixture(scope="module")
@@ -27,13 +27,12 @@ def test_convert_default(runner):
         traceback.print_exception(*result.exc_info)  # noqa
     expected_source_type = "DEBUG - Inventory source type is json"
     expected_output_type = "DEBUG - Output type is: all"
-    expected_source_dir = (
-        "WARNING - Source directory not specified, using default: motherstarter/inputs"
     )
     assert result.exit_code == 0
     assert expected_source_type in result.output
-    assert expected_output_type in result.output
     assert expected_source_dir in result.output
+
+    assert expected_template_dir in result.output
 
 
 def test_output_inventory_json(

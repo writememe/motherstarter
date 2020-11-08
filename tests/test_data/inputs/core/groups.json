@@ -1,0 +1,32 @@
+[
+    {
+        "name": "ios",
+        "platform": "ios",
+        "port": 22,
+        "auth_strict_key": "false"
+    },
+    {
+        "name": "junos",
+        "platform": "junos",
+        "port": 22,
+        "auth_strict_key": "false"
+    },
+    {
+        "name": "eos",
+        "platform": "eos",
+        "port": 22,
+        "auth_strict_key": "false"
+    },
+    {
+        "name": "nxos",
+        "platform": "nxos",
+        "port": 22,
+        "auth_strict_key": "false"
+    },
+    {
+        "name": "nxos_ssh",
+        "platform": "nxos_ssh",
+        "port": 22,
+        "auth_strict_key": "false"
+    }
+]

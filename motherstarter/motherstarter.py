@@ -13,6 +13,7 @@ from colorama import init
 import logging
 import click
 from typing import Optional
+from motherstarter import __version__
 
 # Auto-reset colorama colours back after each print statement
 init(autoreset=True)
@@ -21,7 +22,7 @@ init(autoreset=True)
 # This block of code initialises motherstarter from the command
 # line
 @click.group()
-@click.version_option(version="0.0.1")
+@click.version_option(version=__version__)
 def cli():
     """
     Function to initialise motherstarter from the command line.
@@ -60,8 +61,15 @@ def cli():
 @click.option(
     "--source-dir",
     "-sd",
-    help="Specify the source directory for the source files. Default is under the 'motherstarter/inputs/' folder.",  # noqa (pylama ignore)
-    default=None,
+    help="Specify the source directory for the source files.",  # noqa (pylama ignore)
+    default="motherstarter/inputs/",
+    show_default=True,
+)
+@click.option(
+    "--template-dir",
+    "-td",
+    help="Specify the template directory for the template files.",  # noqa (pylama ignore)
+    default="motherstarter/templates/core/",
     show_default=True,
 )
 @click.option(
@@ -76,7 +84,11 @@ def cli():
     show_default=True,
 )
 def convert(
-    log_level: str, source_type: str, source_dir: str, output_type: str
+    log_level: str,
+    source_type: str,
+    source_dir: str,
+    template_dir: str,
+    output_type: str,
 ) -> None:
     """
     Convert source file(s) into network automation inventory outputs
@@ -92,6 +104,7 @@ def convert(
         source_type (str): The source file type to read the inventory/group
         data from. Valid options: "csv", "json" and "xlsx".\n
         source_dir (str): The source directory to find the files in.\n
+        template_dir (str): The template directory to find the templates in.\n
         output_type (str): What file type(s) you would like to be outputted
         as a result of running the function. Valid options: "all", "ansible",
         "csv", "json", "nornir", "pyats" and "xlsx".\n
@@ -109,10 +122,11 @@ def convert(
     ot = output_type
     # TODO: Refactor this temp code.
     sd = source_dir
+    td = template_dir
     # Initialise the logger
     logger = init_logger(log_level=ll, log_name="motherstarter.log")
     # Initialise the main workflow
-    main(logger=logger, source_type=st, output_type=ot, source_dir=sd)
+    main(logger=logger, source_type=st, output_type=ot, source_dir=sd, template_dir=td)
 
 
 def init_logger(log_level: str, log_name: str = "ms.log"):
@@ -402,7 +416,7 @@ def dataframe_to_dict(df) -> list:
     return df.to_dict(orient="records")
 
 
-def prep_templates(tmpl_dir: Optional[str] = None):
+def prep_templates(tmpl_dir: Optional[str] = "motherstarter/templates/outputs/core"):
     """
     Take the template directory and load a Jinja2 environment
     with those templates and other settings enabled
@@ -411,22 +425,24 @@ def prep_templates(tmpl_dir: Optional[str] = None):
      .
      |
      └── templates
-        └── outputs <---- Set tmpl_dir to here
-            ├── pyats
-            │     └── testbed.j2
-            └── nornir
-                  ├── hosts.j2
-                  └── groups.j2
+            └── core
+                └── outputs <---- Set tmpl_dir to here
+                    ├── pyats
+                    │     └── testbed.j2
+                    └── nornir
+                        ├── hosts.j2
+                        └── groups.j2
 
     NOTE: Whilst this function exposes the ability to change the tmpl_dir,
     it's probably not something you want to be doing. Most people can just
     place the files in template folder structure supplied in the
-    'motherstarter/templates/outputs/' directory. We would recommend just sticking with
+    'motherstarter/templates/outputs/core' directory. We would recommend just sticking with
     that, unless you want to write your own custom workflow.
 
     Args:
         tmpl_dir (str): The template directory one-level above where the Jinja2
-    templates are stored. Default: None
+    templates are stored.
+            Default: motherstarter/templates/outputs/core
 
     Returns:
         env :  The loaded jinja2 environment.
@@ -434,9 +450,6 @@ def prep_templates(tmpl_dir: Optional[str] = None):
     Raises:
         N/A
     """
-    # Specify the template dirs when it is not supplied
-    if tmpl_dir is None:
-        tmpl_dir = "motherstarter/templates/outputs"
     # Load template directory where Jinja2 templates are located
     templates = FileSystemLoader(tmpl_dir)
     # Load environment and setting autoescape to True
@@ -791,7 +804,13 @@ def to_ansible(logger, env, df, output_dir: str = None):
     return ans_h_file
 
 
-def main(logger, source_type: str, output_type: str, source_dir: str = None):
+def main(
+    logger,
+    source_type: str,
+    output_type: str,
+    source_dir: str = "motherstarter/inputs/",
+    template_dir: str = "motherstarter/templates/core/",
+):
     """
     Main workflow function used to execute the entire workflow
 
@@ -802,19 +821,18 @@ def main(logger, source_type: str, output_type: str, source_dir: str = None):
         output_type (str): What file type(s) you would like to be outputted
         as a result of running the function.
         source_dir (str): The source directory of the input files.
-            Default: None
+            Default: motherstarter/inputs/
+        template_dir (str): The template directory of the template files.
+            Default: motherstarter/templates/core/
     Returns:
         N/A
 
     Raises:
         N/A
     """
-    # Specify the source dirs for inputs when it is not supplied
-    if source_dir is None:
-        source_dir = "motherstarter/inputs"
-        logger.warning(f"Source directory not specified, using default: {source_dir}")
-    else:
-        logger.debug(f"Source directory is: {source_dir}")
+    # Debug logging
+    logger.debug(f"Source directory is: {source_dir}")
+    logger.debug(f"Source template directory is: {template_dir}")
     # Initialise inventory dataframe, based on the source_dir and source_type
     inv_df = init_inventory(
         logger=logger, source_dir=source_dir, source_type=source_type
@@ -824,7 +842,7 @@ def main(logger, source_type: str, output_type: str, source_dir: str = None):
         logger=logger, source_dir=source_dir, source_type=source_type
     )
     # Prepare the jinja2 template environment
-    env = prep_templates(tmpl_dir=None)
+    env = prep_templates(tmpl_dir=template_dir)
     # Diagnostic outputs
     logger.debug(f"Output type is: {output_type}")
     # If/Else block to execute the desired output_type based on
@@ -867,4 +885,4 @@ def main(logger, source_type: str, output_type: str, source_dir: str = None):
 
 if __name__ == "__main__":
     # Initialise click from the command-line
-    cli()
+    cli()  # pragma: no cover (ignore pytest)
