@@ -26,6 +26,7 @@ A network data transformation tool to accelerate the adoption of network automat
     - [Definitions](#definitions) 
   - [motherstarter is not...](#motherstarter-is-not-)
   - [What is with the name?](#what-is-with-the-name)
+- [Release Notes](#release-notes)
 
 
 # Quick Start Guide
@@ -191,4 +192,4 @@ You feed the tool good "data", and you can take it's output to make great soluti
  
 ## Release Notes
 
-Please see the [CHANGELOG](./CHANGELOG.md) for release notes.
+Please see the [CHANGELOG](./CHANGELOGNEW.md) for release notes.
