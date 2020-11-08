@@ -1,7 +1,7 @@
 """
 motherstarter noxfile
 """
-
+# Import modules
 import nox
 
 
@@ -93,7 +93,7 @@ def bandit(session):
 
 
 @nox.session(python=["3.8"])
-def pytest(python=["3.8"]):
+def pytest(session):
     """
     Nox run tests using pytest
 
