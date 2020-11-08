@@ -1,10 +1,15 @@
 # Non-pinned requirements file
-black
-pylama
-yamllint
 bandit
-pandas
-jinja2
-xlrd
+black
+click
 colorama
+jinja2
+mypy=
+nox
 openpyxl
+pandas
+pylama
+pytest
+pytest-cov
+xlrd
+yamllint
