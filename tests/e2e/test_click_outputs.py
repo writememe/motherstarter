@@ -27,11 +27,14 @@ def test_convert_default(runner):
         traceback.print_exception(*result.exc_info)  # noqa
     expected_source_type = "DEBUG - Inventory source type is json"
     expected_output_type = "DEBUG - Output type is: all"
+    expected_source_dir = "DEBUG - Source directory is: motherstarter/inputs/"
+    expected_template_dir = (
+        "DEBUG - Source template directory is: motherstarter/templates/core/"
     )
     assert result.exit_code == 0
     assert expected_source_type in result.output
+    assert expected_output_type in result.output
     assert expected_source_dir in result.output
-
     assert expected_template_dir in result.output
 
 

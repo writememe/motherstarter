@@ -37,7 +37,6 @@ venv: ## Install virtualenv, create virtualenv, install requirements for Python 
 pytest: ## Perform local testing using pytest in verbose mode
 	@echo "--- Performing pytest (verbose) ---"
 	pytest . --cov-report term-missing -vs --pylama . --cache-clear -vvvvv
-	pytest --cov=./ --cov-report=xml
 
 pytest-cov: ## Perform local testing using pytest and generate coverage report
 	@echo "--- Performing pytest (coverage report) ---"
