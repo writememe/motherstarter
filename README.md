@@ -1,5 +1,6 @@
 [![codecov](https://codecov.io/gh/writememe/motherstarter/branch/develop/graph/badge.svg?token=YMRIJT034F)](https://codecov.io/gh/writememe/motherstarter)
 ![motherstarter](https://github.com/writememe/motherstarter/workflows/motherstarter/badge.svg)
+[![PyPI version](https://badge.fury.io/py/motherstarter.svg)](https://badge.fury.io/py/motherstarter)
 [![Python 3.6](https://img.shields.io/badge/python-3.6-blue.svg)](https://www.python.org/downloads/release/python-360/)
 [![Python 3.7](https://img.shields.io/badge/python-3.7-blue.svg)](https://www.python.org/downloads/release/python-370/)
 [![Python 3.8](https://img.shields.io/badge/python-3.8-blue.svg)](https://www.python.org/downloads/release/python-380/)
@@ -27,6 +28,7 @@ A network data transformation tool to accelerate the adoption of network automat
   - [motherstarter is not...](#motherstarter-is-not-)
   - [What is with the name?](#what-is-with-the-name)
 - [Release Notes](#release-notes)
+- [Contributors](#contributors)
 
 
 # Quick Start Guide
@@ -37,27 +39,20 @@ Install and trial motherstarter in minutes using the guide below:
 
 Follow the installation instructions below:
 
-1. Clone the repository to the machine on which you will run the application from:
-
-```bash
-git clone https://github.com/writememe/motherstarter.git
-cd motherstarter
-```
-
-2. Create the virtual environment to run the application in:
+1. Create the virtual environment to run the application in:
 
 ```bash
 virtualenv --python=`which python3` venv
 source venv/bin/activate
 ```
 
-3. Install the pip package:
+2. Install the pip package:
 
-```bash
-pip install -e .
+```python
+pip install motherstarter
 ```
 
-4. Validate that motherstarter is installed:
+3. Validate that motherstarter is installed:
 
 ```bash
 > motherstarter --version
@@ -193,3 +188,7 @@ You feed the tool good "data", and you can take it's output to make great soluti
 ## Release Notes
 
 Please see the [CHANGELOG](./CHANGELOG.md) for release notes.
+
+## Contributors
+
+A very big thank you to the [CONTRIBUTORS](./CONTRIBUTORS.md) on this project.
