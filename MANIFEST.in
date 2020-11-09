@@ -1,0 +1,2 @@
+include motherstarter/templates/*/*/*.j2
+include motherstarter/inputs/*
