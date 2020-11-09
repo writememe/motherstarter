@@ -1,5 +1,11 @@
 CHANGELOG
 =======
 
+# 2020.11.10
+- Updated README documentation to indicate it's installable via `pip`
+- Removed old `templates/core/outputs` folder, not needed.
+- Added `CONTRIBUTORS` documentation
+- Added `MANIFEST.in` to make sure that the package_data is included.
+
 # 2020.11.09
 - Initial beta release, now ready for public visibility. Unit tests written, will need to be tested more thoroughly.
