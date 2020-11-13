@@ -27,15 +27,39 @@ def test_convert_default(runner):
         traceback.print_exception(*result.exc_info)  # noqa
     expected_source_type = "DEBUG - Inventory source type is json"
     expected_output_type = "DEBUG - Output type is: all"
-    expected_source_dir = "DEBUG - Source directory is: motherstarter/inputs/"
-    expected_template_dir = (
-        "DEBUG - Source template directory is: motherstarter/templates/core/"
+    """
+    NOTE: Due to the default dir being a combination of the input/template dirs
+    and the motherstarter_file dir, these tests are split into two.
+    An example is:
+    motherstarter_dir = /mnt/c/Users/acme/projects/motherstarter/
+    default_template_dir = motherstarter/templates/core/
+    default_source_dir = motherstarter/inputs/
+
+    You end up with something like:
+
+    template_dir = motherstarter_dir + default_template_dir
+    source_dir = motherstarter_dir + default_source_dir
+
+    The motherstarter_dir changes on every platform, so we don't bother
+    testing that. Instead, we just want to make sure we detect the 
+    default_source_dir and default_template_dir in the outputs and the DEBUG stamps
+    at the front of the outputs.
+    """
+    expected_source_dir_start = "DEBUG - Source directory is: "
+    expected_source_dir_end = "motherstarter/inputs/"
+    expected_template_dir_start = (
+        "DEBUG - Source template directory is: "
+    )
+    expected_template_dir_end = (
+        "motherstarter/templates/core/"
     )
     assert result.exit_code == 0
     assert expected_source_type in result.output
     assert expected_output_type in result.output
-    assert expected_source_dir in result.output
-    assert expected_template_dir in result.output
+    assert expected_source_dir_start in result.output
+    assert expected_source_dir_end in result.output
+    assert expected_template_dir_start in result.output
+    assert expected_template_dir_end in result.output
 
 
 def test_output_inventory_json(
