@@ -1,0 +1,6 @@
+name,platform,port,auth_strict_key
+ios,ios,22,false
+junos,junos,22,false
+eos,eos,22,false
+nxos,nxos,22,false
+nxos_ssh,nxos_ssh,22,false
