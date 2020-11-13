@@ -124,15 +124,25 @@ def convert(
     Raises:
         N/A
     """
-    # TODO: Rewrite this code
+    # If/else block to handle using when the user
+    # doesn't specify a template_dir from the command-line
+    # If the default value is triggered at this point
     if template_dir == "motherstarter/templates/core/":
+        # Assign the td variable by joining it with the
+        # absolute path of the file + the default template_dir
         td = os.path.join(dirname, "templates/core/")
     else:
+        # If the user supplies something, use that instead.
         td = template_dir
-    # TODO: Refactor this temp code.
+    # If/else block to handle using when the user
+    # doesn't specify a source_dir from the command-line
+    # If the default value is triggered at this point
     if source_dir == "motherstarter/inputs/":
+        # Assign the td variable by joining it with the
+        # absolute path of the file + the default source_dir
         sd = os.path.join(dirname, "inputs/")
     else:
+        # If the user supplies something, use that instead.
         sd = source_dir
     # Convert log level to an upper-case variable
     ll = log_level.upper()
