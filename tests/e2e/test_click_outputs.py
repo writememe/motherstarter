@@ -41,18 +41,14 @@ def test_convert_default(runner):
     source_dir = motherstarter_dir + default_source_dir
 
     The motherstarter_dir changes on every platform, so we don't bother
-    testing that. Instead, we just want to make sure we detect the 
+    testing that. Instead, we just want to make sure we detect the
     default_source_dir and default_template_dir in the outputs and the DEBUG stamps
     at the front of the outputs.
     """
     expected_source_dir_start = "DEBUG - Source directory is: "
     expected_source_dir_end = "motherstarter/inputs/"
-    expected_template_dir_start = (
-        "DEBUG - Source template directory is: "
-    )
-    expected_template_dir_end = (
-        "motherstarter/templates/core/"
-    )
+    expected_template_dir_start = "DEBUG - Source template directory is: "
+    expected_template_dir_end = "motherstarter/templates/core/"
     assert result.exit_code == 0
     assert expected_source_type in result.output
     assert expected_output_type in result.output
