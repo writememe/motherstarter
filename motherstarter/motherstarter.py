@@ -14,6 +14,14 @@ import logging
 import click
 from typing import Optional
 from motherstarter import __version__
+import os
+import sys
+
+# Get path of the current dir under which the file is executed
+dirname = os.path.dirname(os.path.abspath(__file__))
+# Append sys path so that relative pathing works for input
+# files and templates
+sys.path.append(os.path.join(dirname))
 
 # Auto-reset colorama colours back after each print statement
 init(autoreset=True)
@@ -120,9 +128,26 @@ def convert(
     # Rename the other inputs for usage below
     st = source_type
     ot = output_type
-    # TODO: Refactor this temp code.
-    sd = source_dir
-    td = template_dir
+    # If/else block to handle using when the user
+    # doesn't specify a template_dir from the command-line
+    # If the default value is triggered at this point
+    if template_dir == "motherstarter/templates/core/":
+        # Assign the td variable by joining it with the
+        # absolute path of the file + the default template_dir
+        td = os.path.join(dirname, "templates/core/")
+    else:
+        # If the user supplies something, use that instead.
+        td = template_dir
+    # If/else block to handle using when the user
+    # doesn't specify a source_dir from the command-line
+    # If the default value is triggered at this point
+    if source_dir == "motherstarter/inputs/":
+        # Assign the td variable by joining it with the
+        # absolute path of the file + the default source_dir
+        sd = os.path.join(dirname, "inputs/")
+    else:
+        # If the user supplies something, use that instead.
+        sd = source_dir
     # Initialise the logger
     logger = init_logger(log_level=ll, log_name="motherstarter.log")
     # Initialise the main workflow
