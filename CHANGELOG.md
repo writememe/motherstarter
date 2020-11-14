@@ -1,6 +1,10 @@
 CHANGELOG
 =======
 
+# 2020.11.14
+- Minor version bump to kickoff pypi packaging.
+- Updating `TESTS.md` with extra aspects which need to be done.
+
 # 2020.11.13
 - Fixing issues whereby `source_dir` or `template_dir` did not work with the default supplied files provided inside the motherstarter package.
 - Adjusted unit tests to replicate these changes

@@ -35,3 +35,7 @@ Output tests
     - Test log file is logging correctly by generating a log file
     - Read log file and look for certain values in the file
     - Not sure if much else is needed here?
+
+### Documenting tests
+
+Although self-explanatory, probably should add some comments to the tests.
