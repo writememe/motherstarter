@@ -1,6 +1,9 @@
 CHANGELOG
 =======
 
+# 2020.11.15
+- Restoring changes implemented in 2020.11.13
+
 # 2020.11.14
 - Minor version bump to kickoff pypi packaging.
 - Updating `TESTS.md` with extra aspects which need to be done.
