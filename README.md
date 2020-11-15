@@ -12,21 +12,28 @@
 motherstarter
 =======
 
-A network data transformation tool to accelerate the adoption of network automation by providing a command-line interface to convert input file sources to various network automation output formats.
+A network data transformation tool to accelerate the adoption of network automation by providing a command-line interface to convert input file sources to various network automation output formats. An overview diagram is shown below:
+
+![motherstarter overview](diagrams/motherstarter-overview.png)
 
 
 # Table of Contents
 
 - [Quick Start Guide](#quick-start-guide)
   - [Installation](#installation)
-  - [Usage](#usage)
+  - [Basic Usage](#basic-usage)
+- [Videos](#videos)
 - [Support Matrix](#support-matrix)
 - [What is motherstarter?](#what-is-motherstarter)
   - [Why should you use motherstarter?](#why-should-you-use-motherstarter)
   - [Nomenclature](#nomenclature)
-    - [Definitions](#definitions) 
-  - [motherstarter is not...](#motherstarter-is-not-)
-  - [What is with the name?](#what-is-with-the-name)
+    - [Definitions](#definitions)
+- [Advanced Usage](#advanced-usage)
+  - [Customising Input Data](#customising-input-data)
+  - [Customising Templates](#customising-templates)
+    - [Still confused?](#still-confused)
+- [motherstarter is not...](#motherstarter-is-not-)
+- [What is with the name?](#what-is-with-the-name)
 - [Release Notes](#release-notes)
 - [Contributors](#contributors)
 
@@ -58,7 +65,7 @@ pip install motherstarter
 > motherstarter --version
 ```
 
-## Usage
+## Basic Usage
 
 To use motherstarter, please look at the command-line helper below:
 
@@ -117,8 +124,23 @@ To run using the defaults, execute the following:
 ```python
 motherstarter convert
 ```
-
 Sample outputs are provided in the [motherstarter/outputs](motherstarter/outputs) folder.
+
+## Videos
+
+Below are some videos which have been made for motherstarter:
+
+### Installation and Getting Started
+
+Watch how to install motherstarter, and how to get started using the basic defaults:
+
+[motherstartarter - Installation and Getting Started](https://youtu.be/7EsrLThgHok)
+
+### Customising input data and templates
+
+Watch how to customise your own input data and templates to suit your own business needs:
+
+[motherstarter - Customise to your environment](https://www.youtube.com/watch?v=4zbgO7JjFiw)
 
 ## Support Matrix
 
@@ -168,7 +190,60 @@ is supplied below:
 
 motherstarter will make frequent usage of `inventory` and `groups` throughout the code and templates, so this table is a handy reference when trying to understand the differences.
 
-### motherstarter is not ...
+## Advanced Usage
+
+motherstarter provides the ability to provide your own input data, using the `--source-dir` option at the command-line. In addition to this, motherstarter also allows you to provide your own templates using the `--template-dir` at the command-line. The instructions are provided below:
+
+### Customising Input Data
+
+As mentioned in the [Support Matrix](#support-matrix), motherstarter provided three input types; csv, json and xlsx files.
+
+The files must follow the naming conventions as supplied in the [sample inputs folder](https://github.com/writememe/motherstarter/tree/master/motherstarter/inputs). This includes the name(s) of the files and the name of spreadsheet tabs in the xlsx files. You can name the source directory folder in whatever name you like, as long as it contains the applicable files. Two valid examples are shown below:
+
+```bash
+inputs/ <----- This would be the source-dir folder at the command line, using xlsx as the source-type
+├── groups.xlsx
+└── inventory.xlsx
+```
+
+```bash
+environments/
+└── prod/ <----- This would be the source-dir folder at the command line, using json as the source-type
+    ├── groups.json
+    └── inventory.json
+```
+
+### Customising Templates
+
+motherstarter provides a framework for you to write your own templates for ansible, nornir and pyATS files. The file and folder must follow the naming conventions as supplied in the [sample templates folder](https://github.com/writememe/motherstarter/tree/master/motherstarter/templates). This includes the name(s) of the Jinja2 templates and the name of the folders. You can name the template directory folder in whatever name you like, as long as it contains the applicable files and folders. Two valid examples are shown below:
+
+```
+templates
+├── custom <----- This would be the template-dir folder at the command line
+│   ├── ansible
+│   │   └── hosts.j2
+│   ├── nornir
+│   │   ├── groups.j2
+│   │   └── hosts.j2
+│   └── pyats
+│       └── testbed.j2
+└── standard <----- This would be the template-dir folder at the command line
+    ├── ansible
+    │   └── hosts.j2
+    ├── nornir
+    │   ├── groups.j2
+    │   └── hosts.j2
+    └── pyats
+        └── testbed.j2
+```
+
+**NOTE: All inventory templates leverage a dictionary called `inventory`, and all group templates leverage a template called `groups`. When customising your templates, ensure that you iterate over the correct dictionary. Please follow the sample templates which have been supplied**
+
+### Still confused?
+
+A video showing both customising the input data and templated data is provided [here](https://youtu.be/4zbgO7JjFiw)
+
+## motherstarter is not ...
 
 It's important to understand that motherstarter does not intend, nor plan to be a permanent, enterprise-class inventory solution. motherstarter cannot substitute for a first-class system such as netbox. It's anticipated that you will reach the limits of motherstarter as an inventory solution, if you plan to make the inventory files available in multiple locations over multiple solutions.
 
