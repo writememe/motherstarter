@@ -1,6 +1,11 @@
 CHANGELOG
 =======
 
+# 2020.11.16
+
+- Uplifted documentation, including overview diagram, advanced usage and links to how-to videos.
+- Resolved [pytest 6.1.2 issue](https://github.com/writememe/motherstarter/pull/29) by not calling pylama directly with the `make pytest` target.
+
 # 2020.11.15
 - Restoring changes implemented in 2020.11.13
 
