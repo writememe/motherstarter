@@ -237,7 +237,7 @@ templates
         └── testbed.j2
 ```
 
-**NOTE: All inventory templates leverage a dictionary called `inventory`, and all group template leverage a template called `groups`. When customising your templates, ensure that you iterate over the correct dictionary. Please follow the sample templates which have been supplied**
+**NOTE: All inventory templates leverage a dictionary called `inventory`, and all group templates leverage a template called `groups`. When customising your templates, ensure that you iterate over the correct dictionary. Please follow the sample templates which have been supplied**
 
 ### Still confused?
 
