@@ -31,7 +31,7 @@ A network data transformation tool to accelerate the adoption of network automat
 - [Advanced Usage](#advanced-usage)
   - [Customising Input Data](#customising-input-data)
   - [Customising Templates](#customising-templates)
-    - [Still confused?](#still-confused?)
+    - [Still confused?](#still-confused)
 - [motherstarter is not...](#motherstarter-is-not-)
 - [What is with the name?](#what-is-with-the-name)
 - [Release Notes](#release-notes)
@@ -215,7 +215,7 @@ environments/
 
 ### Customising Templates
 
-motherstarter provides a framework for you to write your own templates for ansible, nornir and pyATS files. The file and folder must follow the naming conventions as supplied in the [sample templates folder](https://github.com/writememe/motherstarter/tree/master/motherstarter/templates). This includes the name(s) of the Jinja2 and the name of the folders. You can name the template directory folder in whatever name you like, as long as it contains the applicable files and folders. Two valid examples are shown below:
+motherstarter provides a framework for you to write your own templates for ansible, nornir and pyATS files. The file and folder must follow the naming conventions as supplied in the [sample templates folder](https://github.com/writememe/motherstarter/tree/master/motherstarter/templates). This includes the name(s) of the Jinja2 templates and the name of the folders. You can name the template directory folder in whatever name you like, as long as it contains the applicable files and folders. Two valid examples are shown below:
 
 ```
 templates
