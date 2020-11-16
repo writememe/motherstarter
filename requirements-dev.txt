@@ -4,7 +4,7 @@ black
 click
 colorama
 jinja2
-mypy=
+mypy
 nox
 openpyxl
 pandas
