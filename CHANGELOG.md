@@ -1,6 +1,17 @@
 CHANGELOG
 =======
 
+# 2020.12.23
+
+## Version bumps
+- bandit 1.6.2 to bandit 1.7.0
+- pandas 1.1.4 to 1.1.5
+- pytest 6.1.2 to 6.2.1
+- xlrd 1.20 to 2.0.1
+
+## motherstarter excel functionality
+- Migrated motherstarter input/output xlsx functions from `xlrd` to `colorama`
+
 # 2020.11.16
 
 - Uplifted documentation, including overview diagram, advanced usage and links to how-to videos.
