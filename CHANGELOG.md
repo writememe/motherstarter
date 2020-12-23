@@ -10,7 +10,7 @@ CHANGELOG
 - xlrd 1.20 to 2.0.1
 
 ## motherstarter excel functionality
-- Migrated motherstarter input/output xlsx functions from `xlrd` to `colorama`
+- Migrated motherstarter input/output xlsx functions from `xlrd` to `openpyxl`
 
 # 2020.11.16
 
