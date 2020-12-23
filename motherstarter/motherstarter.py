@@ -17,6 +17,11 @@ from motherstarter import __version__
 import os
 import sys
 
+
+# Set pandas to use openpyxl for all xlsx
+# files by default.
+pd.set_option("xlsx", "openpyxl")
+
 # Get path of the current dir under which the file is executed
 dirname = os.path.dirname(os.path.abspath(__file__))
 # Append sys path so that relative pathing works for input
