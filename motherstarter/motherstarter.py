@@ -18,10 +18,6 @@ import os
 import sys
 
 
-# Set pandas to use openpyxl for all xlsx
-# files by default.
-pd.set_option("xlsx", "openpyxl")
-
 # Get path of the current dir under which the file is executed
 dirname = os.path.dirname(os.path.abspath(__file__))
 # Append sys path so that relative pathing works for input
@@ -335,7 +331,9 @@ def init_inventory_xlsx(source_dir: Optional[str] = "motherstarter/inputs"):
         N/A
     """
     # Read in source file. NOTE: The source filename and sheet name are hardcoded
-    df = pd.read_excel(f"{source_dir}/inventory.xlsx", sheet_name="inventory")
+    df = pd.read_excel(
+        f"{source_dir}/inventory.xlsx", sheet_name="inventory", engine="openpyxl"
+    )
     # Return dataframe
     return df
 
@@ -402,7 +400,9 @@ def init_groups_xlsx(source_dir: Optional[str] = "motherstarter/inputs"):
         N/A
     """
     # Read in source file. NOTE: The source filename and sheet name are hardcoded
-    df = pd.read_excel(f"{source_dir}/groups.xlsx", sheet_name="groups")
+    df = pd.read_excel(
+        f"{source_dir}/groups.xlsx", sheet_name="groups", engine="openpyxl"
+    )
     # Return dataframe
     return df
 
