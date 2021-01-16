@@ -1,0 +1,6 @@
+---
+# Codecov.io configuration file for
+# https://codecov.io/gh/writememe/motherstarter
+ignore:
+  - "noxfile.py"  # Ignore nox test config file
+  - "setup.py"  # Ignore motherstarter setup file
