@@ -1,6 +1,21 @@
 CHANGELOG
 =======
 
+# 2021.01.16
+
+## BREAKING CHANGES - Python 3.6 Support Depcrecated
+
+- Due to an inherit [`pandas` dependency, python 3.6 support has been deprecated](https://pandas.pydata.org/pandas-docs/stable/whatsnew/v1.2.0.html#increased-minimum-version-for-python).
+
+## Version bumps
+
+- pandas 1.1.5 to 1.2.0
+- nox 2020.8.22 to 2020.12.31
+
+## Test Coverage Optimisations
+
+- Ignore `codecov` analysis on motherstarter `setup.py` and `noxfile.py` files
+
 # 2020.12.23
 
 ## Version bumps
