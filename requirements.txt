@@ -10,6 +10,6 @@ openpyxl==3.0.6
 pandas==1.2.0
 pylama==7.7.1
 pytest==6.2.1
-pytest-cov==2.10.1
+pytest-cov==2.11.1
 xlrd==2.0.1
 yamllint==1.26.0
