@@ -21,10 +21,22 @@ def test_convert_default(runner):
     """
     Invoke motherstarter convert with defaults, so
     we can then process the various output files.
+
+    Args:
+        runner: The runner which simulates command-line
+        inputs, replicating an end user.
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
     """
+    # Execute command and assign to variable
     result = runner.invoke(ms.cli, ["convert"])
     if result.exception:
         traceback.print_exception(*result.exc_info)  # noqa
+    # Assign expected strings to variables, for further validation.
     expected_source_type = "DEBUG - Inventory source type is json"
     expected_output_type = "DEBUG - Output type is: all"
     """
@@ -42,10 +54,12 @@ def test_convert_default(runner):
     default_source_dir and default_template_dir in the outputs and the DEBUG stamps
     at the front of the outputs.
     """
+    # Assign expected strings to variables, for further validation.
     expected_source_dir_start = "DEBUG - Source directory is: "
     expected_source_dir_end = "motherstarter/inputs/"
     expected_template_dir_start = "DEBUG - Source template directory is: "
     expected_template_dir_end = "motherstarter/templates/core/"
+    # Perform assertion tests to ensure variables are in the expected outputs
     assert result.exit_code == 0
     assert expected_source_type in result.output
     assert expected_output_type in result.output
@@ -58,6 +72,20 @@ def test_convert_default(runner):
 def test_output_inventory_json(
     base_input_dir=base_input_dir, base_output_dir=base_output_dir
 ):
+    """
+    Test that the JSON input file and JSON output files
+    match in length.
+
+    Args:
+        runner: The runner which simulates command-line
+        inputs, replicating an end user.
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
     with open(f"{base_input_dir}/inventory.json") as input_f:
         input_data = json.load(input_f)
     with open(f"{base_output_dir}/json/inventory.json") as output_f:
@@ -69,6 +97,20 @@ def test_output_inventory_json(
 def test_output_groups_json(
     base_input_dir=base_input_dir, base_output_dir=base_output_dir
 ):
+    """
+    Test that the JSON input file and JSON output files
+    match in length.
+
+    Args:
+        runner: The runner which simulates command-line
+        inputs, replicating an end user.
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
     with open(f"{base_input_dir}/groups.json") as input_f:
         input_data = json.load(input_f)
     with open(f"{base_output_dir}/json/groups.json") as output_f:
@@ -80,6 +122,20 @@ def test_output_groups_json(
 def test_output_inventory_csv(
     base_input_dir=base_input_dir, base_output_dir=base_output_dir
 ):
+    """
+    Test that the csv input file and csv output files
+    match in length.
+
+    Args:
+        runner: The runner which simulates command-line
+        inputs, replicating an end user.
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
     with open(f"{base_input_dir}/inventory.json") as input_f:
         input_data = json.load(input_f)
     with open(f"{base_output_dir}/csv/inventory.csv") as output_f:
@@ -92,6 +148,20 @@ def test_output_inventory_csv(
 def test_output_groups_csv(
     base_input_dir=base_input_dir, base_output_dir=base_output_dir
 ):
+    """
+    Test that the csv input file and csv output files
+    match in length.
+
+    Args:
+        runner: The runner which simulates command-line
+        inputs, replicating an end user.
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
     with open(f"{base_input_dir}/groups.json") as input_f:
         input_data = json.load(input_f)
     with open(f"{base_output_dir}/csv/groups.csv") as output_f:
@@ -104,6 +174,20 @@ def test_output_groups_csv(
 def test_output_inventory_xlsx(
     base_input_dir=base_input_dir, base_output_dir=base_output_dir
 ):
+    """
+    Test that the xlsx input file and xlsx output files
+    match in length.
+
+    Args:
+        runner: The runner which simulates command-line
+        inputs, replicating an end user.
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
     with open(f"{base_input_dir}/inventory.json") as input_f:
         input_data = json.load(input_f)
     wb = load_workbook(filename=f"{base_output_dir}/xlsx/inventory.xlsx")
@@ -122,6 +206,20 @@ def test_output_inventory_xlsx(
 def test_output_groups_xlsx(
     base_input_dir=base_input_dir, base_output_dir=base_output_dir
 ):
+    """
+    Test that the xlsx input file and xlsx output files
+    match in length.
+
+    Args:
+        runner: The runner which simulates command-line
+        inputs, replicating an end user.
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
     with open(f"{base_input_dir}/groups.json") as input_f:
         input_data = json.load(input_f)
     wb = load_workbook(filename=f"{base_output_dir}/xlsx/groups.xlsx")
@@ -140,6 +238,20 @@ def test_output_groups_xlsx(
 def test_output_inventory_nornir(
     base_input_dir=base_input_dir, base_output_dir=base_output_dir
 ):
+    """
+    Test that the json input file and nornir inventory files
+    match in length.
+
+    Args:
+        runner: The runner which simulates command-line
+        inputs, replicating an end user.
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
     with open(f"{base_input_dir}/inventory.json") as input_f:
         input_data = json.load(input_f)
     with open(f"{base_output_dir}/nr/inventory/hosts.yaml") as output_f:
@@ -151,6 +263,20 @@ def test_output_inventory_nornir(
 def test_output_groups_nornir(
     base_input_dir=base_input_dir, base_output_dir=base_output_dir
 ):
+    """
+    Test that the json input file and nornir groups files
+    match in length.
+
+    Args:
+        runner: The runner which simulates command-line
+        inputs, replicating an end user.
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
     with open(f"{base_input_dir}/groups.json") as input_f:
         input_data = json.load(input_f)
     with open(f"{base_output_dir}/nr/inventory/groups.yaml") as output_f:
@@ -160,6 +286,20 @@ def test_output_groups_nornir(
 
 
 def test_output_pyats(base_input_dir=base_input_dir, base_output_dir=base_output_dir):
+    """
+    Test that the json input file and pyats files
+    match in length.
+
+    Args:
+        runner: The runner which simulates command-line
+        inputs, replicating an end user.
+
+    Returns:
+        N/A
+
+    Raises:
+        N/A
+    """
     with open(f"{base_input_dir}/inventory.json") as input_f:
         input_data = json.load(input_f)
     with open(f"{base_output_dir}/pyats/mother_starter_tb.yaml") as output_f:
