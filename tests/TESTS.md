@@ -28,14 +28,6 @@ Output tests
 - Perform tests for the following scenarios:
     - [x] Test output files are present
     - [x] Test output files are valid by reading content
-    - [ ] Test output files that input details much output values (i.e. input inventory[0] == output inventory[0])
+    - [x] Test output files that input details much output values (i.e. input inventory[0] == output inventory[0])
     - [x] Test output files that input details much output count (4 devices read in, there should be 4 devices outputted)
 
-### Test logging
-    - Test log file is logging correctly by generating a log file
-    - Read log file and look for certain values in the file
-    - Not sure if much else is needed here?
-
-### Documenting tests
-
-Although self-explanatory, probably should add some comments to the tests.
