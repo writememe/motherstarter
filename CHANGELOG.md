@@ -1,6 +1,25 @@
 CHANGELOG
 =======
 
+# 2021.02.07
+
+## Version bumps
+
+- yamllint 1.25.0 to 1.26.0
+- mypy 0.790 to 0.800
+- pandas 1.2.0 to 1.2.1
+- pytest-cov 2.10.1 to 2.11.1
+- openpyxl 3.0.5 to 3.0.6
+
+## Testing documentation uplift
+
+- Added more comments to tests
+- Updated tests documentation
+
+## Added NOTICE
+
+- Added NOTICE file to project
+
 # 2021.01.16
 
 ## BREAKING CHANGES - Python 3.6 Support Depcrecated
