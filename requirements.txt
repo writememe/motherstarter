@@ -7,7 +7,7 @@ jinja2==2.11.2
 mypy==0.800
 nox==2020.12.31
 openpyxl==3.0.6
-pandas==1.2.1
+pandas==1.2.2
 pylama==7.7.1
 pytest==6.2.1
 pytest-cov==2.11.1
