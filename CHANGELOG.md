@@ -1,6 +1,15 @@
 CHANGELOG
 =======
 
+# 2021.03.05
+
+## Version bumps
+
+- jinja 2.11.2 to 2.11.3
+- pytest 6.2.1 to 6.2.2
+- pandas 1.2.1 to 1.2.3
+- mypy 0.800 to 0.812
+
 # 2021.02.07
 
 ## Version bumps
