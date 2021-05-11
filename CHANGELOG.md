@@ -5,7 +5,7 @@ CHANGELOG
 
 ## Version bumps
 
-- black 20.8b1 to 21.4b2
+- black 20.8b1 to 21.5b1
 - openpyxl 3.0.6 to 3.0.7
 - pandas 1.2.3 to 1.2.4
 - pytest 6.2.2 to 6.2.3
