@@ -1,6 +1,16 @@
 CHANGELOG
 =======
 
+# 2021.05.11
+
+## Version bumps
+
+- black 20.8b1 to 21.4b2
+- openpyxl 3.0.6 to 3.0.7
+- pandas 1.2.3 to 1.2.4
+- pytest 6.2.2 to 6.2.3
+- yamllint 1.26.0 to 1.26.1
+
 # 2021.03.05
 
 ## Version bumps
