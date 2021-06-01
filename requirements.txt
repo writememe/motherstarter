@@ -1,6 +1,6 @@
 # Requirements file, statically pinned for now
 bandit==1.7.0
-black==21.5b1
+black==21.5b2
 click>=7.1,<=7.2
 colorama==0.4.4
 jinja2==2.11.3
