@@ -4,7 +4,7 @@ black==21.7b0
 click>=7.1,<=7.2
 colorama==0.4.4
 jinja2==2.11.3
-mypy==0.812
+mypy==0.910
 nox==2020.12.31
 openpyxl==3.0.7
 pandas==1.2.4
