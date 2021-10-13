@@ -13,3 +13,4 @@ pytest
 pytest-cov
 xlrd
 yamllint
+data-science-types

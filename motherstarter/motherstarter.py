@@ -9,10 +9,11 @@ used to perform network automation tasks.
 import pandas as pd
 from jinja2 import Environment, FileSystemLoader
 import pathlib as pl
-from colorama import init
+from colorama import init  # type: ignore
+from logging import Logger
 import logging
 import click
-from typing import Optional
+from typing import Optional, TextIO, Union, List, Dict, Any
 from motherstarter import __version__
 import os
 import sys
@@ -32,7 +33,7 @@ init(autoreset=True)
 # line
 @click.group()
 @click.version_option(version=__version__)
-def cli():
+def cli() -> None:
     """
     Function to initialise motherstarter from the command line.
 
@@ -155,7 +156,7 @@ def convert(
     main(logger=logger, source_type=st, output_type=ot, source_dir=sd, template_dir=td)
 
 
-def init_logger(log_level: str, log_name: str = "ms.log"):
+def init_logger(log_level: str, log_name: str = "ms.log") -> Logger:
     """
     Initialise a logger object, to be used to perform logging
     and console outputs to the screen.
@@ -196,16 +197,18 @@ def init_logger(log_level: str, log_name: str = "ms.log"):
     # NOTE: This will be an integer value
     # https://docs.python.org/3/library/logging.html#logging-levels
     log_integer = logger_map.get(log_level)
-    logger.setLevel(level=log_integer)
-    f_handler.setLevel(level=log_integer)
-    s_handler.setLevel(level=log_integer)
+    logger.setLevel(level=log_integer)  # type: ignore
+    f_handler.setLevel(level=log_integer)  # type: ignore
+    s_handler.setLevel(level=log_integer)  # type: ignore
     # Add these handlers to the logger objects
     logger.addHandler(f_handler)
     logger.addHandler(s_handler)
     return logger
 
 
-def init_inventory(logger, source_dir: str = None, source_type: str = "json"):
+def init_inventory(
+    logger: Logger, source_dir: str = "", source_type: str = "json"
+) -> pd.DataFrame:
     """
     Initialise the inventory data based on the source_type and from the source
     directory and return a pandas dataframe object.
@@ -239,13 +242,15 @@ def init_inventory(logger, source_dir: str = None, source_type: str = "json"):
         # Output an error. NOTE: Due to using argparse options, we should
         # never hit this error but just in case we do.
         logger.error(f"Source Type: {source_type} not supported...")
-        # Set df to None
-        df = None
+        # Exit the program
+        sys.exit(2)
     # Return the df object
     return df
 
 
-def init_groups(logger, source_dir: str = None, source_type: str = "json"):
+def init_groups(
+    logger: Logger, source_dir: str = "", source_type: str = "json"
+) -> pd.DataFrame:
     """
     Initialise the group data based on the source_type and from the source
     directory and return a pandas dataframe object
@@ -280,13 +285,15 @@ def init_groups(logger, source_dir: str = None, source_type: str = "json"):
         # Output an error. NOTE: Due to using argparse options, we should
         # never hit this error but just in case we do.
         logger.error(f"Source Type: {source_type} not supported...")
-        # Set df to None
-        df = None
+        # Exit the program
+        sys.exit(2)
     # Return the df object
     return df
 
 
-def init_inventory_json(source_dir: Optional[str] = "motherstarter/inputs"):
+def init_inventory_json(
+    source_dir: Optional[str] = "motherstarter/inputs",
+) -> Union[pd.DataFrame, Any]:
     """
     Initialise a pandas dataframe by using pandas read_json
     function by reading in the "inventory.json" file from the
@@ -314,7 +321,9 @@ def init_inventory_json(source_dir: Optional[str] = "motherstarter/inputs"):
     return df
 
 
-def init_inventory_xlsx(source_dir: Optional[str] = "motherstarter/inputs"):
+def init_inventory_xlsx(
+    source_dir: Optional[str] = "motherstarter/inputs",
+) -> Union[pd.DataFrame, Any]:
     """
     Initialise a pandas dataframe by using pandas read_excel
     function by reading in the "inventory.xlsx" file from the
@@ -338,7 +347,9 @@ def init_inventory_xlsx(source_dir: Optional[str] = "motherstarter/inputs"):
     return df
 
 
-def init_inventory_csv(source_dir: Optional[str] = "motherstarter/inputs"):
+def init_inventory_csv(
+    source_dir: Optional[str] = "motherstarter/inputs",
+) -> pd.DataFrame:
     """
     Initialise a pandas dataframe by using pandas read_csv
     function by reading in the "inventory.csv" file from the
@@ -361,7 +372,9 @@ def init_inventory_csv(source_dir: Optional[str] = "motherstarter/inputs"):
     return df
 
 
-def init_groups_json(source_dir: Optional[str] = "motherstarter/inputs"):
+def init_groups_json(
+    source_dir: Optional[str] = "motherstarter/inputs",
+) -> Union[pd.DataFrame, Any]:
     """
     Initialise a pandas dataframe by using pandas read_json
     function by reading in the "groups.json" file from the
@@ -383,7 +396,9 @@ def init_groups_json(source_dir: Optional[str] = "motherstarter/inputs"):
     return df
 
 
-def init_groups_xlsx(source_dir: Optional[str] = "motherstarter/inputs"):
+def init_groups_xlsx(
+    source_dir: Optional[str] = "motherstarter/inputs",
+) -> Union[pd.DataFrame, Any]:
     """
     Initialise a pandas dataframe by using pandas read_excel
     function by reading in the "groups.xlsx" file from the
@@ -407,7 +422,7 @@ def init_groups_xlsx(source_dir: Optional[str] = "motherstarter/inputs"):
     return df
 
 
-def init_groups_csv(source_dir: Optional[str] = "motherstarter/inputs"):
+def init_groups_csv(source_dir: Optional[str] = "motherstarter/inputs") -> pd.DataFrame:
     """
     Initialise a pandas dataframe by using pandas read_csv
     function by reading in the "groups.csv" file from the
@@ -428,7 +443,7 @@ def init_groups_csv(source_dir: Optional[str] = "motherstarter/inputs"):
     return df
 
 
-def dataframe_to_dict(df) -> list:
+def dataframe_to_dict(df: pd.DataFrame) -> List[Dict[str, Any]]:
     """
     Helper function to return a Pandas dataframe into
     a dictionary so that it can be used for further
@@ -446,7 +461,9 @@ def dataframe_to_dict(df) -> list:
     return df.to_dict(orient="records")
 
 
-def prep_templates(tmpl_dir: Optional[str] = "motherstarter/templates/outputs/core"):
+def prep_templates(
+    tmpl_dir: Any = "motherstarter/templates/outputs/core",
+) -> Environment:
     """
     Take the template directory and load a Jinja2 environment
     with those templates and other settings enabled
@@ -490,7 +507,9 @@ def prep_templates(tmpl_dir: Optional[str] = "motherstarter/templates/outputs/co
     return env
 
 
-def to_nr_hosts(logger, env, df, output_dir: str = None):
+def to_nr_hosts(
+    logger: Logger, env: Environment, df: pd.DataFrame, output_dir: str = ""
+) -> TextIO:
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
@@ -531,7 +550,9 @@ def to_nr_hosts(logger, env, df, output_dir: str = None):
     return nr_h_file
 
 
-def to_nr_groups(logger, env, df, output_dir: str = None):
+def to_nr_groups(
+    logger: Logger, env: Environment, df: pd.DataFrame, output_dir: str = ""
+) -> TextIO:
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
@@ -572,7 +593,9 @@ def to_nr_groups(logger, env, df, output_dir: str = None):
     return nr_g_file
 
 
-def to_pyats(logger, env, df, output_dir: str = None):
+def to_pyats(
+    logger: Logger, env: Environment, df: pd.DataFrame, output_dir: str = ""
+) -> TextIO:
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
@@ -613,7 +636,7 @@ def to_pyats(logger, env, df, output_dir: str = None):
     return tb_file
 
 
-def to_csv_inventory(logger, df, output_dir: str = None):
+def to_csv_inventory(logger: Logger, df: pd.DataFrame, output_dir: str = "") -> str:
     """
     Take the pandas dataframe and save it to a CSV file.
 
@@ -643,7 +666,7 @@ def to_csv_inventory(logger, df, output_dir: str = None):
     return csv_file
 
 
-def to_xlsx_inventory(logger, df, output_dir: str = None):
+def to_xlsx_inventory(logger: Logger, df: pd.DataFrame, output_dir: str = "") -> str:
     """
     Take the pandas dataframe and save it to a xlsx file.
 
@@ -673,7 +696,7 @@ def to_xlsx_inventory(logger, df, output_dir: str = None):
     return xlsx_file
 
 
-def to_json_inventory(logger, df, output_dir: str = None):
+def to_json_inventory(logger: Logger, df: pd.DataFrame, output_dir: str = "") -> str:
     """
     Take the pandas dataframe and save it to a json file.
 
@@ -703,7 +726,7 @@ def to_json_inventory(logger, df, output_dir: str = None):
     return json_file
 
 
-def to_csv_groups(logger, df, output_dir: str = None):
+def to_csv_groups(logger: Logger, df: pd.DataFrame, output_dir: str = "") -> str:
     """
     Take the pandas dataframe and save it to a CSV file.
 
@@ -733,7 +756,7 @@ def to_csv_groups(logger, df, output_dir: str = None):
     return csv_file
 
 
-def to_xlsx_groups(logger, df, output_dir: str = None):
+def to_xlsx_groups(logger: Logger, df: pd.DataFrame, output_dir: str = "") -> str:
     """
     Take the pandas dataframe and save it to a xlsx file.
 
@@ -763,7 +786,7 @@ def to_xlsx_groups(logger, df, output_dir: str = None):
     return xlsx_file
 
 
-def to_json_groups(logger, df, output_dir: str = None):
+def to_json_groups(logger: Logger, df: pd.DataFrame, output_dir: str = "") -> str:
     """
     Take the pandas dataframe and save it to a json file.
 
@@ -793,7 +816,9 @@ def to_json_groups(logger, df, output_dir: str = None):
     return json_file
 
 
-def to_ansible(logger, env, df, output_dir: str = None):
+def to_ansible(
+    logger: Logger, env: Environment, df: pd.DataFrame, output_dir: str = ""
+) -> TextIO:
     """
     Take the pandas dataframe, convert it to a dictionary
     and render that dictionary through a Jinja2 template to
@@ -835,12 +860,12 @@ def to_ansible(logger, env, df, output_dir: str = None):
 
 
 def main(
-    logger,
+    logger: Logger,
     source_type: str,
     output_type: str,
     source_dir: str = "motherstarter/inputs/",
     template_dir: str = "motherstarter/templates/core/",
-):
+) -> None:
     """
     Main workflow function used to execute the entire workflow
 
