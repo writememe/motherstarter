@@ -109,13 +109,13 @@ def convert(
         Output type: nornir
 
     Args:\n
-        log_level (str): The severity logging level for all events. Valid
+        log_level: The severity logging level for all events. Valid
         options: "debug", "info", "warning", "error" and "critical".
-        source_type (str): The source file type to read the inventory/group
+        source_type: The source file type to read the inventory/group
         data from. Valid options: "csv", "json" and "xlsx".\n
-        source_dir (str): The source directory to find the files in.\n
-        template_dir (str): The template directory to find the templates in.\n
-        output_type (str): What file type(s) you would like to be outputted
+        source_dir: The source directory to find the files in.\n
+        template_dir: The template directory to find the templates in.\n
+        output_type: What file type(s) you would like to be outputted
         as a result of running the function. Valid options: "all", "ansible",
         "csv", "json", "nornir", "pyats" and "xlsx".\n
 
@@ -164,11 +164,11 @@ def init_logger(log_level: str, log_name: str = "ms.log") -> Logger:
     the logging level.
 
     Args:
-        log_level (str): The severity logging level for all events
-        log_name (str): The name of the log file. Default "ms.log"
+        log_level: The severity logging level for all events
+        log_name: The name of the log file.
 
     Returns:
-        logger: An initialised logger object
+        logger: An initialised Logger object
 
     Raises:
         N/A
@@ -214,16 +214,15 @@ def init_inventory(
     directory and return a pandas dataframe object.
 
     Args:
-        logger: The initialised logger object.
-        source_dir (str): The source directory to find the files in.
-        source_type (str): The source file type to read the inventory data from.
-            Default: "json".
+        logger: The initialised Logger object.
+        source_dir: The source directory to find the files in.
+        source_type: The source file type to read the inventory data from.
 
     Returns:
-        df (?): The pandas dataframe object for further processing.
+        df: The pandas dataframe object for further processing.
 
     Raises:
-        N/A
+        ValueError: When a non-valid input is specified.
     """
     # Provide debugging output if needed.
     logger.debug(f"Inventory source type is {source_type}")
@@ -239,11 +238,11 @@ def init_inventory(
         # Execute the xlsx specific init inventory
         df = init_inventory_csv(source_dir)
     else:
-        # Output an error. NOTE: Due to using argparse options, we should
+        # Output and raise ValueError error. NOTE: Due to using argparse options, we should
         # never hit this error but just in case we do.
-        logger.error(f"Source Type: {source_type} not supported...")
-        # Exit the program
-        sys.exit(2)
+        invalid_error = f"Source Type: {source_type} not supported..."
+        logger.error(invalid_error)
+        raise ValueError(invalid_error)
     # Return the df object
     return df
 
@@ -257,16 +256,14 @@ def init_groups(
 
     Args:
         logger: The initialised logger object
-        source_dir (str): The source directory to find the inventory files in.
-            Default: None
-        source_type (str): The source file type to read the group data from.
-            Default: "json"
+        source_dir: The source directory to find the inventory files in.
+        source_type: The source file type to read the group data from.
 
     Returns:
-        df (?): The pandas dataframe object for further processing.
+        df: The pandas dataframe object for further processing.
 
     Raises:
-        N/A
+        ValueError: When a non-valid input is specified.
     """
     # Provide debugging output if needed.
     logger.debug(f"Inventory source type is {source_type}")
@@ -282,11 +279,11 @@ def init_groups(
         # Execute the csv specific init group
         df = init_groups_csv(source_dir)
     else:
-        # Output an error. NOTE: Due to using argparse options, we should
+        # Output and raise ValueError error. NOTE: Due to using argparse options, we should
         # never hit this error but just in case we do.
-        logger.error(f"Source Type: {source_type} not supported...")
-        # Exit the program
-        sys.exit(2)
+        invalid_error = f"Source Type: {source_type} not supported..."
+        logger.error(invalid_error)
+        raise ValueError(invalid_error)
     # Return the df object
     return df
 
@@ -306,11 +303,10 @@ def init_inventory_json(
     to write your own custom workflow.
 
     Args:
-        source_dir (str): The source directory to find the inventory files in.
-            Default: "motherstarter/inputs"
+        source_dir: The source directory to find the inventory files in.
 
     Returns:
-        df (?): The pandas dataframe object for further processing.
+        df: The pandas dataframe object for further processing.
 
     Raises:
         N/A
@@ -330,17 +326,16 @@ def init_inventory_xlsx(
     applicable source directory
 
     Args:
-        source_dir (str): The source directory to find the inventory files in.
-            Default: "motherstarter/inputs"
+        source_dir: The source directory to find the inventory files in.
 
     Returns:
-        df : The pandas dataframe object for further processing.
+        df: The pandas dataframe object for further processing.
 
     Raises:
         N/A
     """
     # Read in source file. NOTE: The source filename and sheet name are hardcoded
-    df = pd.read_excel(
+    df = pd.read_excel(  # type: ignore
         f"{source_dir}/inventory.xlsx", sheet_name="inventory", engine="openpyxl"
     )
     # Return dataframe
@@ -357,11 +352,10 @@ def init_inventory_csv(
 
 
     Args:
-        source_dir (str): The source directory to find the inventory files in.
-            Default: "motherstarter/inputs"
+        source_dir: The source directory to find the inventory files in.
 
     Returns:
-        df : The pandas dataframe object for further processing.
+        df: The pandas dataframe object for further processing.
 
     Raises:
         N/A
@@ -381,11 +375,10 @@ def init_groups_json(
     applicable source directory
 
     Args:
-        source_dir (str): The source directory to find the inventory files in.
-            Default: "motherstarter/inputs"
+        source_dir: The source directory to find the inventory files in.
 
     Returns:
-        df : The pandas dataframe object for further processing.
+        df: The pandas dataframe object for further processing.
 
     Raises:
         N/A
@@ -405,17 +398,16 @@ def init_groups_xlsx(
     applicable source directory
 
     Args:
-        source_dir (str): The source directory to find the inventory files in.
-            Default: "motherstarter/inputs"
+        source_dir: The source directory to find the inventory files in.
 
     Returns:
-        df : The pandas dataframe object for further processing.
+        df: The pandas dataframe object for further processing.
 
     Raises:
         N/A
     """
     # Read in source file. NOTE: The source filename and sheet name are hardcoded
-    df = pd.read_excel(
+    df = pd.read_excel(  # type: ignore
         f"{source_dir}/groups.xlsx", sheet_name="groups", engine="openpyxl"
     )
     # Return dataframe
@@ -429,11 +421,10 @@ def init_groups_csv(source_dir: Optional[str] = "motherstarter/inputs") -> pd.Da
     applicable source directory
 
     Args:
-        source_dir (str): The source directory to find the inventory files in.
-            Default: "motherstarter/inputs"
+        source_dir: The source directory to find the inventory files in.
 
     Returns:
-        df : The pandas dataframe object for further processing.
+        df: The pandas dataframe object for further processing.
 
     Raises:
         N/A
@@ -450,10 +441,10 @@ def dataframe_to_dict(df: pd.DataFrame) -> List[Dict[str, Any]]:
     processing throughout the application
 
     Args:
-        df : The pandas dataframe object.
+        df: The pandas dataframe object.
 
     Returns:
-        df (list): A list of dictionaries of the dataframe object.
+        df: A list of dictionaries of the dataframe object.
 
     Raises:
         N/A
@@ -487,12 +478,11 @@ def prep_templates(
     that, unless you want to write your own custom workflow.
 
     Args:
-        tmpl_dir (str): The template directory one-level above where the Jinja2
+        tmpl_dir: The template directory one-level above where the Jinja2
     templates are stored.
-            Default: motherstarter/templates/outputs/core
 
     Returns:
-        env :  The loaded jinja2 environment.
+        env: The loaded jinja2 environment.
 
     Raises:
         N/A
@@ -516,12 +506,12 @@ def to_nr_hosts(
     create an nornir hosts inventory file.
 
     Args:
-        logger: The initialised logger object.
-        env : The loaded Jinja2 environment, used to retrieve
+        logger: The initialised Logger object.
+        env: The loaded Jinja2 environment, used to retrieve
         templates from.
-        df : The pandas dataframe object, initialised from the
+        df: The pandas dataframe object, initialised from the
         inventory data source
-        output_dir (str): The output directory. Default: None.
+        output_dir: The output directory.
 
     Returns:
         nr_h_file : The nornir hosts file object.
@@ -530,8 +520,10 @@ def to_nr_hosts(
         N/A
     """
     # Specify the output dir when it is not supplied
-    if output_dir is None:
+    if not output_dir:
         output_dir = "motherstarter/outputs/nr/inventory"
+    # # Temp hack TODO
+    # output_dir = "motherstarter/outputs/nr/inventory"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Convert pandas dataframe to a dictionary and assign to the
@@ -559,12 +551,12 @@ def to_nr_groups(
     create an nornir groups inventory file.
 
     Args:
-        logger: The initialised logger object.
-        env : The loaded Jinja2 environment, used to retrieve
+        logger: The initialised Logger object.
+        env: The loaded Jinja2 environment, used to retrieve
         templates from.
-        df : The pandas dataframe object, initialised from the
+        df: The pandas dataframe object, initialised from the
         inventory data source.
-        output_dir (str): The output directory. Default: None.
+        output_dir: The output directory.
 
     Returns:
         nr_g_file: The nornir groups file object.
@@ -573,7 +565,7 @@ def to_nr_groups(
         N/A
     """
     # Specify the output dir when it is not supplied
-    if output_dir is None:
+    if not output_dir:
         output_dir = "motherstarter/outputs/nr/inventory"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -602,12 +594,12 @@ def to_pyats(
     create an pyATS testbed file.
 
     Args:
-        logger: The initialised logger object.
+        logger: The initialised Logger object.
         env : The loaded Jinja2 environment, used to retrieve
         templates from.
-        df : The pandas dataframe object, initialised from the
+        df: The pandas dataframe object, initialised from the
         inventory data source.
-        output_dir (str): The output directory. Default: None
+        output_dir: The output directory.
 
     Returns:
         tb_file : The pyATS testbed file object.
@@ -616,7 +608,7 @@ def to_pyats(
         N/A
     """
     # Specify the output dir when it is not supplied
-    if output_dir is None:
+    if not output_dir:
         output_dir = "motherstarter/outputs/pyats"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -641,19 +633,19 @@ def to_csv_inventory(logger: Logger, df: pd.DataFrame, output_dir: str = "") -> 
     Take the pandas dataframe and save it to a CSV file.
 
     Args:
-        logger: The initialised logger object.
-        df : The pandas dataframe object, initialised from the
+        logger: The initialised Logger object.
+        df: The pandas dataframe object, initialised from the
         inventory data source
-        output_dir (str): The output directory. Default: None.
+        output_dir: The output directory.
 
     Returns:
-        csv_file : The CSV file object.
+        csv_file: The CSV file object.
 
     Raises:
         N/A
     """
     # Specify the output dir when it is not supplied
-    if output_dir is None:
+    if not output_dir:
         output_dir = "motherstarter/outputs/csv"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -671,26 +663,26 @@ def to_xlsx_inventory(logger: Logger, df: pd.DataFrame, output_dir: str = "") ->
     Take the pandas dataframe and save it to a xlsx file.
 
     Args:
-        logger: The initialised logger object.
-        df : The pandas dataframe object, initialised from the
+        logger: The initialised Logger object.
+        df: The pandas dataframe object, initialised from the
         inventory data source.
-        output_dir (str): The output directory.
+        output_dir: The output directory.
 
     Returns:
-        xlsx_file : The xlsx file object.
+        xlsx_file: The xlsx file object.
 
     Raises:
         N/A
     """
     # Specify the output dir when it is not supplied
-    if output_dir is None:
+    if not output_dir:
         output_dir = "motherstarter/outputs/xlsx"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign xlsx file name to a variable
     xlsx_file = f"{output_dir}/inventory.xlsx"
     # Output the dataframe to Excel, save in xlsx file
-    df.to_excel(xlsx_file, index=False, sheet_name="inventory")
+    df.to_excel(xlsx_file, index=False, sheet_name="inventory")  # type: ignore
     # Log diagnostic information
     logger.info(f"File output location: {xlsx_file}")
     return xlsx_file
@@ -701,26 +693,26 @@ def to_json_inventory(logger: Logger, df: pd.DataFrame, output_dir: str = "") ->
     Take the pandas dataframe and save it to a json file.
 
     Args:
-        logger: The initialised logger object.
-        df : The pandas dataframe object, initialised from the
+        logger: The initialised Logger object.
+        df: The pandas dataframe object, initialised from the
         inventory data source
-        output_dir (str): The output directory. Default: None.
+        output_dir: The output directory.
 
     Returns:
-        json_file : The json file object.
+        json_file: The json file object.
 
     Raises:
         N/A
     """
     # Specify the output dir when it is not supplied
-    if output_dir is None:
+    if not output_dir:
         output_dir = "motherstarter/outputs/json"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign json file name to a variable
     json_file = f"{output_dir}/inventory.json"
     # Output the dataframe to json, save in json file
-    df.to_json(json_file, indent=4, orient="records")
+    df.to_json(json_file, indent=4, orient="records")  # type: ignore
     # Log diagnostic information
     logger.info(f"File output location: {json_file}")
     return json_file
@@ -731,19 +723,19 @@ def to_csv_groups(logger: Logger, df: pd.DataFrame, output_dir: str = "") -> str
     Take the pandas dataframe and save it to a CSV file.
 
     Args:
-        logger: The initialised logger object.
-        df : The pandas dataframe object, initialised from the
+        logger: The initialised Logger object.
+        df: The pandas dataframe object, initialised from the
         inventory data source
-        output_dir (str): The output directory. Default: None.
+        output_dir: The output directory.
 
     Returns:
-        csv_file : The CSV file object.
+        csv_file: The CSV file object.
 
     Raises:
         N/A
     """
     # Specify the output dir when it is not supplied
-    if output_dir is None:
+    if not output_dir:
         output_dir = "motherstarter/outputs/csv"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -761,26 +753,26 @@ def to_xlsx_groups(logger: Logger, df: pd.DataFrame, output_dir: str = "") -> st
     Take the pandas dataframe and save it to a xlsx file.
 
     Args:
-        logger: The initialised logger object.
-        df : The pandas dataframe object, initialised from the
+        logger: The initialised Logger object.
+        df: The pandas dataframe object, initialised from the
         inventory data source.
-        output_dir (str): The output directory.
+        output_dir: The output directory.
 
     Returns:
-        xlsx_file : The xlsx file object.
+        xlsx_file: The xlsx file object.
 
     Raises:
         N/A
     """
     # Specify the output dir when it is not supplied
-    if output_dir is None:
+    if not output_dir:
         output_dir = "motherstarter/outputs/xlsx"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign xlsx file name to a variable
     xlsx_file = f"{output_dir}/groups.xlsx"
     # Output the dataframe to Excel, save in xlsx file
-    df.to_excel(xlsx_file, index=False, sheet_name="groups")
+    df.to_excel(xlsx_file, index=False, sheet_name="groups")  # type: ignore
     # Log diagnostic information
     logger.info(f"File output location: {xlsx_file}")
     return xlsx_file
@@ -791,26 +783,26 @@ def to_json_groups(logger: Logger, df: pd.DataFrame, output_dir: str = "") -> st
     Take the pandas dataframe and save it to a json file.
 
     Args:
-        logger: The initialised logger object.
-        df : The pandas dataframe object, initialised from the
+        logger: The initialised Logger object.
+        df: The pandas dataframe object, initialised from the
         inventory data source
-        output_dir (str): The output directory. Default: None.
+        output_dir: The output directory.
 
     Returns:
-        json_file : The json file object.
+        json_file: The json file object.
 
     Raises:
         N/A
     """
     # Specify the output dir when it is not supplied
-    if output_dir is None:
+    if not output_dir:
         output_dir = "motherstarter/outputs/json"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
     # Assign json file name to a variable
     json_file = f"{output_dir}/groups.json"
     # Output the dataframe to json, save in json file
-    df.to_json(json_file, indent=4, orient="records")
+    df.to_json(json_file, indent=4, orient="records")  # type: ignore
     # Log diagnostic information
     logger.info(f"File output location: {json_file}")
     return json_file
@@ -825,12 +817,12 @@ def to_ansible(
     create an Ansible inventory file.
 
     Args:
-        logger: The initialised logger object.
-        env : The loaded Jinja2 environment, used to retrieve
+        logger: The initialised Logger object.
+        env: The loaded Jinja2 environment, used to retrieve
         templates from.
-        df : The pandas dataframe object, initialised from the
+        df: The pandas dataframe object, initialised from the
         inventory data source
-        output_dir (str): The output directory. Default: None.
+        output_dir: The output directory.
 
     Returns:
         ans_h_file : The Ansible inventory file object.
@@ -839,7 +831,7 @@ def to_ansible(
         N/A
     """
     # Specify the output dir when it is not supplied
-    if output_dir is None:
+    if not output_dir:
         output_dir = "motherstarter/outputs/ansible/inventory"
     # Create entry directory and/or check that it exists
     pl.Path(output_dir).mkdir(parents=True, exist_ok=True)
@@ -870,15 +862,13 @@ def main(
     Main workflow function used to execute the entire workflow
 
     Args:
-        logger: The initialised logger object.
-        source_type (str): The source file type to read the inventory
+        logger: The initialised Logger object.
+        source_type: The source file type to read the inventory
         and group data in from.
-        output_type (str): What file type(s) you would like to be outputted
+        output_type: What file type(s) you would like to be outputted
         as a result of running the function.
-        source_dir (str): The source directory of the input files.
-            Default: motherstarter/inputs/
-        template_dir (str): The template directory of the template files.
-            Default: motherstarter/templates/core/
+        source_dir: The source directory of the input files.
+        template_dir: The template directory of the template files.
     Returns:
         N/A
 
