@@ -12,5 +12,5 @@ pylama==7.7.1
 pytest==6.2.4
 pytest-cov==2.12.1
 xlrd==2.0.1
-yamllint==1.26.2
+yamllint==1.26.3
 data-science-types==0.2.23
