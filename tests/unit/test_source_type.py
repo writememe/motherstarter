@@ -24,10 +24,9 @@ def test_init_inventory_bad():
     # Ensure that a ValueError is raised when a bad source is supplied.
     # Initialise the init_inventory function with a bad source_type
     with pytest.raises(ValueError) as val_err:
-        df = ms.init_inventory(
+        df = ms.init_inventory(  # noqa (unused import)
             logger=logger, source_dir="tests/test_data/inputs/core", source_type=ST
         )
-        print(df)
     # Perform assertion tests to ensure error message are in the expected outputs
     assert f"Source Type: {ST} not supported..." in str(val_err.value)
 
@@ -38,9 +37,8 @@ def test_init_groups_bad():
     # Ensure that a ValueError is raised when a bad source is supplied.
     # Initialise the init_inventory function with a bad source_type
     with pytest.raises(ValueError) as val_err:
-        df = ms.init_groups(
+        df = ms.init_groups(  # noqa (unused import)
             logger=logger, source_dir="tests/test_data/inputs/core", source_type=ST
         )
-        print(df)
     # Perform assertion tests to ensure error message are in the expected outputs
     assert f"Source Type: {ST} not supported..." in str(val_err.value)
