@@ -37,6 +37,7 @@ def lint(session):
         "-s",
         "B101",
     )
+    session.run("python", "-m", "mypy", "--strict", "motherstarter/")
 
 
 @nox.session(python=["3.7", "3.8", "3.9"])
@@ -125,6 +126,24 @@ def bandit(session):
         "-s",
         "B101",
     )
+
+
+@nox.session(python=["3.7", "3.8", "3.9"])
+def mypy(session):
+    """
+    Nox run mypy
+
+    Args:
+        session: nox session
+
+    Returns:
+        None
+
+    Raises:
+        N/A
+    """
+    session.install("-r", "requirements.txt")
+    session.run("python", "-m", "mypy", "--strict", "motherstarter/")
 
 
 @nox.session(python=["3.7", "3.8", "3.9"])

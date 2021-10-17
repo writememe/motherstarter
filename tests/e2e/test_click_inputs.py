@@ -263,7 +263,7 @@ def test_convert_source_type_bad(runner):
     # Execute command and assign to variable
     result = runner.invoke(ms.convert, ["-st", st])
     # Assign expected strings to variables, for further validation.
-    expected_block = f"Error: Invalid value for '--source-type' / '-st': invalid choice: {st}. (choose from csv, json, xlsx)"  # noqa
+    expected_block = f"Error: Invalid value for '--source-type' / '-st': '{st}' is not one of 'csv', 'json', 'xlsx'."  # noqa
     # Perform assertion tests to ensure variables are in the expected outputs
     assert result.exit_code == 2
     assert expected_block in result.output
@@ -498,7 +498,7 @@ def test_convert_log_level_bad(runner):
     # Execute command and assign to variable
     result = runner.invoke(ms.convert, ["-l", ll])
     # Assign expected strings to variables, for further validation.
-    expected_block = f"Error: Invalid value for '--log-level' / '-l': invalid choice: {ll}. (choose from debug, info, warning, error, critical)"  # noqa
+    expected_block = f"Error: Invalid value for '--log-level' / '-l': '{ll}' is not one of 'debug', 'info', 'warning', 'error', 'critical'."  # noqa
     # Perform assertion tests to ensure variables are in the expected outputs
     assert result.exit_code == 2
     assert expected_block in result.output
@@ -835,6 +835,6 @@ def test_convert_output_type_all(runner):
 def test_convert_output_type_bad(runner):
     ot = "bad"
     result = runner.invoke(ms.convert, ["-o", ot])
-    expected_block = f"Error: Invalid value for '--output-type' / '-o': invalid choice: {ot}. (choose from all, ansible, csv, json, nornir, pyats, xlsx)"  # noqa
+    expected_block = f"Error: Invalid value for '--output-type' / '-o': '{ot}' is not one of 'all', 'ansible', 'csv', 'json', 'nornir', 'pyats', 'xlsx'."  # noqa
     assert result.exit_code == 2
     assert expected_block in result.output
