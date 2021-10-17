@@ -311,10 +311,8 @@ def init_inventory_json(
     Raises:
         N/A
     """
-    # Read in source file. NOTE: The source filename is hardcoded
-    df = pd.read_json(f"{source_dir}/inventory.json")
     # Return dataframe
-    return df
+    return pd.read_json(f"{source_dir}/inventory.json")
 
 
 def init_inventory_xlsx(
@@ -334,12 +332,10 @@ def init_inventory_xlsx(
     Raises:
         N/A
     """
-    # Read in source file. NOTE: The source filename and sheet name are hardcoded
-    df = pd.read_excel(  # type: ignore
+    # Return dataframe
+    return pd.read_excel(  # type: ignore
         f"{source_dir}/inventory.xlsx", sheet_name="inventory", engine="openpyxl"
     )
-    # Return dataframe
-    return df
 
 
 def init_inventory_csv(
@@ -360,10 +356,8 @@ def init_inventory_csv(
     Raises:
         N/A
     """
-    # Read in source file. NOTE: The source filename is hardcoded
-    df = pd.read_csv(f"{source_dir}/inventory.csv")
     # Return dataframe
-    return df
+    return pd.read_csv(f"{source_dir}/inventory.csv")
 
 
 def init_groups_json(
@@ -383,10 +377,8 @@ def init_groups_json(
     Raises:
         N/A
     """
-    # Read in source file. NOTE: The source filename is hardcoded
-    df = pd.read_json(f"{source_dir}/groups.json")
     # Return dataframe
-    return df
+    return pd.read_json(f"{source_dir}/groups.json")
 
 
 def init_groups_xlsx(
@@ -406,12 +398,10 @@ def init_groups_xlsx(
     Raises:
         N/A
     """
-    # Read in source file. NOTE: The source filename and sheet name are hardcoded
-    df = pd.read_excel(  # type: ignore
+    # Return dataframe
+    return pd.read_excel(  # type: ignore
         f"{source_dir}/groups.xlsx", sheet_name="groups", engine="openpyxl"
     )
-    # Return dataframe
-    return df
 
 
 def init_groups_csv(source_dir: Optional[str] = "motherstarter/inputs") -> pd.DataFrame:
@@ -429,9 +419,7 @@ def init_groups_csv(source_dir: Optional[str] = "motherstarter/inputs") -> pd.Da
     Raises:
         N/A
     """
-    # Read in source file. NOTE: The source filename is hardcoded
-    df = pd.read_csv(f"{source_dir}/groups.csv")
-    return df
+    return pd.read_csv(f"{source_dir}/groups.csv")
 
 
 def dataframe_to_dict(df: pd.DataFrame) -> List[Dict[str, Any]]:
@@ -489,12 +477,9 @@ def prep_templates(
     """
     # Load template directory where Jinja2 templates are located
     templates = FileSystemLoader(tmpl_dir)
-    # Load environment and setting autoescape to True
-    # to prevent XSS attacks
-    env = Environment(
+    return Environment(
         loader=templates, autoescape=True, trim_blocks=True, lstrip_blocks=True
     )
-    return env
 
 
 def to_nr_hosts(
