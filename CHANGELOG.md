@@ -5,7 +5,7 @@ CHANGELOG
 
 ## Type hints
 
-Type hinting has been added across the codebase [#150](https://github.com/writememe/motherstarter/pull/150). This closes long standing issue [#19](https://github.com/writememe/motherstarter/issues/19)
+Type hinting has been added across the codebase [(#150)](https://github.com/writememe/motherstarter/pull/150) which closes long standing issue [(#19)](https://github.com/writememe/motherstarter/issues/19).
 
 - Added type hints to codebase
 - Refactored some unit tests
