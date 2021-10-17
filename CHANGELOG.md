@@ -1,6 +1,33 @@
 CHANGELOG
 =======
 
+# 2021.10.17
+
+## Type hints
+
+Type hinting has been added across the codebase [#150](https://github.com/writememe/motherstarter/pull/150). This closes long standing issue [#19](https://github.com/writememe/motherstarter/issues/19)
+
+- Added type hints to codebase
+- Refactored some unit tests
+- Added `mypy` to CI testing
+
+## Version bumps
+
+- black 21.5b1 to 21.9b0
+- click max version from <=7.2 to <8.1
+- jinja2 2.11.3 to 3.0.1
+- mypy 0.812 to 0.910
+- nox 2020.12.31 to 2021.10.1
+- openpyxl 3.0.7 to 3.0.9
+- pandas 1.2.4 to 1.3.3
+- pytest 6.2.3 to 6.2.5
+- pytest-cov 2.11.2 to 3.0.0
+- yamllint 1.26.1 to 1.26.3
+
+## Codecov Github Actions upgrade
+
+- Upgraded [Codecov action](https://github.com/codecov/codecov-action) from 1.4.1 to 2.1.0
+
 # 2021.05.11
 
 ## Version bumps
