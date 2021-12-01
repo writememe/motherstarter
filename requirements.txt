@@ -3,7 +3,7 @@ bandit==1.7.0
 black==21.9b0
 click>=7.1,<8.1
 colorama==0.4.4
-jinja2==3.0.1
+jinja2==3.0.3
 mypy==0.910
 nox==2021.10.1
 openpyxl==3.0.9
