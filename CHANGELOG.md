@@ -1,6 +1,29 @@
 CHANGELOG
 =======
 
+# 2022.04.02
+
+## BREAKING CHANGES - Python 3.7 Support Deprecated
+
+- Due to an inherit [`pandas` dependency, python 3.7 support has been deprecated](https://pandas.pydata.org/docs/whatsnew/v1.4.0.html#increased-minimum-version-for-python)
+
+## Version bumps
+
+- bandit 1.7.0 to 1.7.4
+- black 21.9b0 to 22.3.0
+- click 7.1,<8.1 to 7.1,<8.2
+- jinja 3.0.1 to 3.1.1
+- mypy 0.910 to 0.942
+- nox 2021.10.1 to 2022.1.7
+- pandas 1.3.3 to 1.4.1
+- pylama 7.7.1 to 8.3.8
+- pytest 6.2.5 to 7.1.1
+
+
+## Github Actions setup python upgrade
+
+- Upgraded setup python from v2 to v3.1.0
+
 # 2021.10.17
 
 ## Type hints
