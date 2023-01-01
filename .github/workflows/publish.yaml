@@ -12,7 +12,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
       - name: set up python 3.9
-        uses: actions/setup-python@v3.1.0
+        uses: actions/setup-python@v4.4.0
         with:
           python-version: 3.9
       - name: setup publish env
