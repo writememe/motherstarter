@@ -9,7 +9,7 @@ nox==2022.1.7
 openpyxl==3.0.9
 pandas==1.4.1
 pylama==8.3.8
-pytest==7.1.1
+pytest==7.4.2
 pytest-cov==3.0.0
 xlrd==2.0.1
 yamllint==1.26.3
